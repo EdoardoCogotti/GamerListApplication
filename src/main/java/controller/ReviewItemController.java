@@ -57,7 +57,7 @@ public class ReviewItemController implements Initializable {
         contentReview.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
 
-        helpfulValue.setText(String.valueOf(review.getHelpful()));
+        helpfulValue.setText(String.valueOf(review.getHelpfull()));
         if(review.getPositive())
             thumbImage.setImage(new Image("/images/Like-icon.png"));
         else

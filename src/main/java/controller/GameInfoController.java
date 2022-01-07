@@ -42,7 +42,7 @@ public class GameInfoController implements Initializable {
             review.setUsername("edo");
             review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
-            review.setHelpful(3);
+            review.setHelpfull(3);
             review.setPositive(false);
             reviews.add(review);
         }
