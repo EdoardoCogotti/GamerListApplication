@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FriendListController">
+   <children>
+      <VBox maxWidth="1060.0" minWidth="935.0" prefHeight="600.0" prefWidth="935.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="94.0" prefWidth="655.0" text="Following" textFill="WHITE">
+                     <font>
+                        <Font name="Consolas Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="94.0" prefWidth="530.0" text="Follower" textFill="WHITE">
+                     <font>
+                        <Font name="Consolas Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="512.0" prefWidth="979.0">
+               <children>
+                  <TableView fx:id="tbFollowingData" maxWidth="500.0" minWidth="500.0" prefHeight="506.0" prefWidth="500.0">
+                    <columns>
+                      <TableColumn fx:id="userName" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Name" />
+                        <TableColumn fx:id="firstNameValue" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="FirstName" />
+                      <TableColumn fx:id="genderValue" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Gender" />
+                        <TableColumn fx:id="actionCol" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text=" " />
+                    </columns>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="10.0" />
+                     </HBox.margin>
+                  </TableView>
+                  <TableView fx:id="tbFollowerData" maxWidth="500.0" minWidth="374.0" prefHeight="486.0" prefWidth="374.0">
+                     <columns>
+                        <TableColumn fx:id="userNameFollower" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Name" />
+                        <TableColumn fx:id="firstNameValueFollower" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="FirstName" />
+                        <TableColumn fx:id="genderValueFollower" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Gender" />
+                     </columns>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="20.0" />
+                     </HBox.margin>
+                  </TableView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

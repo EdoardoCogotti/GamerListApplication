@@ -1,0 +1,26 @@
+
+.full{
+    -fx-background-color: #AAAAAA;
+    -fx-background-radius: 10;
+}
+
+.content{
+    -fx-background-radius: 20;
+    -fx-background-color: #DDDDDD;
+}
+
+.info{
+    -fx-background-radius: 20;
+    -fx-background-color: #6be55b;
+}
+
+.popover {
+    -fx-background-color: white;
+}
+
+.popover > .border {
+    -fx-stroke: linear-gradient(to bottom, rgba(0,0,0, .3), rgba(0, 0, 0, .7));
+    -fx-stroke-width: 0.5;
+    -fx-fill: rgba(30 , 30, 30, .95);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 10.0, 0.5, 2.0, 2.0);
+}

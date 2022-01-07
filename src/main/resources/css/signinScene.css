@@ -1,0 +1,18 @@
+.root{
+    -fx-background-color: #111111;
+}
+
+.label{
+    -fx-font-size: 13;
+    -fx-font-family: "Lucida Console";
+    -fx-text-fill: "white";
+    -fx-alignment: center; /* expand container to all the panel */
+}
+
+#menuTitleLabel{
+    -fx-font-size: 30;
+}
+
+#errorLabel{
+    -fx-text-fill: "red";
+}

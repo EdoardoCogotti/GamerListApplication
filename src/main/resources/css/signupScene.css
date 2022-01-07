@@ -1,0 +1,28 @@
+.root{
+    -fx-background-color: #444444;
+    /*-fx-alignment: center;*/
+}
+
+.label{
+    -fx-font-size: 14;
+    -fx-font-family: "Lucida Console";
+    -fx-text-fill: "white";
+    /*-fx-alignment: center; /* expand container to all the panel */
+}
+
+#titleLabel{
+    -fx-font-size: 30;
+    -fx-alignment: center;
+}
+
+#errorLabel{
+    -fx-text-fill: "red";
+}
+
+.choice-box .menu-item > .label { -fx-text-fill: #444444; }
+.choice-box .menu-item:focused > .label { -fx-text-fill: black; }
+
+.radio-button{
+    -fx-text-fill: "white";
+    -fx-font-family: "Lucida Console";
+}

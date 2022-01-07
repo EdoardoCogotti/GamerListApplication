@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GamerListController">
+   <children>
+      <VBox prefHeight="600.0" prefWidth="700.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="135.0" prefWidth="706.0" text="GamerList" textFill="WHITE">
+                     <font>
+                        <Font name="Consolas Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="512.0" prefWidth="700.0">
+               <children>
+                  <TableView fx:id="tbGameData" maxWidth="660.0" minWidth="660.0" prefHeight="506.0" prefWidth="660.0">
+                    <columns>
+                      <TableColumn fx:id="gameName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Name" />
+                      <TableColumn fx:id="developerName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Developer" />
+                        <TableColumn fx:id="publisherName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Publisher" />
+                        <TableColumn fx:id="storeName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Store" />
+                        <TableColumn fx:id="actionCol" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" />
+                    </columns>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </TableView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

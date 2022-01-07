@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SigninController">
+   <children>
+      <Label fx:id="menuTitleLabel" layoutY="44.0" prefHeight="17.0" prefWidth="600.0" text="GamerList" />
+      <Button fx:id="loginButton" layoutX="237.0" layoutY="319.0" mnemonicParsing="false" onAction="#login" stylesheets="@css/buttons.css" text="LOGIN" />
+      <Label layoutY="123.0" prefHeight="17.0" prefWidth="600.0" text="Type your username and password" />
+      <Label fx:id="loginLabel" layoutX="189.0" layoutY="190.0" text="Username:" />
+      <TextField fx:id="usernameTextField" layoutX="263.0" layoutY="186.0" promptText="es. Edoardo" />
+      <Button layoutX="300.0" layoutY="319.0" mnemonicParsing="false" onAction="#signup" stylesheets="@css/buttons.css" text="SIGN UP" />
+      <Label fx:id="loginLabel1" layoutX="189.0" layoutY="229.0" text="Password:" />
+      <PasswordField fx:id="passwordTextField" layoutX="263.0" layoutY="225.0" />
+      <Label fx:id="errorLabel" layoutY="280.0" prefHeight="17.0" prefWidth="600.0" text=" " visible="false" />
+   </children>
+</AnchorPane>

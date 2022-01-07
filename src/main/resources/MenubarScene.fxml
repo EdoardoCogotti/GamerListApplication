@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane fx:id="menuScene" maxWidth="1200.0" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" stylesheets="@css/menubarScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenubarController">
+   <children>
+      <HBox fx:id="menuBox" maxWidth="1200.0" prefHeight="44.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <MenuBar fx:id="searchMenuBar" prefHeight="44.0" prefWidth="160.0">
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Find">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#switchToSearchGame" text="Game" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToSearchUser" text="User" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToAnalytic" text="Analytic" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+            <Pane fx:id="spacer" HBox.hgrow="ALWAYS" />
+            <MenuBar fx:id="profileMenuBar" prefHeight="44.0" prefWidth="110.0">
+               <menus>
+                  <Menu fx:id="profileMenu" mnemonicParsing="false" text="Profile">
+                     <items>
+                        <MenuItem fx:id="profileMenuItem" mnemonicParsing="false" text="MyProfile" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToFriendList" text="Friends" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToGamerList" text="GameList" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToSignin" text="Logout">
+                           <accelerator>
+                              <KeyCodeCombination alt="DOWN" code="Q" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

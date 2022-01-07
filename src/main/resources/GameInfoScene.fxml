@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane cache="true" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameInfoController">
+   <children>
+      <BorderPane layoutY="6.0" prefHeight="20.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox prefHeight="80.0" prefWidth="309.0" styleClass="left-bar" stylesheets="@css/gameInfoScene.css" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="gameValue" alignment="CENTER" prefHeight="143.0" prefWidth="319.0" text="Name">
+                           <font>
+                              <Font name="Consolas Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="364.0" prefWidth="259.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <HBox prefHeight="40.0" prefWidth="259.0">
+                           <children>
+                              <Label prefHeight="54.0" prefWidth="85.0" text="Store:" />
+                              <Label fx:id="storeValue" prefHeight="46.0" prefWidth="175.0" text="storeValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="50.0" prefWidth="85.0" text="Released:" />
+                              <Label fx:id="releaseDateValue" prefHeight="46.0" prefWidth="178.0" text="releaseDateValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="176.0" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="48.0" prefWidth="85.0" text="Publisher:" />
+                              <Label fx:id="publisherValue" prefHeight="46.0" prefWidth="174.0" text="publisherValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="181.0" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="60.0" prefWidth="85.0" text="Developer:" />
+                              <Label fx:id="developerValue" prefHeight="47.0" prefWidth="179.0" text="developerValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="309.0" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="49.0" prefWidth="85.0" text="Languages:" />
+                              <Label fx:id="languagesValue" prefHeight="47.0" prefWidth="174.0" text="languagesValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="314.0" prefHeight="40.0" prefWidth="250.0">
+                           <children>
+                              <Label prefHeight="60.0" prefWidth="85.0" text="Genres:" />
+                              <Label fx:id="genresValue" prefHeight="47.0" prefWidth="175.0" text="genresValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="126.0" prefWidth="259.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" prefHeight="131.0" prefWidth="85.0" text="GameDetails:" />
+                              <Label fx:id="gameDetailsValue" alignment="TOP_LEFT" prefHeight="131.0" prefWidth="174.0" text="gameDetailsValue" wrapText="true" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="259.0">
+                           <children>
+                              <Button fx:id="gamelistButton" alignment="CENTER" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#updateGamelist" stylesheets="@css/buttons.css" text="ADD IN GAMELIST">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="106.0" prefWidth="910.0" text="Reviews ">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="506.0" prefWidth="891.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ScrollPane prefHeight="355.0" prefWidth="800.0" styleClass="transparent" stylesheets="@css/gameInfoScene.css">
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                           <content>
+                              <GridPane fx:id="grid">
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
