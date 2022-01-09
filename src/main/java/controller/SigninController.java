@@ -31,7 +31,10 @@ public class SigninController {
         // TO_DO check if exist in database
 
         if(true) {
+            Session.getInstance().setLoggedUser(username);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameFormScene.fxml"));
             root = loader.load();
 
             Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);

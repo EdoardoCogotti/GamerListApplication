@@ -102,4 +102,12 @@ public class Review {
 
     // metodi statici che comunicano con il backend
 
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "gamename='" + gamename + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

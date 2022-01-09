@@ -23,7 +23,7 @@ public class UserProfileController {
     @FXML
     private HBox lastNameBox, emailBox, phoneBox, birthdayBox, followBox;
     @FXML
-    private Button followButton;
+    private Button followButton, deleteButton;
 
     private int id;
     private boolean followed;
@@ -60,6 +60,7 @@ public class UserProfileController {
                 followButton.setText("UNFOLLOW");
                 followed = false;
             }
+            deleteButton.setManaged(false);
         }
         else{
             followBox.setVisible(false);

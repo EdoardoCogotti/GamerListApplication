@@ -9,7 +9,17 @@
     -fx-background-color: #DDDDDD;
 }
 
-.info{
+.infoGog{
+    -fx-background-radius: 20;
+    -fx-background-color: #aa2cb2;
+}
+
+.infoSteam{
+    -fx-background-radius: 20;
+    -fx-background-color: #1A9FFF;
+}
+
+.infoGamerlist{
     -fx-background-radius: 20;
     -fx-background-color: #6be55b;
 }

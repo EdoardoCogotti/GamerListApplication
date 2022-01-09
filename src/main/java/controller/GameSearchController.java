@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,7 +65,11 @@ public class GameSearchController implements Initializable{
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
                     try {
-                        switchToGameInfo(mouseEvent, currentGame);
+                        User u = Session.getInstance().getLoggedUser();
+                         if(u!=null && u.getAdmin())
+                            switchToUserEdit(mouseEvent);
+                        else
+                            switchToGameInfo(mouseEvent, currentGame);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -83,6 +88,19 @@ public class GameSearchController implements Initializable{
 
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/gameInfoScene.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToUserEdit(MouseEvent event) throws IOException {
+        stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUserEditScene.fxml"));
+        Parent root = loader.load();
+        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
+
+        scene = new Scene(newRoot);
+        String css = this.getClass().getResource("/css/userEditScene.css").toExternalForm();
         scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();

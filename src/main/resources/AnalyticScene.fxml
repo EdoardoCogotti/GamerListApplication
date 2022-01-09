@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnalyticController">
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@css/analyticScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnalyticController">
    <children>
-      <HBox prefHeight="139.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="560.0" prefWidth="416.0">
+            <HBox alignment="CENTER" prefHeight="127.0" prefWidth="800.0">
                <children>
-                  <Label text="You could know these users with your tastes:" wrapText="true">
-                     <VBox.margin>
-                        <Insets bottom="30.0" />
-                     </VBox.margin></Label>
-                  <ListView fx:id="userList" prefHeight="200.0" prefWidth="200.0" />
+                  <Label prefHeight="50.0" prefWidth="367.0" text="Your position in the overall ranking about review score is better than :" wrapText="true" />
+                  <Label fx:id="userRankValue" text="Label">
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/rank-icon.png" />
+                     </image>
+                  </ImageView>
                </children>
-               <HBox.margin>
-                  <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-               </HBox.margin>
-            </VBox>
-            <Pane prefHeight="600.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
-            <VBox alignment="CENTER" prefHeight="560.0" prefWidth="410.0">
+            </HBox>
+            <HBox prefHeight="474.0" prefWidth="800.0">
                <children>
-                  <Label text="Your friends write positive reviews about this games:" wrapText="true">
-                     <VBox.margin>
-                        <Insets bottom="30.0" />
-                     </VBox.margin></Label>
-                  <ListView fx:id="gameList" prefHeight="200.0" prefWidth="200.0" />
+                  <BarChart fx:id="barChart" prefHeight="474.0" prefWidth="797.0" title="Top 3 games with more positive reviews this year">
+                    <xAxis>
+                      <CategoryAxis label="Genre" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis label="Positive reviews" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
                </children>
-               <HBox.margin>
-                  <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-               </HBox.margin>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

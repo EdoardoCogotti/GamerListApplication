@@ -11,7 +11,7 @@
    <children>
       <VBox prefHeight="300.0" prefWidth="100.0" styleClass="full" stylesheets="@css/reviewItem.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox fx:id="usernameBar" prefHeight="49.0" prefWidth="158.0" styleClass="info" stylesheets="@css/reviewItem.css">
+            <HBox fx:id="usernameBar" prefHeight="49.0" prefWidth="158.0" styleClass="infoGog" stylesheets="@css/reviewItem.css">
                <children>
                   <Label alignment="CENTER" prefHeight="59.0" prefWidth="118.0" text="Username:">
                      <font>

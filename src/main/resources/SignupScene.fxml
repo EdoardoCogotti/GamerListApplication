@@ -90,12 +90,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#submit" stylesheets="@css/buttons.css" text="SUBMIT">
+                  <Button mnemonicParsing="false" onAction="#switchToSignin" stylesheets="@css/buttons.css" text="BACK">
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#switchToSignin" stylesheets="@css/buttons.css" text="BACK">
+                  <Button mnemonicParsing="false" onAction="#submit" stylesheets="@css/buttons.css" text="SUBMIT">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

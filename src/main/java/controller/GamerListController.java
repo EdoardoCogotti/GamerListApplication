@@ -17,8 +17,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Game;
-import model.User;
+
+import model.GamerListElement;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,19 +27,19 @@ import java.util.ResourceBundle;
 public class GamerListController implements Initializable {
 
     @FXML
-    private TableView<Game> tbGameData;
+    private TableView<GamerListElement> tbGameData;
     @FXML
-    public TableColumn<Game, String> gameName;
+    public TableColumn<GamerListElement, String> gameName;
     @FXML
-    public TableColumn<Game, String> developerName;
+    public TableColumn<GamerListElement, String> developerName;
     @FXML
-    public TableColumn<Game, String> publisherName;
+    public TableColumn<GamerListElement, String> publisherName;
     @FXML
-    public TableColumn<Game, String> storeName;
+    public TableColumn<GamerListElement, Integer> friendsCountName;
     @FXML
-    public TableColumn<Game, String> actionCol;
+    public TableColumn<GamerListElement, String> actionCol;
 
-    private ObservableList<Game> gameList = FXCollections.observableArrayList();
+    private ObservableList<GamerListElement> gameList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,23 +47,23 @@ public class GamerListController implements Initializable {
         //TO_DO find gamelist from db
 
         for(int i=0; i<50; i++){
-            Game g = new Game();
+            GamerListElement g = new GamerListElement();
             g.setName("Peggle 3");
             g.setDeveloper("Bandai");
             g.setPublisher("Bandai");
-            g.setStore("Steam");
+            g.setFriendsCount(5);
             gameList.add(g);
         }
 
         gameName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         developerName.setCellValueFactory(new PropertyValueFactory<>("Developer"));
         publisherName.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
-        storeName.setCellValueFactory(new PropertyValueFactory<>("Store"));
+        friendsCountName.setCellValueFactory(new PropertyValueFactory<>("FriendsCount"));
 
         tbGameData.setItems(gameList);
 
         gameName.setCellFactory(tc -> {
-            TableCell<Game, String> cell = new TableCell<>() {
+            TableCell<GamerListElement, String> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty) ;
@@ -83,12 +83,12 @@ public class GamerListController implements Initializable {
             return cell ;
         });
 
-        Callback<TableColumn<Game, String>, TableCell<Game, String>> cellFactory
+        Callback<TableColumn<GamerListElement, String>, TableCell<GamerListElement, String>> cellFactory
                 =
                 new Callback<>() {
                     @Override
-                    public TableCell call(final TableColumn<Game, String> param) {
-                        final TableCell<Game, String> cell = new TableCell<>() {
+                    public TableCell call(final TableColumn<GamerListElement, String> param) {
+                        final TableCell<GamerListElement, String> cell = new TableCell<>() {
 
                             Button btn = new Button("REMOVE");
                             boolean added=true;
@@ -101,7 +101,7 @@ public class GamerListController implements Initializable {
                                     setText(null);
                                 } else {
                                     btn.setOnAction(event -> {
-                                        Game g = getTableView().getItems().get(getIndex());
+                                        GamerListElement g = getTableView().getItems().get(getIndex());
                                         if(added){
                                             System.out.println("REMOVED");
                                             added=false;
