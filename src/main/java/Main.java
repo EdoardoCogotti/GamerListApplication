@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import model.Game;
 
 public class Main extends Application {
 
@@ -35,14 +36,19 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        Game prova = Game.getGamesByNamePart("Fever").get(0);
+        String nome = prova.getName();
+        prova.setName(nome + "_PisaMerda");
+        prova.update();
     }
 
     @Override
     public void stop(){
 
         // close connections
-        /*MongoDriver mongoDriver = MongoDriver.getInstance();
-        Neo4jDriver neoDriver = Neo4jDriver.getInstance();
+        /*utils.MongoDriver mongoDriver = utils.MongoDriver.getInstance();
+        utils.Neo4jDriver neoDriver = utils.Neo4jDriver.getInstance();
 
         mongoDriver.close();
         neoDriver.close();

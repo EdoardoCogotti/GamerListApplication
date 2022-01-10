@@ -1,4 +1,4 @@
-package com.ducange.backend.Model;
+package model;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ public class ReviewCompact {
 
     //General parameters
     private String platform;
-    //private String username;
     private Date creation_date;
-
+    
     //GOG
+    private String name;
     private int rating;
-
+    
     //STEAM
     private int helpfull;
     private boolean positive;
@@ -20,15 +20,15 @@ public class ReviewCompact {
 
     public ReviewCompact(
             String new_platform,
-            //String new_username,
             Date new_creation_date,
+            String new_username,
             int new_rating,
             int new_helpfull,
             boolean new_positive
     ) {
         this.platform = new_platform;
-        //this.username = new_username;
         this.creation_date = new_creation_date;
+        this.name = new_username;
         this.rating = new_rating;
         this.helpfull = new_helpfull;
         this.positive = new_positive;
@@ -39,11 +39,10 @@ public class ReviewCompact {
         this.platform = newValue;
     }
 
-	/*
-	public void setUsername(String newValue) {
-		this.username = newValue;
+
+	public void setName(String newValue) {
+		this.name = newValue;
 	}
-	*/
 
     public void setCreationDate(Date newValue) {
         this.creation_date = newValue;
@@ -66,15 +65,13 @@ public class ReviewCompact {
 
 
     //GET
-    public String getplatform() {
+    public String getPlatform() {
         return  this.platform;
     }
 
-	/*
-	public String getUsername() {
-		return  this.username;
+	public String getName() {
+		return  this.name;
 	}
-	*/
 
     public Date getCreationDate() {
         return  this.creation_date;
@@ -88,5 +85,9 @@ public class ReviewCompact {
     //STEAM GETs
     public int getHelpfull() {
         return  this.helpfull;
+    }
+
+    public boolean getPositive() {
+        return  this.positive;
     }
 }

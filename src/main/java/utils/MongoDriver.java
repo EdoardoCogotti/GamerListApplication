@@ -1,3 +1,5 @@
+package utils;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -32,8 +34,10 @@ public class MongoDriver {
     public void close() {
         if(driverInstance == null)
             throw new RuntimeException("ERROR: Connection doesn't exist (getInstance() method not called)");
-        else
+        else{
             driverInstance.client.close();
+            driverInstance = null;
+        }
     }
 
 }

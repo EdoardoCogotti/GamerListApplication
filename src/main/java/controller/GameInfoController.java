@@ -80,14 +80,12 @@ public class GameInfoController implements Initializable {
         languages.add("spanish");
         languages.add("italian");
         g.setLanguages(languages);
-        JSONObject gameDetailsObject = new JSONObject();
-        gameDetailsObject.put("single_player", true);
-        gameDetailsObject.put("multi_player", false);
-        gameDetailsObject.put("coop", false);
-        gameDetailsObject.put("controller_support", true);
-        gameDetailsObject.put("cloud_saves", false);
-        gameDetailsObject.put("achievement", true);
-        g.setGameDetails(gameDetailsObject);
+        g.setSinglePlayer(true);
+        g.setMultiPlayer(false);
+        g.setCoop(false);
+        g.setControllerSupport(true);
+        g.setCloudSaves(false);
+        g.setAchievement(true);
 
         gameValue.setText(g.getName());
         storeValue.setText(g.getStore());
