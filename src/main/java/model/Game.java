@@ -372,6 +372,7 @@ public class Game {
 
     public void addReview(ReviewCompact rc){
         this.reviews.add(rc);
+        this.tot_reviews++;
     }
 
     private Document toDocument(){

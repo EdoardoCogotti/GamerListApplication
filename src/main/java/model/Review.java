@@ -82,8 +82,12 @@ public class Review {
     }
     public void setCreationDate(LocalDate creationDate) {this.creationDate = creationDate;}
     public void setTitle(String title) {this.title = title;}
+
+    //GOG GET
     public void setGamename(String gamename) {this.gamename = gamename;}
-    public void setHelpfull(int helpful) {this.helpfull = helpfull;}
+    public void setHelpfull(int helpfull) {this.helpfull = helpfull;}
+
+    //Steam GET
     public void setPositive(boolean positive) {this.positive = positive;}
     public void setRating(int rating) {this.rating = rating;}
 
