@@ -74,6 +74,14 @@ public class ReviewItemController implements Initializable {
         ratingValue.setText(review.getRating() + "/5");
     }
 
+    public void setGamerlistData(Review review){
+        this.review = review;
+        usernameValue.setText(review.getUsername());
+        contentReview.setText(review.getContent());
+        creationDateValue.setText(review.getCreationDate().toString());
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         usernameBar.setOnMouseClicked(new EventHandler<MouseEvent>() {

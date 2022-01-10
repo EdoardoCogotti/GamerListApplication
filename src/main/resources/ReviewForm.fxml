@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="891.0" stylesheets="@css/reviewForm.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReviewFormController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="891.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="201.0" prefWidth="891.0" spacing="20.0">
+               <children>
+                  <TextArea fx:id="reviewTextArea" prefHeight="158.0" prefWidth="497.0" promptText="Write your Review">
+                     <HBox.margin>
+                        <Insets bottom="15.0" top="15.0" />
+                     </HBox.margin>
+                  </TextArea>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#addMyReview" stylesheets="@css/buttons.css" text="SUBMIT" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

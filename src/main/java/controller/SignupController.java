@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -131,6 +132,10 @@ public class SignupController implements Initializable {
         // TO_DO registra in db
         errorLabel.setText("You are now signed up");
         try{
+            /*User u = Session.getInstance().getLoggedUser();
+            if(u!=null && u.getAdmin())
+                switchToMyProfile(event);
+            else*/
             switchToSignin(event);
         }
         catch(IOException e){e.printStackTrace();}
@@ -145,6 +150,26 @@ public class SignupController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    /*
+    public void switchToMyProfile(ActionEvent event) throws  IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
+        Parent root = loader.load();
+        stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
+        scene = new Scene(root);
+        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
+
+        String username = Session.getInstance().getLoggedUser().getUsername();
+        UserProfileController userProfileController = loader.getController();
+        userProfileController.displayInfo(username, true);
+
+        UtilityMenu.getInstance().bind(newRoot);
+        scene = new Scene(newRoot);
+        String css = this.getClass().getResource("/css/userProfileScene.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        stage.setScene(scene);
+        stage.show();
+    }*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -1,132 +1,72 @@
 package controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import model.Game;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AnalyticController implements Initializable {
 
     @FXML
-    private ListView<String> gameList, userList;
+    private Label userRankValue;
+    @FXML
+    private BarChart barChart;
 
-    private String[] games = {"Layton", "Dark Souls", "Peggle", "Pokemon"};
-    private ObservableList game = FXCollections.observableArrayList();
-    private String currentGame;
-    private String[] users = {"Edo97", "Fra97", "Anna97"};
-    private ObservableList user = FXCollections.observableArrayList();
-    private String currentUser;
-    private Scene scene;
-    private Stage stage;
+    private int percentile;
+    private List<Game> topKGames;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        gameList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //TO_DO get Percentile of the average score of each user’s last year reviews
+        percentile = 80;
+        userRankValue.setText(percentile+"%");
+        if(percentile<30)
+            userRankValue.setStyle("-fx-text-fill: red");
+        else if(percentile<70)
+            userRankValue.setStyle("-fx-text-fill: white");
+        else
+            userRankValue.setStyle("-fx-text-fill: gold");
 
-                currentGame = gameList.getSelectionModel().getSelectedItem();
+        //TO_DO get Top k games with positive reviews for a given genre in the last year
+        // get in form <genre, gamename, numPosReview>
+        List<String> genres = new ArrayList<>();
+        genres.add("Action");
+        genres.add("Puzzle");
+        genres.add("Platform");
+        genres.add("FPS");
+        for(int i=0; i<10; i++)
+            genres.add("DUMMY"+i);
+
+        List<String> games = new ArrayList<>();
+        games.add("Peggle");
+        games.add("Pokemon");
+        games.add("Layton");
+
+        for(String game: games){
+            XYChart.Series<?,?> series = new XYChart.Series<>();
+            series.setName(game);
+            for(String genre: genres){
+                int r = (int)(Math.random()*1000);
+                XYChart.Data data = new XYChart.Data(genre,r);
+                series.getData().add(data);
             }
-        });
-
-        gameList.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
-                try {
-                    switchToGameInfo(mouseEvent, currentGame);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        userList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                currentUser = userList.getSelectionModel().getSelectedItem();
-            }
-        });
-
-        userList.setOnMouseClicked(mouseEvent -> {
-            if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
-                try {
-                    switchToUserProfile(mouseEvent, currentUser);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        fillRecommendGames();
-        fillRecommendUsers();
-    }
-
-    public void fillRecommendGames(){
-        game.clear();
-
-        // TO_DO find recommend games
-        for(String g : games) {
-            game.add(g);
+            barChart.getData().add(series);
         }
-
-        gameList.setItems(game);
-    }
-
-
-    public void fillRecommendUsers(){
-        user.clear();
-
-        // TO_DO find recommend games
-        for(String u : users) {
-            user.add(u);
+        for (Object o : barChart.getData()) {
+            for (final XYChart.Data<?, ?> data : ((XYChart.Series<?, ?>)o).getData()) {
+                Tooltip tooltip = new Tooltip();
+                tooltip.setText(((XYChart.Series<?, ?>) o).getName() +" "+
+                        data.getYValue().toString());
+                Tooltip.install(data.getNode(), tooltip);
+            }
         }
-
-        userList.setItems(user);
-    }
-
-    public void switchToGameInfo(MouseEvent event, String game) throws IOException {
-        stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameInfoScene.fxml"));
-        Parent root = loader.load();
-        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
-        GameInfoController gameInfoController = loader.getController();
-        gameInfoController.setGameScene(game);
-
-        scene = new Scene(newRoot);
-        String css = this.getClass().getResource("/css/gameInfoScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToUserProfile(MouseEvent event, String username) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
-        Parent root = loader.load();
-
-        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
-
-        UserProfileController userProfileController = loader.getController();
-        userProfileController.displayInfo(username, false);
-
-        stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
-        UtilityMenu.getInstance().bind(newRoot);
-        scene = new Scene(newRoot);
-        String css = this.getClass().getResource("/css/userProfileScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        stage.setScene(scene);
-        stage.show();
     }
 }

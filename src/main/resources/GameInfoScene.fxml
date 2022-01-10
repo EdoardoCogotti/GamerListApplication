@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -89,7 +90,7 @@
             </VBox>
          </left>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="centerBar" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -100,6 +101,7 @@
                         </Label>
                      </children>
                   </HBox>
+                  <Pane fx:id="myReview" minHeight="200.0" />
                   <HBox alignment="CENTER" prefHeight="506.0" prefWidth="891.0" VBox.vgrow="ALWAYS">
                      <children>
                         <ScrollPane prefHeight="355.0" prefWidth="800.0" styleClass="transparent" stylesheets="@css/gameInfoScene.css">

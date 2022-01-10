@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import model.Game;
 import model.Review;
@@ -26,12 +27,15 @@ public class GameInfoController implements Initializable {
     @FXML
     private GridPane grid;
     @FXML
+    private Pane myReview;
+    @FXML
     private Label gameValue, storeValue, developerValue, publisherValue,
             genresValue, languagesValue, gameDetailsValue;
     @FXML
     private Button gamelistButton;
 
     private boolean inGamelist;
+    private boolean reviewed;
 
     private List<Review> reviews = new ArrayList<>() ;
     private List<Review> getSteamData(){
@@ -63,6 +67,20 @@ public class GameInfoController implements Initializable {
         return reviews;
     }
 
+    private List<Review> getGamerListData(){
+        List<Review> reviews = new ArrayList<>();
+
+        for(int i=0; i<10; i++){
+            Review review = new Review();
+            review.setUsername("edo");
+            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
+            review.setCreationDate(LocalDate.now());
+            reviews.add(review);
+        }
+        return reviews;
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -86,6 +104,8 @@ public class GameInfoController implements Initializable {
         g.setControllerSupport(true);
         g.setCloudSaves(false);
         g.setAchievement(true);
+
+        Session.getInstance().setCurrentGame(g);
 
         gameValue.setText(g.getName());
         storeValue.setText(g.getStore());
@@ -116,27 +136,33 @@ public class GameInfoController implements Initializable {
         strGameDetails.delete(strGameDetails.length()-1, strGameDetails.length());
         gameDetailsValue.setText(String.valueOf(strGameDetails));
 
-        if(!g.getStore().equals("Steam")) //a
+        if(g.getStore().equals("Steam")) //a
             reviews.addAll(getSteamData());
-        else
+        else if(g.getStore().equals("Gog"))
             reviews.addAll(getGogData());
+        else
+            reviews.addAll(getGamerListData());
 
         int col=0;
         int row=1;
         try {
             for(Review r : reviews){
                 FXMLLoader loader = new FXMLLoader();
-                if(!g.getStore().equals("Steam")) //a
+                if(g.getStore().equals("Steam")) //a
                     loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
-                else
+                else if(g.getStore().equals("Gog"))
                     loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
+                else
+                    loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
                 AnchorPane anchorPane = loader.load();
 
                 ReviewItemController reviewItemController = loader.getController();
-                if(!g.getStore().equals("Steam")) //a
+                if(g.getStore().equals("Steam")) //a
                     reviewItemController.setSteamData(r);
-                else
+                else if(g.getStore().equals("Gog"))
                     reviewItemController.setGogData(r);
+                else
+                    reviewItemController.setGamerlistData(r);
 
                 if(col==3){
                     col=0;
@@ -171,6 +197,21 @@ public class GameInfoController implements Initializable {
             gamelistButton.setText("REMOVE FROM GAMELIST");
         else
             gamelistButton.setText("ADD IN GAMELIST");
+
+        //TO_DO check if game reviewed by the username
+        reviewed= true;
+        try {
+            FXMLLoader loader_review = new FXMLLoader();
+            if (reviewed) {
+                loader_review.setLocation(getClass().getResource("/MyReview.fxml"));
+            } else {
+                loader_review.setLocation(getClass().getResource("/ReviewForm.fxml"));
+            }
+            AnchorPane anchorPane = loader_review.load();
+            myReview.getChildren().add(anchorPane);
+        }
+        catch (IOException e){e.printStackTrace();}
+
     }
 
 

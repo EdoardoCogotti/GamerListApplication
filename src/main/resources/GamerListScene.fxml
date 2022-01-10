@@ -29,7 +29,7 @@
                       <TableColumn fx:id="gameName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Name" />
                       <TableColumn fx:id="developerName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Developer" />
                         <TableColumn fx:id="publisherName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Publisher" />
-                        <TableColumn fx:id="storeName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Store" />
+                        <TableColumn fx:id="friendsCountName" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" resizable="false" text="Friends with it" />
                         <TableColumn fx:id="actionCol" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="132.0" />
                     </columns>
                      <HBox.margin>

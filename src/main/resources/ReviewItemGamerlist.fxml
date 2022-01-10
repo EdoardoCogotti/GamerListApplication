@@ -2,19 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="250.0" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReviewItemController">
+
+<AnchorPane prefHeight="250.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReviewItemController">
    <children>
-      <VBox prefHeight="300.0" prefWidth="100.0" styleClass="full" stylesheets="@css/reviewItem.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="300.0" prefWidth="100.0" styleClass="full" stylesheets="@css/reviewItem.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox fx:id="usernameBar" prefHeight="49.0" prefWidth="158.0" styleClass="infoSteam" stylesheets="@css/reviewItem.css">
+            <HBox fx:id="usernameBar" prefHeight="49.0" prefWidth="158.0" styleClass="infoGamerlist" stylesheets="@css/reviewItem.css">
                <children>
                   <Label alignment="CENTER" prefHeight="59.0" prefWidth="118.0" text="Username:">
                      <font>
@@ -34,41 +32,9 @@
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="58.0" text="Helpful:">
-                     <font>
-                        <Font name="Consolas" size="12.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="helpfulValue" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" text="NaN">
-                     <font>
-                        <Font name="Consolas" size="12.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <Region prefHeight="14.0" prefWidth="20.0" HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="thumbImage" fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                     <image>
-                        <Image url="@images/Like-Icon.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <VBox.margin>
-                  <Insets top="2.0" />
-               </VBox.margin>
-            </HBox>
             <HBox fx:id="reviewContent" prefHeight="270.0" prefWidth="180.0">
                <children>
-                  <VBox fx:id="reviewVbox" prefHeight="162.0" prefWidth="186.0">
+                  <VBox fx:id="reviewVbox" prefHeight="200.0">
                      <children>
                         <Label fx:id="contentReview" alignment="CENTER" prefHeight="194.0" prefWidth="180.0" styleClass="content" stylesheets="@css/reviewItem.css" text=" ContentPlaceholde" textAlignment="CENTER" wrapText="true">
                            <font>
