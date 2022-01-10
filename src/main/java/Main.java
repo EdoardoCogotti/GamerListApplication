@@ -37,7 +37,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        Game prova = Game.getGamesByNamePart("Fever").get(0);
+        Game prova = Game.getGamesByNamePart("Cou").get(0);
         String nome = prova.getName();
         prova.setName(nome + "_PisaMerda");
         prova.update();

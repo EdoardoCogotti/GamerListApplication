@@ -26,7 +26,7 @@ public class Game {
     private String developer;
     private String publisher;
     private List<String> languages;
-    private List<String> achievements;
+    private int achievements;
     private List<String> genres;
     private String rating;
     private int tot_reviews;
@@ -65,7 +65,7 @@ public class Game {
             String new_developer,
             String new_publisher,
             ArrayList<String> new_languages,
-            ArrayList<String> new_achievements,
+            int new_achievements,
             ArrayList<String> new_genres,
             String new_rating,
             int new_tot_reviews,
@@ -190,7 +190,7 @@ public class Game {
 
     public void setLanguages(List<String> newValue){ this.languages = newValue;}
 
-    public void setAchievement(List<String> newValue){  this.achievements = newValue;}
+    public void setAchievement(int newValue){  this.achievements = newValue;}
 
     public void setGenres(List<String> newValue){   this.genres = newValue;}
 
@@ -209,21 +209,56 @@ public class Game {
     public void setAchievement(boolean newValue) {  this.achievement = newValue;}
 
     //GOG GET
-    public void  player_rating(Double newValue){   this.player_rating = newValue;}
+    public void  player_rating(Double newValue){   
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        this.player_rating = newValue;
+    }
 
-    public void  oses(List<String> newValue){   this.oses = newValue;}
+    public void  oses(List<String> newValue){   
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        this.oses = newValue;
+    }
 
-    public void  size(String newValue){ this.size = newValue;}
+    public void  size(String newValue){ 
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        this.size = newValue;
+    }
 
-    public void  in_development(boolean newValue){  this.in_development = newValue;}
+    public void  in_development(boolean newValue){  
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        this.in_development = newValue;
+    }
 
 
     //STEAM GET
-    public void  game_description(String newValue){ this.game_description = newValue;}
+    public void  game_description(String newValue){ 
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
+        } 
+        this.game_description = newValue;
+    }
 
-    public void  minimum_requirements(String newValue){ this.minimum_requirements = newValue;}
+    public void  minimum_requirements(String newValue){ 
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
+        } 
+        this.minimum_requirements = newValue;
+    }
 
-    public void  recommended_requirements(String newValue){ this.recommended_requirements = newValue;}
+    public void  recommended_requirements(String newValue){ 
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
+        } 
+        this.recommended_requirements = newValue;
+    }
 
 
 
@@ -249,7 +284,7 @@ public class Game {
 
     public List<String> getLanguages(){ return  this.languages;}
 
-    public List<String> getAchievements(){  return  this.achievements;}
+    public int getAchievements(){  return  this.achievements;}
 
     public List<String> getGenres(){    return  this.genres;}
 
@@ -280,22 +315,64 @@ public class Game {
     
     //GOG specific GET
 
-    public Double getPlayerRating(){   return  this.player_rating;}
+    public Double getPlayerRating(){   
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        return  this.player_rating;
+    }
 
-    public List<String> getOses(){  return  this.oses;}
+    public List<String> getOses(){  
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        return  this.oses;
+    }
 
-    public String getSize(){    return  this.size;}
+    public String getSize(){    
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        return  this.size;
+    }
 
-    public boolean getInDevelopment(){  return  this.in_development;}
+    public boolean getInDevelopment(){  
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
+        } 
+        return  this.in_development;
+    }
 
 
-    //GOG specific GET
+    //Steam specific GET
 
-    public String getGameDescription(){ return  this.game_description;}
+    public String getGameDescription(){ 
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
+        }    
+        return  this.game_description;
+    }
 
-    public String getMinimumRequirements(){ return  this.minimum_requirements;}
+    public String getMinimumRequirements(){ 
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
+        }    
+        return  this.minimum_requirements;
+    }
 
-    public String getRecommendedRequirements(){ return  this.recommended_requirements;}
+    public String getRecommendedRequirements(){ 
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
+        }    
+        return  this.recommended_requirements;
+    }
+
+    //for reviews
+    public List<ReviewCompact> getReviews(){ return     this.reviews;}
+
+    public void addReview(ReviewCompact rc){
+        this.reviews.add(rc);
+    }
 
     private Document toDocument(){
         Document doc = new Document();
@@ -309,7 +386,7 @@ public class Game {
         doc.append("developer", this.developer);
         doc.append("publisher", this.publisher);
         doc.append("languages", (this.languages != null)? new ArrayList<String>(this.languages) : new ArrayList<String>());
-        doc.append("achievements", (this.achievements != null)? new ArrayList<String>( this.achievements) : new ArrayList<String>());
+        doc.append("achievements", this.achievements);
         doc.append("store", this.store);
         doc.append("tot_reviews", this.tot_reviews);
         //Details
@@ -322,15 +399,15 @@ public class Game {
         detailsDoc.append("achievement", this.achievement);
         doc.append("details", detailsDoc);
 
-        System.out.println(this.store);
-        System.out.println(this.rating);
+        //System.out.println(this.store);
+        //System.out.println(this.game_description);
         if(this.store.equals("GOG")){
             doc.append("player_rating", this.player_rating);
             doc.append("oses", this.oses);
             doc.append("size", this.size);
             doc.append("in_development", this.in_development);
         }
-        if(this.store.equals("Steams")){
+        if(this.store.equals("Steam")){
             //Steam
             doc.append("game_description", this.game_description);
             doc.append("minimum_requirements", this.minimum_requirements);
@@ -359,24 +436,19 @@ public class Game {
     }
 
 
-
     //Save a Game info on the DB
     public void update(){
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
 
-        //Check if the game exists by controlling the ID
+        //find a game by it's id in mongo
         Bson bsonFilter = Filters.eq("_id", this.id);
-        /*
-        Document gameDoc = gamesColl.find(bsonFilter).first();
-        if(gameDoc == null){
-            throw new RuntimeException("The object given doesn't exist in the MongoDB");
-        }
-        */
 
-        //Convert to document and replace original;
+        //Convert to document and replace original document in MongoDB;
         Document newGameDoc = this.toDocument();
         gamesColl.findOneAndReplace(bsonFilter, newGameDoc);
+
+        //TODO: insert info in the graphDB if needed
 
     }
 
