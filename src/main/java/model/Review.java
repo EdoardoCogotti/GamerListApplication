@@ -32,7 +32,7 @@ public class Review {
     private String title;
 
     //Steam
-    private int helpfull;
+    private int helpful;
     private boolean positive;
 
     public Review(){
@@ -62,7 +62,7 @@ public class Review {
         this.title = new_title; 
 
         //Steam
-        this.helpfull = new_helpful;
+        this.helpful = new_helpful;
         this.positive = new_positive; 
     }
 
@@ -81,7 +81,7 @@ public class Review {
         }
         if(this.store.equals("Steam")){
             //Steam
-            this.helpfull = doc.getInteger("helpful");
+            this.helpful = doc.getInteger("helpful");
             this.positive = doc.getBoolean("positive");
         }
 
@@ -110,7 +110,7 @@ public class Review {
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG review field in a Steam review");
         } 
-        this.helpfull = helpful;
+        this.helpful = helpful;
     }
 
     //Steam GET
@@ -130,7 +130,7 @@ public class Review {
     public String getContent() {return this.content;}
     public String getUsername() {return this.username;}
     public String getTitle() {return this.title;}
-    public int getHelpful() {return this.helpfull;}
+    public int getHelpful() {return this.helpful;}
     public LocalDate getCreationDate() {return this.creationDate;}
     public String getGamename() {return this.gamename;}
 
@@ -166,7 +166,7 @@ public class Review {
                 java.util.Date.from(this.creationDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
                 this.username,
                 this.rating,
-                this.helpfull,
+                this.helpful,
                 this.positive
         ));
     }
@@ -218,7 +218,7 @@ public class Review {
         }
         if(this.store.equals("Steam")){
             //Steam
-            doc.append("helpfull", this.helpfull);
+            doc.append("helpful", this.helpful);
             doc.append("positive", this.positive); 
         }
 

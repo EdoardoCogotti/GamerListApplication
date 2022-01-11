@@ -164,8 +164,8 @@ public class Game {
                 rating = review.getInteger("rating");
                 username= review.getString("name");
             }else{
-                helpful =  review.getInteger("helpful");
-                positive =  review.getBoolean("positive");
+                helpful =  Integer.parseInt(review.getString("helpful"));
+                positive =  review.getString("rating") == "1";
             }
             this.reviews.add(new ReviewCompact(store, creation_date, username, rating, helpful, positive));
         }
@@ -400,7 +400,7 @@ public class Game {
         detailsDoc.append("controller_support", this.controller_support);
         detailsDoc.append("cloud_saves", this.cloud_saves);
         detailsDoc.append("achievement", this.achievement);
-        doc.append("details", detailsDoc);
+        doc.append("game_details", detailsDoc);
 
         //System.out.println(this.store);
         //System.out.println(this.game_description);
@@ -427,7 +427,7 @@ public class Game {
                 reviewDoc.append("rating", review.getRating());
             }else{
                 //Steam
-                reviewDoc.append("helpfull", review.getHelpfull());
+                reviewDoc.append("helpful", review.gethelpful());
                 reviewDoc.append("positive", review.getPositive());
             }
 
