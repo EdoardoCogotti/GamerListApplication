@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.Review;
 import org.controlsfx.control.PopOver;
 
@@ -57,7 +55,7 @@ public class ReviewItemController implements Initializable {
         contentReview.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
 
-        helpfulValue.setText(String.valueOf(review.getHelpfull()));
+        helpfulValue.setText(String.valueOf(review.getHelpful()));
         if(review.getPositive())
             thumbImage.setImage(new Image("/images/Like-icon.png"));
         else

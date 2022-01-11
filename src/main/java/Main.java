@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Game;
+import model.Review;
 
 public class Main extends Application {
 
@@ -37,10 +38,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        Game prova = Game.getGamesByNamePart("Cou").get(0);
-        String nome = prova.getName();
-        prova.setName(nome + "_PisaMerda");
-        prova.update();
+        Game prova = Game.getGamesByNamePart("Pimpa").get(0);
+        prova.delete();
+        //Review provRev = Review.getReviewsByGame(prova).get(0);
+        //prova.update();
     }
 
     @Override

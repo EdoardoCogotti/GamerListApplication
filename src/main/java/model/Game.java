@@ -1,9 +1,11 @@
 package model;
 
 import com.mongodb.DBObject;
+import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -152,7 +154,7 @@ public class Game {
         //Load all the reviews
         ArrayList<Document> reviews = (ArrayList<Document>) doc.get("reviews");
         this.reviews = new ArrayList<ReviewCompact>();
-        int rating = -1, helpfull = -1;
+        int rating = -1, helpful = -1;
         boolean positive = false;
         String username = "";
         for(Document review :reviews){
@@ -162,10 +164,10 @@ public class Game {
                 rating = review.getInteger("rating");
                 username= review.getString("name");
             }else{
-                helpfull =  Integer.parseInt(review.getString("helpfull"));
-                positive =  review.getString("rating") == "1";
+                helpful =  review.getInteger("helpful");
+                positive =  review.getBoolean("positive");
             }
-            this.reviews.add(new ReviewCompact(store, creation_date, username, rating, helpfull, positive));
+            this.reviews.add(new ReviewCompact(store, creation_date, username, rating, helpful, positive));
         }
         //System.out.println(this.reviews.get(1).positive);
     }
@@ -442,15 +444,33 @@ public class Game {
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
 
-        //find a game by it's id in mongo
+        //find a game by its id in mongo
         Bson bsonFilter = Filters.eq("_id", this.id);
 
         //Convert to document and replace original document in MongoDB;
         Document newGameDoc = this.toDocument();
-        gamesColl.findOneAndReplace(bsonFilter, newGameDoc);
+        Document ret = gamesColl.findOneAndReplace(bsonFilter, newGameDoc);
+        if(ret == null){
+            throw new RuntimeException("ERROR: you are trying to update a review that isn't in the MongoDB");
+        }
 
         //TODO: insert info in the graphDB if needed
 
+    }
+
+
+    public void delete(){
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
+
+        //find a game by its id in mongo
+        Bson bsonFilter = Filters.eq("_id", this.id);
+        try {
+            DeleteResult result = gamesColl.deleteOne(bsonFilter);
+            System.out.println("Deleted document count: " + result.getDeletedCount());
+        } catch (MongoException me) {
+            System.err.println("ERROR: Unable to delete the review due to an error: " + me);
+        }
     }
 
 
