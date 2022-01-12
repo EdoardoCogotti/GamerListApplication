@@ -38,8 +38,8 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        Game prova = Game.getGamesByNamePart("Pimpa").get(0);
-        prova.delete();
+        //Game prova = Game.getGamesByNamePart("Pimpa").get(0);
+        //prova.delete();
         //Review provRev = Review.getReviewsByGame(prova).get(0);
         //prova.update();
     }

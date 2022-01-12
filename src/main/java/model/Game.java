@@ -427,7 +427,7 @@ public class Game {
                 reviewDoc.append("rating", review.getRating());
             }else{
                 //Steam
-                reviewDoc.append("helpful", review.gethelpful());
+                reviewDoc.append("helpful", review.getHelpfull());
                 reviewDoc.append("positive", review.getPositive());
             }
 

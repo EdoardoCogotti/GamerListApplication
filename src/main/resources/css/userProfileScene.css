@@ -6,7 +6,6 @@
     -fx-font-size: 11;
     -fx-font-family: "Lucida Console";
     -fx-text-fill: "white";
-    /*-fx-alignment: center; /* expand container to all the panel */
 }
 
 #nameLabel{
@@ -24,4 +23,8 @@
 .radio-button{
     -fx-text-fill: white;
     -fx-font-family: "Lucida Console";
+}
+
+.titleLabel{
+    -fx-font-size: 24;
 }

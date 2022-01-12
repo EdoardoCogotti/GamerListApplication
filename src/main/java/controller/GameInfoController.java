@@ -32,7 +32,7 @@ public class GameInfoController implements Initializable {
     private Label gameValue, storeValue, developerValue, publisherValue,
             genresValue, languagesValue, gameDetailsValue;
     @FXML
-    private Button gamelistButton;
+    private Button gamelistButton,deleteButton ;
 
     private boolean inGamelist;
     private boolean reviewed;
@@ -191,12 +191,21 @@ public class GameInfoController implements Initializable {
 
         //TO_DO get reviews from db
 
-        //TO_DO check if game in user gamerlist
-        inGamelist = true;
-        if(inGamelist)
-            gamelistButton.setText("REMOVE FROM GAMELIST");
-        else
-            gamelistButton.setText("ADD IN GAMELIST");
+        if(Session.getInstance().getLoggedUser().getAdmin()) {
+            gamelistButton.setVisible(false);
+            gamelistButton.setManaged(false);
+        }
+        else {
+            deleteButton.setVisible(false);
+            deleteButton.setManaged(false);
+
+            //TO_DO check if game in user gamerlist
+            inGamelist = true;
+            if (inGamelist)
+                gamelistButton.setText("REMOVE FROM GAMELIST");
+            else
+                gamelistButton.setText("ADD IN GAMELIST");
+        }
 
         //TO_DO check if game reviewed by the username
         reviewed= true;
@@ -214,7 +223,6 @@ public class GameInfoController implements Initializable {
 
     }
 
-
     public void updateGamelist(){
         if(inGamelist){
             inGamelist=false;
@@ -228,4 +236,9 @@ public class GameInfoController implements Initializable {
         }
     }
 
+    public void deleteGame(){
+        String gamename = gameValue.getText();
+
+        //TO_DO delete game in db
+    }
 }

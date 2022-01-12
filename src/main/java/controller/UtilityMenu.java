@@ -23,7 +23,12 @@ public class UtilityMenu {
 
     private UtilityMenu() {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenubarScene.fxml"));
+            String menuBarPath;
+            if(Session.getInstance().getLoggedUser().getAdmin())
+                menuBarPath="/AdminMenubarScene.fxml";
+            else
+                menuBarPath="/MenubarScene.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(menuBarPath));
             menu = loader.load();
         }
         catch (IOException e){e.printStackTrace();}

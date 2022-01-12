@@ -49,4 +49,7 @@ public final class Session {
         }
     }
 
+    public void logout(){
+        loggedUser = null;
+    }
 }

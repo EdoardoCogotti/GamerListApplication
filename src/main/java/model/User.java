@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class User {
 
@@ -15,7 +16,7 @@ public class User {
     private String phone;
     private LocalDate birthday;
     private LocalDate registered;
-    private GamerListElement gamerList;
+    private List<GamerListElement> gamerList;
     private boolean admin;
 
     private String DUMMY;
@@ -27,7 +28,7 @@ public class User {
 
     public User(String username){
         this.username=username;
-        this.admin = false;
+        this.admin = true;
         //TO_DO populate other fields querying db with username
     }
 

@@ -33,6 +33,8 @@ public class SignupController implements Initializable {
     private DatePicker myDatePicker;
     @FXML
     private ChoiceBox<String> countryChoiceBox;
+    @FXML
+    private Button backButton;
     // interesting to use TreeView and MenuBar
 
     // TO_DO load from json https://github.com/samayo/country-json/blob/master/src/country-by-name.json
@@ -42,6 +44,8 @@ public class SignupController implements Initializable {
 
     private Stage stage;
     private Scene scene;
+
+    private User user;
 
 
     public void submit(ActionEvent event){
@@ -132,11 +136,10 @@ public class SignupController implements Initializable {
         // TO_DO registra in db
         errorLabel.setText("You are now signed up");
         try{
-            /*User u = Session.getInstance().getLoggedUser();
-            if(u!=null && u.getAdmin())
+            if(user!=null && user.getAdmin())
                 switchToMyProfile(event);
-            else*/
-            switchToSignin(event);
+            else
+                switchToSignin(event);
         }
         catch(IOException e){e.printStackTrace();}
     }
@@ -151,7 +154,6 @@ public class SignupController implements Initializable {
         stage.show();
     }
 
-    /*
     public void switchToMyProfile(ActionEvent event) throws  IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
         Parent root = loader.load();
@@ -169,10 +171,16 @@ public class SignupController implements Initializable {
         scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
-    }*/
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        user = Session.getInstance().getLoggedUser();
+        if(user!=null && user.getAdmin()){
+            backButton.setVisible(false);
+            backButton.setManaged(false);
+        }
 
         countryChoiceBox.getItems().addAll(countryList);
     }

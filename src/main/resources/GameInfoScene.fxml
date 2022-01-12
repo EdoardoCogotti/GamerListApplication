@@ -75,8 +75,9 @@
                               <Label fx:id="gameDetailsValue" alignment="TOP_LEFT" prefHeight="131.0" prefWidth="174.0" text="gameDetailsValue" wrapText="true" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="259.0">
+                        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="259.0" spacing="10.0">
                            <children>
+                              <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteGame" stylesheets="@css/buttons.css" text="DELETE" />
                               <Button fx:id="gamelistButton" alignment="CENTER" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#updateGamelist" stylesheets="@css/buttons.css" text="ADD IN GAMELIST">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -9,17 +9,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="menuScene" maxWidth="1200.0" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" stylesheets="@css/menubarScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenubarController">
+<AnchorPane fx:id="menuScene" maxWidth="1200.0" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" stylesheets="@css/menubarScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminMenubarController">
    <children>
       <HBox fx:id="menuBox" maxWidth="1200.0" prefHeight="44.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <MenuBar fx:id="searchMenuBar" prefHeight="44.0" prefWidth="282.0">
                <menus>
-                  <Menu mnemonicParsing="false" text="Analytic" />
+                  <Menu mnemonicParsing="false" text="Analytic">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#switchToAdminAnalytic" text="Review Score" />
+                     </items></Menu>
                   <Menu mnemonicParsing="false" text="Create">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#switchToAnalytic" text="User" />
-                        <MenuItem mnemonicParsing="false" onAction="#switchToSuggestion" text="Game" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToUserForm" text="User" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToGameForm" text="Game" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Find">
@@ -34,7 +37,7 @@
                <menus>
                   <Menu fx:id="profileMenu" mnemonicParsing="false" text="Profile">
                      <items>
-                        <MenuItem fx:id="profileMenuItem" mnemonicParsing="false" text="MyProfile" />
+                        <MenuItem fx:id="profileMenuItem" mnemonicParsing="false" onAction="#switchToMyProfile" text="MyProfile" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#switchToSignin" text="Logout">
                            <accelerator>

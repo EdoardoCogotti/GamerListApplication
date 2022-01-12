@@ -104,7 +104,6 @@ public class MenubarController {
         UserProfileController userProfileController = loader.getController();
         userProfileController.displayInfo(username, true);
 
-
         UtilityMenu.getInstance().bind(newRoot);
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/userProfileScene.css").toExternalForm();
@@ -114,6 +113,8 @@ public class MenubarController {
     }
 
     public void switchToSignin(ActionEvent event) throws IOException {
+        Session.getInstance().logout();
+
         Parent root = FXMLLoader.load(getClass().getResource("/SigninScene.fxml"));
         stage = (Stage) (profileMenuBar.getScene().getWindow()); // MenuItem isn't child of Node class, use FXML injection
         scene = new Scene(root);
@@ -122,5 +123,4 @@ public class MenubarController {
         stage.setScene(scene);
         stage.show();
     }
-
 }

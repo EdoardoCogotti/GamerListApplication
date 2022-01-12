@@ -90,7 +90,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#switchToSignin" stylesheets="@css/buttons.css" text="BACK">
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#switchToSignin" stylesheets="@css/buttons.css" text="BACK">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

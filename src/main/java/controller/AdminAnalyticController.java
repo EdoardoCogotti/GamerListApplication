@@ -12,22 +12,31 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class UserSearchController implements Initializable {
+public class AdminAnalyticController implements Initializable {
 
+    @FXML
+    private Label minReviewScoreLabel,meanReviewScoreLabel, maxReviewScoreLabel;
     @FXML
     private ListView<String> userList;
     @FXML
     private TextField searchBar;
+    @FXML
+    private RadioButton rButtonLastYear, rButtonAlways;
+    @FXML
+    private HBox statHBox;
 
     private String[] users = {"Mike98", "Raven86", "Sabaku88", "Cydonia", "Edoardo97", "Beba01", "Francesco97", "Anna97"};
     private ObservableList user = FXCollections.observableArrayList();
@@ -47,15 +56,17 @@ public class UserSearchController implements Initializable {
             user.add(u);
 
         userList.setItems(user);
+
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         userList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
                 currentUser = userList.getSelectionModel().getSelectedItem();
+
             }
         });
 
@@ -64,11 +75,24 @@ public class UserSearchController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
                     try {
-                        if(Session.getInstance().getLoggedUser().getAdmin())
-                            switchToEditUser(mouseEvent);
-                        else
-                            switchToUser(mouseEvent, currentUser);
-                    } catch (IOException e) {
+
+                        if(rButtonLastYear.isSelected() || rButtonAlways.isSelected()) {
+                            //TO_DO find analytic of current User
+                            int minReviewScore = 3;
+                            int meanReviewScore = 20;
+                            int maxReviewScore = 50;
+
+                            minReviewScoreLabel.setText(String.valueOf(minReviewScore));
+                            meanReviewScoreLabel.setText(String.valueOf(meanReviewScore));
+                            maxReviewScoreLabel.setText(String.valueOf(maxReviewScore));
+
+                            setColor(minReviewScoreLabel, 10);
+                            setColor(meanReviewScoreLabel, 30);
+                            setColor(maxReviewScoreLabel, 100);
+
+                            statHBox.setVisible(true);
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -76,22 +100,8 @@ public class UserSearchController implements Initializable {
         });
     }
 
-    public void switchToUser(MouseEvent event, String user) throws IOException {
-        stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
-        Parent root = loader.load();
-        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
-        UserProfileController userProfileController = loader.getController();
-        userProfileController.displayInfo(user, false);
-
-        scene = new Scene(newRoot);
-        String css = this.getClass().getResource("/css/userProfileScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToEditUser(MouseEvent event) throws IOException {
+    public void switchToUser(ActionEvent event) throws IOException {
+        
         stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUserEditScene.fxml"));
         Parent root = loader.load();
@@ -100,9 +110,17 @@ public class UserSearchController implements Initializable {
         adminUserEditController.displayInfo(currentUser);
 
         scene = new Scene(newRoot);
-        String css = this.getClass().getResource("/css/userProfileScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void setColor(Label label, int goldValue){
+        int value = Integer.parseInt(label.getText());
+        if(value<0.5*goldValue)
+            label.setStyle("-fx-text-fill: red");
+        else if(value<goldValue)
+            label.setStyle("-fx-text-fill: white");
+        else
+            label.setStyle("-fx-text-fill: gold");
     }
 }

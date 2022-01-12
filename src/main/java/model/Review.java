@@ -97,32 +97,32 @@ public class Review {
         this.username = username;
     }
     public void setCreationDate(LocalDate creationDate) {this.creationDate = creationDate;}
-    public void setTitle(String title) {this.title = title;}
+    public void setGamename(String gamename) {this.gamename = gamename;}
 
     //GOG GET
-    public void setGamename(String gamename) {
-        if(this.store.equals("Steam")){
-            throw new RuntimeException("ERROR: tried to access a GOG review field in a Steam review");
-        } 
-        this.gamename = gamename;
+    public void setPositive(boolean positive) {
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam review field in a GOG review");
+        }
+        this.positive = positive;
     }
     public void setHelpful(int helpful) {
-        if(this.store.equals("Steam")){
-            throw new RuntimeException("ERROR: tried to access a GOG review field in a Steam review");
+        if(this.store.equals("GOG")){
+            throw new RuntimeException("ERROR: tried to access a Steam review field in a GOG review");
         } 
         this.helpful = helpful;
     }
 
     //Steam GET
-    public void setPositive(boolean positive) {
-         if(this.store.equals("GOG")){
-            throw new RuntimeException("ERROR: tried to access a Steam review field in a GOG review");
-        }   
-        this.positive = positive;
+    public void setTitle(String title) {
+        if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG review field in a Steam review");
+        }
+        this.title = title;
     }
     public void setRating(int rating) {
-         if(this.store.equals("GOG")){
-            throw new RuntimeException("ERROR: tried to access a Steam review field in a GOG review");
+         if(this.store.equals("Steam")){
+            throw new RuntimeException("ERROR: tried to access a GOG review field in a Steam review");
         }   
         this.rating = rating;
     }

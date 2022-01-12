@@ -34,7 +34,7 @@ public class SigninController {
             Session.getInstance().setLoggedUser(username);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameFormScene.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminAnalyticScene.fxml"));
             root = loader.load();
 
             Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);

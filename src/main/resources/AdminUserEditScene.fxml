@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminUserEditController">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #333333;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminUserEditController">
    <children>
       <HBox maxWidth="1200.0" minWidth="1200.0" prefHeight="100.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -23,7 +23,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Reviews">
+                        <Label text="Reviews" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="24.0" />
                            </font>
@@ -58,7 +58,7 @@
                <children>
                   <HBox prefHeight="100.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="135.0" prefWidth="706.0" text="GamerList">
+                        <Label alignment="CENTER" prefHeight="135.0" prefWidth="706.0" text="GamerList" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="24.0" />
                            </font>
@@ -87,7 +87,7 @@
                      <children>
                         <StackPane fx:id="profilePic" prefHeight="92.0" prefWidth="73.0">
                            <children>
-                              <ImageView fx:id="profilePic" fitHeight="99.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="profilePic">
+                              <ImageView fitHeight="99.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true" styleClass="profilePic">
                                  <image>
                                     <Image url="@images/avatar.jpg" />
                                  </image>
@@ -107,13 +107,16 @@
                   </HBox>
                   <HBox alignment="CENTER" fillHeight="false" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="nameLabel" alignment="CENTER" maxHeight="41.0" prefHeight="40.0" prefWidth="227.0" text="usernameValue" wrapText="true">
+                        <Label fx:id="nameLabel" alignment="CENTER" maxHeight="41.0" prefHeight="40.0" prefWidth="227.0" text="usernameValue" textFill="WHITE" wrapText="true">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <padding>
                               <Insets top="15.0" />
                            </padding>
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font>
                         </Label>
                      </children>
                   </HBox>
@@ -124,50 +127,98 @@
                   </HBox>
                   <HBox fx:id="firstNameBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="41.0" maxWidth="90.0" minHeight="41.0" minWidth="90.0" prefHeight="41.0" prefWidth="90.0" text="First Name:" />
-                        <Label fx:id="firstNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="41.0" prefWidth="110.0" text="firstNameValue" />
+                        <Label maxHeight="41.0" maxWidth="90.0" minHeight="41.0" minWidth="90.0" prefHeight="41.0" prefWidth="90.0" text="First Name:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="firstNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="41.0" prefWidth="110.0" text="firstNameValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox fx:id="lastNameBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Last Name:" />
-                        <Label fx:id="lastNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="41.0" prefWidth="110.0" text="lastNameValue" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Last Name:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="lastNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="41.0" prefWidth="110.0" text="lastNameValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Gender:" />
-                        <Label fx:id="genderValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="57.0" prefWidth="110.0" text="genderValue" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Gender:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="genderValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="57.0" prefWidth="110.0" text="genderValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Country:" />
-                        <Label fx:id="countryValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="43.0" prefWidth="110.0" text="countryValue" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Country:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="countryValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="43.0" prefWidth="110.0" text="countryValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox fx:id="emailBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="40.0" text="Email:" />
-                        <Label fx:id="emailValue" alignment="CENTER_RIGHT" minWidth="180.0" prefHeight="40.0" prefWidth="151.0" text="emailValue" wrapText="true" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="40.0" text="Email:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="emailValue" alignment="CENTER_RIGHT" minWidth="180.0" prefHeight="40.0" prefWidth="151.0" text="emailValue" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox fx:id="phoneBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Phone:" />
-                        <Label fx:id="phoneValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="47.0" prefWidth="110.0" text="phoneValue" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Phone:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="phoneValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="47.0" prefWidth="110.0" text="phoneValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox fx:id="birthdayBox" alignment="CENTER_LEFT" fillHeight="false" layoutX="10.0" layoutY="444.0" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Birthday:" />
-                        <Label fx:id="birthdayValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="43.0" prefWidth="110.0" text="birthdayValue" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Birthday:" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="birthdayValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="43.0" prefWidth="110.0" text="birthdayValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" fillHeight="false" layoutX="10.0" layoutY="452.0" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
                      <children>
-                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Registered: " />
-                        <Label fx:id="registrationValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="51.0" prefWidth="110.0" text="registrationValue" />
+                        <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Registered: " textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="registrationValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="51.0" prefWidth="110.0" text="registrationValue" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font></Label>
                      </children>
                   </HBox>
                </children>

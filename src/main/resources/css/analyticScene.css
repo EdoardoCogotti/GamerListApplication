@@ -16,3 +16,16 @@
 .chart-legend .label{
     -fx-text-fill: black ;
 }
+
+.radio-button{
+    -fx-text-fill: white;
+    -fx-font-family: "Lucida Console";
+}
+
+#titleLabel{
+    -fx-font-size: 32;
+}
+
+.statValue{
+    -fx-font-size: 24;
+}

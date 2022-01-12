@@ -21,6 +21,7 @@ import model.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class AdminUserEditController implements Initializable {
@@ -45,6 +46,9 @@ public class AdminUserEditController implements Initializable {
     public TextArea reviewTextArea;
     @FXML
     public Button submitReviewButton;
+    @FXML
+    private Label firstNameValue, lastNameValue, genderValue, countryValue,
+            emailValue, phoneValue, birthdayValue, registrationValue;
 
     private ObservableList<GamerListElement> gameList = FXCollections.observableArrayList();
     private ObservableList<Review> reviewList = FXCollections.observableArrayList();
@@ -53,15 +57,34 @@ public class AdminUserEditController implements Initializable {
     private int currentRow;
     private String username;
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         username = nameLabel.getText();
 
-        //TO_DO find gamelist from db
+        // TO_DO get user info from db
+        User u = new User();
+        u.setId(1);
+        u.setFirstName("Edoardo");
+        u.setLastName("Cogotti");
+        u.setGender("male");
+        u.setCountry("Italy");
+        u.setEmail("edoardocogotti@libero.it");
+        u.setPhone("3331234567");
+        u.setBirthday(LocalDate.now());
+        u.setRegistered(LocalDate.now());
 
+        int id = u.getId();
+        firstNameValue.setText(u.getFirstName());
+        genderValue.setText(u.getGender());
+        countryValue.setText(u.getCountry());
+        registrationValue.setText(u.getRegistered().toString());
+        lastNameValue.setText(u.getLastName());
+        emailValue.setText(u.getEmail());
+        phoneValue.setText(u.getPhone());
+        birthdayValue.setText(u.getBirthday().toString());
+
+        //TO_DO find gamelist from db
         for(int i=0; i<30; i++){
             GamerListElement g = new GamerListElement();
             g.setName("Peggle 3");
@@ -142,5 +165,9 @@ public class AdminUserEditController implements Initializable {
         scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void displayInfo(String username){
+        nameLabel.setText(username);
     }
 }

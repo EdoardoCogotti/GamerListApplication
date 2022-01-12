@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@css/analyticScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminAnalyticController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="titleLabel" alignment="CENTER" prefHeight="71.0" prefWidth="808.0" text="Search User:" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Consolas" size="33.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="68.0" prefWidth="550.0" styleClass="search-box" stylesheets="@css/gameInfoScene.css">
+               <children>
+                  <TextField fx:id="searchBar" alignment="CENTER" prefHeight="25.0" prefWidth="334.0" promptText="Type here to search" stylesheets="@css/gameInfoScene.css">
+                     <styleClass>
+                        <String fx:value="search-box" />
+                        <String fx:value="transparent" />
+                     </styleClass>
+                  </TextField>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#searchUsers" prefHeight="30.0" prefWidth="80.0" styleClass="search-button" stylesheets="@css/gameInfoScene.css" text="Search" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" minHeight="180.0" prefHeight="30.0" prefWidth="600.0">
+               <children>
+                  <ListView fx:id="userList" minHeight="180.0" prefHeight="200.0" prefWidth="432.0" />
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <RadioButton fx:id="rButtonLastYear" mnemonicParsing="false" text="Last year">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="period" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="rButtonAlways" mnemonicParsing="false" text="Always" toggleGroup="$period" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="15.0" top="15.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="statHBox" alignment="CENTER" prefHeight="106.0" prefWidth="800.0" spacing="10.0" visible="false">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="190.0" spacing="30.0">
+                     <children>
+                        <Label text="Minimum Review Score" />
+                        <Label fx:id="minReviewScoreLabel" styleClass="statValue" text="Label" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="180.0" prefWidth="162.0" spacing="30.0">
+                     <children>
+                        <Label text="Mean Review Score" />
+                        <Label fx:id="meanReviewScoreLabel" styleClass="statValue" text="Label" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" layoutX="730.0" layoutY="10.0" prefHeight="180.0" prefWidth="158.0" spacing="30.0">
+                     <children>
+                        <Label text="Max Review Score:" />
+                        <Label fx:id="maxReviewScoreLabel" styleClass="statValue" text="Label" />
+                     </children>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#switchToUser" stylesheets="@css/buttons.css" text="GO TO PROFILE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
