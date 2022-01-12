@@ -88,17 +88,4 @@ public class GameSearchController implements Initializable{
         stage.setScene(scene);
         stage.show();
     }
-
-    public void switchToUserEdit(MouseEvent event) throws IOException {
-        stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUserEditScene.fxml"));
-        Parent root = loader.load();
-        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
-
-        scene = new Scene(newRoot);
-        String css = this.getClass().getResource("/css/userEditScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        stage.setScene(scene);
-        stage.show();
-    }
 }

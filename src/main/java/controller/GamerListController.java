@@ -131,6 +131,8 @@ public class GamerListController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameInfoScene.fxml"));
         Parent root = loader.load();
         Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
+        GameInfoController gameInfoController = loader.getController();
+        gameInfoController.setGameScene(gamename);
 
         Scene scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/gameInfoScene.css").toExternalForm();

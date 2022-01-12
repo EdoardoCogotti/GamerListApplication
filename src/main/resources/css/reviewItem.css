@@ -13,15 +13,24 @@
     -fx-background-radius: 20;
     -fx-background-color: #aa2cb2;
 }
+.infoGog:hover{
+    -fx-background-color: #f000ff;
+}
 
 .infoSteam{
     -fx-background-radius: 20;
     -fx-background-color: #1A9FFF;
 }
+.infoSteam:hover{
+    -fx-background-color: #00e1ff;
+}
 
 .infoGamerlist{
     -fx-background-radius: 20;
     -fx-background-color: #6be55b;
+}
+.infoGamerlist:hover{
+    -fx-background-color: #1eff00;
 }
 
 .popover {

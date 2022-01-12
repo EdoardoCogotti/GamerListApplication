@@ -115,7 +115,7 @@
                               <Insets top="15.0" />
                            </padding>
                            <font>
-                              <Font name="Consolas" size="12.0" />
+                              <Font name="Consolas" size="16.0" />
                            </font>
                         </Label>
                      </children>

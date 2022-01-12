@@ -44,7 +44,7 @@
                   <Insets left="25.0" right="25.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" minHeight="180.0" prefHeight="30.0" prefWidth="600.0">
+            <HBox alignment="CENTER" minHeight="180.0" prefHeight="30.0" prefWidth="600.0" stylesheets="@css/searchScene.css">
                <children>
                   <ListView fx:id="userList" minHeight="180.0" prefHeight="200.0" prefWidth="432.0" />
                   <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">

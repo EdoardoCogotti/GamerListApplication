@@ -100,8 +100,8 @@ public class UserSearchController implements Initializable {
         adminUserEditController.displayInfo(currentUser);
 
         scene = new Scene(newRoot);
-        String css = this.getClass().getResource("/css/userProfileScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
+        //String css = this.getClass().getResource("/css/adminUserEditScene.css").toExternalForm();
+        //scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
     }

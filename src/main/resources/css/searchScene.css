@@ -48,6 +48,11 @@
     -fx-background-insets: 0 0 2 0;
 }
 
+.list-view .cell:hover {
+    -fx-background-color: #008df5;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+}
 
 
 
