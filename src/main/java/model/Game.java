@@ -110,10 +110,12 @@ public class Game {
         this.game_description = new_game_description;
         this.minimum_requirements = new_minimum_requirements;
         this.recommended_requirements = new_recommended_requirements;
+
+        //TO_CHECK
     }
 
     public Game(Document doc){
-        //We always copy in the object the fileds that are present both in GOG and Stream
+        //We always copy in the object the fileds that are present both in GOG and Steam
         this.name = doc.getString("name");
         //System.out.println(this.name);
 
@@ -210,6 +212,7 @@ public class Game {
 
     public void setAchievement(boolean newValue) {  this.achievement = newValue;}
 
+    //TO_CHECk
     //GOG GET
     public void  player_rating(Double newValue){   
         if(this.store.equals("Steam")){
@@ -261,12 +264,6 @@ public class Game {
         } 
         this.recommended_requirements = newValue;
     }
-
-
-
-
-
-
 
     //GET functions
 
@@ -370,7 +367,7 @@ public class Game {
     }
 
     //for reviews
-    public List<ReviewCompact> getReviews(){ return     this.reviews;}
+    public List<ReviewCompact> getReviews(){ return this.reviews;}
 
     public void addReview(ReviewCompact rc){
         this.reviews.add(rc);
@@ -438,6 +435,7 @@ public class Game {
         return doc;
     }
 
+    //TO_CHECK insert()
 
     //Save a Game info on the DB
     public void update(){
@@ -473,7 +471,6 @@ public class Game {
         }
     }
 
-
     //Get  list of games
     public static List<Game> getGamesByNamePart(String searchWord ){
         MongoDriver mgDriver = MongoDriver.getInstance();
@@ -497,7 +494,6 @@ public class Game {
             System.out.println(newGame.getName());
             games.add(newGame);
         }
-
 
         return games;
     }

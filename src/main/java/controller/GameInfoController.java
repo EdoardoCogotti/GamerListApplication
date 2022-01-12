@@ -44,6 +44,7 @@ public class GameInfoController implements Initializable {
         for(int i=0; i<13; i++){
             Review review = new Review();
             review.setUsername("edo");
+            review.setStore("Steam");
             review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
             review.setHelpful(3);
@@ -58,6 +59,7 @@ public class GameInfoController implements Initializable {
         for(int i=0; i<13; i++){
             Review review = new Review();
             review.setUsername("edo");
+            review.setStore("Gog");
             review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
             review.setTitle("Awesome shooter if you do the following");
@@ -73,6 +75,7 @@ public class GameInfoController implements Initializable {
         for(int i=0; i<10; i++){
             Review review = new Review();
             review.setUsername("edo");
+            review.setStore("Gamerlist");
             review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
             reviews.add(review);

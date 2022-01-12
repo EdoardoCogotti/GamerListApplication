@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+//TO_CHECK
 public class ReviewCompact {
 
     //General parameters
@@ -15,8 +16,6 @@ public class ReviewCompact {
     //STEAM
     private int helpfull;
     private boolean positive;
-
-
 
     public ReviewCompact(
             String new_platform,
@@ -38,12 +37,9 @@ public class ReviewCompact {
     public void setPlatform(String newValue) {
         this.platform = newValue;
     }
-
-
 	public void setName(String newValue) {
 		this.name = newValue;
 	}
-
     public void setCreationDate(Date newValue) {
         this.creation_date = newValue;
     }
@@ -57,22 +53,17 @@ public class ReviewCompact {
     public void setHelpfull(int newValue) {
         this.helpfull = newValue;
     }
-
     public void setPositive(boolean newValue) {
         this.positive = newValue;
     }
-
-
 
     //GET
     public String getPlatform() {
         return  this.platform;
     }
-
 	public String getName() {
 		return  this.name;
 	}
-
     public Date getCreationDate() {
         return  this.creation_date;
     }
@@ -86,7 +77,6 @@ public class ReviewCompact {
     public int getHelpfull() {
         return  this.helpfull;
     }
-
     public boolean getPositive() {
         return  this.positive;
     }

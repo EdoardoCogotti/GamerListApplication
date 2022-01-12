@@ -57,6 +57,7 @@ public class Review {
         this.store = new_store; 
         this.content = new_content; 
 
+        //TO_CHECK
         //GOG
         this.rating = new_rating; 
         this.title = new_title; 
@@ -72,7 +73,7 @@ public class Review {
         this.username = doc.getString("username"); 
         this.creationDate = doc.getDate("creation_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();; 
         this.content = doc.getString("content"); 
-        this.store = (doc.getString("title") == null) ? "Steam" : "GOG" ; 
+        this.store = (doc.getString("title") == null) ? "Steam" : "GOG" ; //TO_CHECK
 
         if(this.store.equals("GOG")){
             //GOG
@@ -98,6 +99,7 @@ public class Review {
     }
     public void setCreationDate(LocalDate creationDate) {this.creationDate = creationDate;}
     public void setGamename(String gamename) {this.gamename = gamename;}
+    public void setStore(String store) {this.store = store;}
 
     //GOG GET
     public void setPositive(boolean positive) {
@@ -129,12 +131,16 @@ public class Review {
 
     public String getContent() {return this.content;}
     public String getUsername() {return this.username;}
-    public String getTitle() {return this.title;}
-    public int getHelpful() {return this.helpful;}
     public LocalDate getCreationDate() {return this.creationDate;}
     public String getGamename() {return this.gamename;}
+    public String getStore() { return store; }
 
+    // Steam GETs
+    public int getHelpful() {return this.helpful;}
     public boolean getPositive() {return this.positive;}
+
+    // Gog GETs
+    public String getTitle() {return this.title;}
     public int getRating() {return this.rating;}
 
     @Override
@@ -150,7 +156,8 @@ public class Review {
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewColl =  mgDriver.getCollection("reviews");
 
-        //find a review by it's id in mongo
+        //TO_CHECK
+        //find a review by its id in mongo
         Bson bsonFilter = Filters.eq("_id", this.id);
 
         //Convert to document and replace original document in MongoDB;
@@ -176,7 +183,7 @@ public class Review {
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewColl =  mgDriver.getCollection("reviews");
 
-        //find a review by it's id in mongo
+        //find a review by its id in mongo
         Bson bsonFilter = Filters.eq("_id", this.id);
 
         //Convert to document and replace original document in MongoDB;
@@ -242,7 +249,6 @@ public class Review {
             System.out.println(rev.content);
             reviews.add(rev);
         }
-
 
         return reviews;
     }
