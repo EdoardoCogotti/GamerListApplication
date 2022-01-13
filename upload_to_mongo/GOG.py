@@ -67,7 +67,7 @@ for i, element in enumerate(data):
         #element[new_key] = element.pop(old_key)
 
     # add
-    element["_id"]=id
+    #element["_id"]=id
     id += 1
     element["store"]="GOG"
     element["tot_reviews"]=tot_reviews

@@ -11,6 +11,7 @@ import com.mongodb.client.result.InsertOneResult;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import utils.MongoDriver;
 public class Game {
 
     //General parameters
-    private int id;
+    private ObjectId id;
     private String store;
     private String url;
     private String name;
@@ -87,7 +88,7 @@ public class Game {
             String new_minimum_requirements,
             String new_recommended_requirements
     ){
-        this.id = new_id;
+        this.id = new ObjectId();
         this.store = new_store;
         this.url = new_url;
         this.name = new_name;
@@ -121,7 +122,7 @@ public class Game {
         this.name = doc.getString("name");
         //System.out.println(this.name);
 
-        this.id = doc.getInteger("_id");
+        this.id = doc.getObjectId("_id");
         this.store = doc.getString("store");
         this.url = doc.getString("url");
         this.name = doc.getString("name");
@@ -178,9 +179,7 @@ public class Game {
 
     // setter e getter
     //SET functions
-    public void setId(int id){
-        this.id = id;
-    }
+    public void setId(ObjectId id){  this.id = id;}
 
     public void setStore (String newValue){ this.store = newValue;}
 
@@ -268,7 +267,7 @@ public class Game {
 
     //GET functions
 
-    public int getId(){ return  this.id;}
+    public ObjectId getId(){ return  this.id;}
 
     public String getStore(){   return  this.store;}
 

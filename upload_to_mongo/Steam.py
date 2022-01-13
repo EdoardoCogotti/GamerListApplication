@@ -100,7 +100,7 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       usernamesUsed = []
 
       #set the game filds
-      game["_id"] = gId
+      #game["_id"] = gId
       game["url"] = rowG['url']
       game["store"] = "Steam"
       game["name"] = rowG['name']

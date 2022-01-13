@@ -124,7 +124,8 @@ public class AdminUserEditController implements Initializable {
     }
 
     public void deleteReview(){
-        //TO_DO Delete Review
+        //TO_DO FRA DONE Delete Review
+        currentReview.delete();
 
         tbReviewData.getItems().removeAll(currentReview);
     }
@@ -149,7 +150,8 @@ public class AdminUserEditController implements Initializable {
         currentReview.setContent(reviewTextArea.getText());
         tbReviewData.getItems().set(currentRow, currentReview);
 
-        //TO_DO Commit Review change in db
+        //TO_DO FRA Commit Review change in db
+        this.currentReview.update();
 
         submitReviewButton.setVisible(false);
         reviewTextArea.setVisible(false);
