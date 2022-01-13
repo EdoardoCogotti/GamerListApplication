@@ -7,11 +7,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import model.Game;
 import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameFormController implements Initializable {
@@ -107,7 +110,36 @@ public class GameFormController implements Initializable {
             return;
         }
 
-        //TO_DO add new game in db
+        //Add new game in db
+        ArrayList details = new ArrayList<String>(checkedGameDetailsList);
+        Game newGame = new Game(
+            store,
+            "www.google.com",
+            gamename,
+            java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+            developer,
+            publisher,
+            new ArrayList<String>(checkedLanguagesList),
+            0,
+            new ArrayList<String>(checkedGenreList),
+            "PEGI 18",
+            0,
+            details.contains("single_player"),
+            details.contains("multi_player"),
+            details.contains("coop"),
+            details.contains("controller_support"),
+            details.contains("cloud_saves"),
+            details.contains("achievement"),
+            0,
+            new ArrayList<String>(),
+            "temp MB",
+            true,
+            "temp",
+            "temp",
+            "temp"
+        );
+
+        newGame.insert();
     }
 
     @Override

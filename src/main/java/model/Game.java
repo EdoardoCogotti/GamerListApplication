@@ -62,7 +62,6 @@ public class Game {
     }
 
     public Game(
-            int new_id,
             String new_store,
             String new_url,
             String new_name,
@@ -113,6 +112,7 @@ public class Game {
         this.game_description = new_game_description;
         this.minimum_requirements = new_minimum_requirements;
         this.recommended_requirements = new_recommended_requirements;
+        this.reviews = new ArrayList<ReviewCompact>();
 
         //TO_CHECK
     }

@@ -70,7 +70,7 @@ public class Review {
         this.id = doc.getObjectId("_id");
         this.gamename = doc.getString("name"); 
         this.username = doc.getString("username"); 
-        this.creationDate = doc.getDate("creation_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();; 
+        this.creationDate = doc.getDate("creation_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
         this.content = doc.getString("content"); 
         this.store = (doc.getString("title") == null) ? "Steam" : "GOG" ; //TODO prendere direttaente dallo DB
 
