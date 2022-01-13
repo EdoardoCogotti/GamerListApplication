@@ -6,6 +6,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.InsertOneResult;
+
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -166,8 +168,8 @@ public class Game {
                 rating = review.getInteger("rating");
                 username= review.getString("name");
             }else{
-                helpful =  Integer.parseInt(review.getString("helpful"));
-                positive =  review.getString("rating") == "1";
+                helpful =  review.getInteger("helpful");
+                positive = review.getBoolean("positive");
             }
             this.reviews.add(new ReviewCompact(store, creation_date, username, rating, helpful, positive));
         }
@@ -212,30 +214,29 @@ public class Game {
 
     public void setAchievement(boolean newValue) {  this.achievement = newValue;}
 
-    //TO_CHECk
-    //GOG GET
-    public void  player_rating(Double newValue){   
+    //GOG SET
+    public void  setPlayerRating(Double newValue){   
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
         this.player_rating = newValue;
     }
 
-    public void  oses(List<String> newValue){   
+    public void  setOses(List<String> newValue){   
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
         this.oses = newValue;
     }
 
-    public void  size(String newValue){ 
+    public void  setSize(String newValue){ 
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
         this.size = newValue;
     }
 
-    public void  in_development(boolean newValue){  
+    public void  setInDevelopment(boolean newValue){  
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
@@ -243,22 +244,22 @@ public class Game {
     }
 
 
-    //STEAM GET
-    public void  game_description(String newValue){ 
+    //STEAM SET
+    public void  setGameDescription(String newValue){ 
         if(this.store.equals("GOG")){
             throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
         } 
         this.game_description = newValue;
     }
 
-    public void  minimum_requirements(String newValue){ 
+    public void  setMinimumRequirements(String newValue){ 
         if(this.store.equals("GOG")){
             throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
         } 
         this.minimum_requirements = newValue;
     }
 
-    public void  recommended_requirements(String newValue){ 
+    public void  setRecommendedRequirements(String newValue){ 
         if(this.store.equals("GOG")){
             throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
         } 
@@ -309,6 +310,17 @@ public class Game {
         details.put("controller_support", this.controller_support);
         details.put("cloud_saves", this.cloud_saves);
         details.put("achievement", this.achievement);
+        return details;
+    }
+
+    public String getGameDetailsString(){
+        String details = "";
+        details+= "single_player: " + String.valueOf(this.single_player) + "\n";
+        details+= "multi_player: " + String.valueOf(this.multi_player) + "\n";
+        details+= "coop: " + String.valueOf(this.coop) + "\n";
+        details+= "controller_support: " + String.valueOf(this.controller_support) + "\n";
+        details+= "cloud_saves: " + String.valueOf(this.cloud_saves) + "\n";
+        details+= "achievement: " + String.valueOf(this.achievement) + "\n";
         return details;
     }
     
@@ -435,7 +447,19 @@ public class Game {
         return doc;
     }
 
-    //TO_CHECK insert()
+    public void insert(){
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
+
+        //Convert to document and replace original document in MongoDB;
+        InsertOneResult ret = gamesColl.insertOne(this.toDocument());
+        if(ret == null){
+            throw new RuntimeException("ERROR: it was't possible to insert the game in MongoDB");
+        }
+
+        //TODO: insert info in the graphDB if needed
+
+    }
 
     //Save a Game info on the DB
     public void update(){
@@ -446,8 +470,7 @@ public class Game {
         Bson bsonFilter = Filters.eq("_id", this.id);
 
         //Convert to document and replace original document in MongoDB;
-        Document newGameDoc = this.toDocument();
-        Document ret = gamesColl.findOneAndReplace(bsonFilter, newGameDoc);
+        Document ret = gamesColl.findOneAndReplace(bsonFilter, this.toDocument());
         if(ret == null){
             throw new RuntimeException("ERROR: you are trying to update a review that isn't in the MongoDB");
         }
@@ -470,6 +493,7 @@ public class Game {
             System.err.println("ERROR: Unable to delete the review due to an error: " + me);
         }
     }
+
 
     //Get  list of games
     public static List<Game> getGamesByNamePart(String searchWord ){

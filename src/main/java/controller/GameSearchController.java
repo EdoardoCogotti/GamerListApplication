@@ -17,10 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Game;
 import model.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameSearchController implements Initializable{
@@ -41,11 +43,12 @@ public class GameSearchController implements Initializable{
 
         game.clear();
 
-        // TO_DO search games in db
+        // TO_DO FRA search games in db
         String searchedString = searchBar.getText();
+        List<Game> games = Game.getGamesByNamePart(searchedString);
 
-        for(String g : games)
-            game.add(g);
+        for(Game g : games)
+            game.add(g.getName());
 
         gameList.setItems(game);
     }

@@ -6,7 +6,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
-import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -73,7 +72,7 @@ public class Review {
         this.username = doc.getString("username"); 
         this.creationDate = doc.getDate("creation_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();; 
         this.content = doc.getString("content"); 
-        this.store = (doc.getString("title") == null) ? "Steam" : "GOG" ; //TO_CHECK
+        this.store = (doc.getString("title") == null) ? "Steam" : "GOG" ; //TODO prendere direttaente dallo DB
 
         if(this.store.equals("GOG")){
             //GOG
@@ -155,10 +154,6 @@ public class Review {
         //Add review to the "Reviews" collection
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewColl =  mgDriver.getCollection("reviews");
-
-        //TO_CHECK
-        //find a review by its id in mongo
-        Bson bsonFilter = Filters.eq("_id", this.id);
 
         //Convert to document and replace original document in MongoDB;
         Document newReviewDoc = this.toDocument();

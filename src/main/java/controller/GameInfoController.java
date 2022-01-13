@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class GameInfoController implements Initializable {
 
@@ -146,6 +147,7 @@ public class GameInfoController implements Initializable {
         else
             reviews.addAll(getGamerListData());
 
+        /*
         int col=0;
         int row=1;
         try {
@@ -186,13 +188,70 @@ public class GameInfoController implements Initializable {
             }
         } catch (IOException e) {e.printStackTrace();}
 
+         */
+
+    }
+
+    private void viewReviews(Game game){
+        int col=0;
+        int row=1;
+        try {
+            for(Review r : reviews){
+                FXMLLoader loader = new FXMLLoader();
+                if(game.getStore().equals("Steam")) //a
+                    loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
+                else if(game.getStore().equals("Gog"))
+                    loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
+                else
+                    loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
+                AnchorPane anchorPane = loader.load();
+
+                ReviewItemController reviewItemController = loader.getController();
+                if(game.getStore().equals("Steam")) //a
+                    reviewItemController.setSteamData(r);
+                else if(game.getStore().equals("Gog"))
+                    reviewItemController.setGogData(r);
+                else
+                    reviewItemController.setGamerlistData(r);
+
+                if(col==3){
+                    col=0;
+                    row++;
+                }
+
+                grid.add(anchorPane, col++, row); // (child, column, row)
+
+                grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+                grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+                grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+                grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+                GridPane.setMargin(anchorPane, new Insets(20));
+            }
+        } catch (IOException e) {e.printStackTrace();}
+
     }
 
     public void setGameScene(String name){
-        gameValue.setText(name);
-        //TO_DO get game info from db
+        //Get game info from db
+        Game game = Game.getGamesByNamePart(name).get(0);
+        this.gameValue.setText(game.getName());
+        this.storeValue.setText(game.getStore());
+        this.developerValue.setText(game.getDeveloper());
+        this.publisherValue.setText(game.getPublisher());
+        this.genresValue.setText(game.getGenres().stream()
+                .collect(Collectors.joining(", ", "", "")));
+        this.languagesValue.setText(game.getLanguages().stream()
+                .collect(Collectors.joining(", ", "", "")));
+        this.gameDetailsValue.setText(game.getGameDetailsString());
 
-        //TO_DO get reviews from db
+
+        //Get reviews from db
+        this.reviews = Review.getReviewsByGame(game);
+        this.viewReviews(game);
 
         if(Session.getInstance().getLoggedUser().getAdmin()) {
             gamelistButton.setVisible(false);
