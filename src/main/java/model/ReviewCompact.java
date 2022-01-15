@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-//TO_CHECK
+//Serve per fare le analytics
 public class ReviewCompact {
 
     //General parameters

@@ -15,12 +15,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Game;
 import org.controlsfx.control.CheckComboBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameFormController implements Initializable {
@@ -141,6 +144,36 @@ public class GameFormController implements Initializable {
             return;
         }
 
+        //Add new game in db
+        ArrayList details = new ArrayList<String>(checkedGameDetailsList);
+        Game newGame = new Game(
+            store,
+            "www.google.com",
+            gamename,
+            java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+            developer,
+            publisher,
+            new ArrayList<String>(checkedLanguagesList),
+            0,
+            new ArrayList<String>(checkedGenreList),
+            "PEGI 18",
+            0,
+            details.contains("single_player"),
+            details.contains("multi_player"),
+            details.contains("coop"),
+            details.contains("controller_support"),
+            details.contains("cloud_saves"),
+            details.contains("achievement"),
+            0,
+            new ArrayList<String>(),
+            "temp MB",
+            true,
+            "temp",
+            "temp",
+            "temp"
+        );
+
+        newGame.insert();
         switchToNextPage();
 
     }
@@ -171,7 +204,6 @@ public class GameFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-
         final ObservableList<String> gameDetailsList = FXCollections.observableArrayList();
         for (String gd : gameDetails) {
             gameDetailsList.add(gd);

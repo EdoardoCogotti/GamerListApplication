@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class GameInfoController implements Initializable {
 
@@ -56,9 +57,6 @@ public class GameInfoController implements Initializable {
 
     private boolean inGamelist;
     private boolean reviewed;
-
-    private PopOver popOverLang, popOverGenre;
-    private Label langPopup, genrePopup;
 
     private List<Review> reviews = new ArrayList<>() ;
     private List<Review> getSteamData(){
@@ -143,7 +141,7 @@ public class GameInfoController implements Initializable {
         g.setCloudSaves(false);
         g.setAchievement(true);
 
-        g.setAchievements(10);
+        g.setAchievement(10);
         g.setRating("PEGI Rating: 12+ (Violence)");
 
         /*
@@ -162,7 +160,6 @@ public class GameInfoController implements Initializable {
         Session.getInstance().setCurrentGame(g);
 
         gameValue.setText(g.getName());
-        urlValue.setText(g.getUrl());
         storeValue.setText(g.getStore());
         developerValue.setText(g.getDeveloper());
         publisherValue.setText(g.getPublisher());
@@ -176,7 +173,6 @@ public class GameInfoController implements Initializable {
             strLang.append(lang).append("; ");
         strLang.delete(strLang.length()-2, strLang.length());
         languagesValue.setText(String.valueOf(strLang));
-        System.out.println((Text)languagesValue.lookup(".text"));
         JSONObject gameDetails = g.getGameDetails();
         StringBuilder strGameDetails = new StringBuilder();
         Iterator<String> keys = gameDetails.keys();
@@ -230,10 +226,10 @@ public class GameInfoController implements Initializable {
         else
             reviews.addAll(getGamerListData());
 
+        /*
         int col=0;
         int row=1;
         try {
-
             for(Review r : reviews){
                 FXMLLoader loader = new FXMLLoader();
                 AnchorPane anchorPane;
@@ -275,24 +271,71 @@ public class GameInfoController implements Initializable {
                 GridPane.setMargin(anchorPane, new Insets(20));
             }
         } catch (IOException e) {e.printStackTrace();}
+        */
 
-        //init popovers
-        /*String originalString = strLang.toString();
-        Text textNode = (Text) .lookup(".languagesValue"); // "text" is the style class of Text
-        String actualString = textNode.getText();
-        boolean langOverrunCheck = !originalString.equals(actualString);
-        if(langOverrunCheck) {
-            langPopup = new Label(originalString);
-            createPopup(languagesValue, langPopup);
-        }*/
+    }
+
+    private void viewReviews(Game game){
+        int col=0;
+        int row=1;
+        try {
+            for(Review r : reviews){
+                FXMLLoader loader = new FXMLLoader();
+                AnchorPane anchorPane;
+                if(game.getStore().equals("Steam")) //a
+                    loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
+                else if(game.getStore().equals("Gog"))
+                    loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
+                else
+                    loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
+                anchorPane = loader.load();
+
+                ReviewItemController reviewItemController = loader.getController();
+                if(r.getStore().equals("Steam")) //a
+                    reviewItemController.setSteamData(r);
+                else if(r.getStore().equals("Gog"))
+                    reviewItemController.setGogData(r);
+                else
+                    reviewItemController.setGamerlistData(r);
+
+                if(col==3){
+                    col=0;
+                    row++;
+                }
+
+                grid.add(anchorPane, col++, row); // (child, column, row)
+
+                grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+                grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+                grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+                grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+                GridPane.setMargin(anchorPane, new Insets(20));
+            }
+        } catch (IOException e) {e.printStackTrace();}
 
     }
 
     public void setGameScene(String name){
-        gameValue.setText(name);
-        //TO_DO get game info from db
+        //Get game info from db
+        Game game = Game.getGamesByNamePart(name).get(0);
+        this.gameValue.setText(game.getName());
+        this.storeValue.setText(game.getStore());
+        this.developerValue.setText(game.getDeveloper());
+        this.publisherValue.setText(game.getPublisher());
+        this.genresValue.setText(game.getGenres().stream()
+                .collect(Collectors.joining(", ", "", "")));
+        this.languagesValue.setText(game.getLanguages().stream()
+                .collect(Collectors.joining(", ", "", "")));
+        this.gameDetailsValue.setText(game.getGameDetailsString());
 
-        //TO_DO get reviews from db
+
+        //Get reviews from db
+        this.reviews = Review.getReviewsByGame(game);
+        this.viewReviews(game);
 
         if(Session.getInstance().getLoggedUser().getAdmin()) {
             gamelistButton.setVisible(false);
@@ -312,7 +355,7 @@ public class GameInfoController implements Initializable {
 
         //TO_DO check if game reviewed by the username and in case retrieve content
         reviewed= true;
-        String content = "Prova";
+        //String content = "Prova";
         try {
             FXMLLoader loader_review = new FXMLLoader();
             AnchorPane anchorPane;
@@ -320,8 +363,8 @@ public class GameInfoController implements Initializable {
                 loader_review.setLocation(getClass().getResource("/MyReview.fxml"));
                 anchorPane = loader_review.load();
 
-                MyReviewController myReviewController = loader_review.getController();
-                myReviewController.setContent(content);
+                //MyReviewController myReviewController = loader_review.getController();
+                //myReviewController.setContent(content);
             } else {
                 loader_review.setLocation(getClass().getResource("/ReviewForm.fxml"));
                 anchorPane = loader_review.load();
@@ -329,7 +372,6 @@ public class GameInfoController implements Initializable {
                 ReviewFormController reviewFormController = loader_review.getController();
                 reviewFormController.setEditFlag(false); //it won't be reviewed in this case
             }
-
             myReview.getChildren().add(anchorPane);
         }
         catch (IOException e){e.printStackTrace();}
@@ -353,21 +395,5 @@ public class GameInfoController implements Initializable {
         String gamename = gameValue.getText();
 
         //TO_DO delete game in db
-    }
-
-    private void createPopup(Label value, Label popup){
-        value.setOnMouseEntered(mouseEvent -> {
-            popup.setWrapText(true);
-            popup.setTextAlignment(TextAlignment.CENTER);
-            VBox vBox= new VBox(popup);
-            vBox.setPrefWidth(400);
-            vBox.setStyle("-fx-background-color: white;");
-            popOverLang = new PopOver(vBox);
-            popOverLang.show(popup);
-        });
-
-        languagesValue.setOnMouseExited(mouseEvent -> {
-            popOverLang.hide();
-        });
     }
 }
