@@ -4,8 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import model.Game;
+import model.Review;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class ReviewFormController {
 
@@ -18,8 +22,17 @@ public class ReviewFormController {
         String content = reviewTextArea.getText();
         String username = Session.getInstance().getLoggedUser().getUsername();
         String gameName = Session.getInstance().getCurrentGame().getName();
-        // TO_DO add my review in db
+        // TO_DO FRA add my review in db
         System.out.print("ADD REVIEW :" + username + " " + gameName + " " + content);
+        Review review = new Review(
+                gameName,
+                username,
+                new Date(System.currentTimeMillis()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                "GamerList",
+                content
+        );
+        System.out.println(gameName);
+        review.insert(Game.getGamesByNamePart(gameName).get(0));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MyReview.fxml"));
 

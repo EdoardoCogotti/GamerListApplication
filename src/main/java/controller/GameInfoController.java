@@ -31,7 +31,7 @@ public class GameInfoController implements Initializable {
     private Pane myReview;
     @FXML
     private Label gameValue, storeValue, developerValue, publisherValue,
-            genresValue, languagesValue, gameDetailsValue;
+            genresValue, languagesValue, gameDetailsValue, releseDateValue;
     @FXML
     private Button gamelistButton,deleteButton ;
 
@@ -88,6 +88,7 @@ public class GameInfoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        /*
         Game g = new Game();
         g.setName("Portal 2");
         g.setStore("Steam");
@@ -147,7 +148,7 @@ public class GameInfoController implements Initializable {
         else
             reviews.addAll(getGamerListData());
 
-        /*
+        
         int col=0;
         int row=1;
         try {
@@ -236,8 +237,13 @@ public class GameInfoController implements Initializable {
     }
 
     public void setGameScene(String name){
+        String currentUser = Session.getInstance().getLoggedUser().getUsername();
+
         //Get game info from db
         Game game = Game.getGamesByNamePart(name).get(0);
+
+        Session.getInstance().setCurrentGame(game);
+
         this.gameValue.setText(game.getName());
         this.storeValue.setText(game.getStore());
         this.developerValue.setText(game.getDeveloper());
@@ -247,17 +253,25 @@ public class GameInfoController implements Initializable {
         this.languagesValue.setText(game.getLanguages().stream()
                 .collect(Collectors.joining(", ", "", "")));
         this.gameDetailsValue.setText(game.getGameDetailsString());
+        //TO_DO this.releseDateValue
 
 
         //Get reviews from db
         this.reviews = Review.getReviewsByGame(game);
+        //exclude review by current user (it's visualize on top instead)
+        Review toRemove = null;
+        for(Review review : this.reviews) {
+            if(review.getUsername().equals(currentUser)){
+                toRemove = review;
+            }
+        }
+        this.reviews.remove(toRemove);
         this.viewReviews(game);
 
         if(Session.getInstance().getLoggedUser().getAdmin()) {
             gamelistButton.setVisible(false);
             gamelistButton.setManaged(false);
-        }
-        else {
+        }else {
             deleteButton.setVisible(false);
             deleteButton.setManaged(false);
 
@@ -269,10 +283,19 @@ public class GameInfoController implements Initializable {
                 gamelistButton.setText("ADD IN GAMELIST");
         }
 
-        //TO_DO check if game reviewed by the username
-        reviewed= true;
+        //Check if game reviewed by the username
+        reviewed = false;
+        List<Review> reviewByCurrentUser = Review.getReviewsByUser(currentUser);
+        for(Review review : reviewByCurrentUser) {
+            System.out.println(review.getContent());
+            if(review.getGamename().equals(game.getName())){
+                reviewed = true;
+            }
+        }
+
         try {
             FXMLLoader loader_review = new FXMLLoader();
+            //TO_DO Must initialize the review with the currently selected one
             if (reviewed) {
                 loader_review.setLocation(getClass().getResource("/MyReview.fxml"));
             } else {
@@ -301,6 +324,8 @@ public class GameInfoController implements Initializable {
     public void deleteGame(){
         String gamename = gameValue.getText();
 
-        //TO_DO delete game in db
+        //Delete game in db
+        Game game = Game.getGamesByNamePart(gamename).get(0);
+        game.delete();
     }
 }

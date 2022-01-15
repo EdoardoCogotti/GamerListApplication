@@ -112,6 +112,7 @@ public class GameFormController implements Initializable {
 
         //Add new game in db
         ArrayList details = new ArrayList<String>(checkedGameDetailsList);
+        //TO_DO FRA inserire campi aggiuntivi per sostituire le info template
         Game newGame = new Game(
             store,
             "www.google.com",

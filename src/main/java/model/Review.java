@@ -43,6 +43,29 @@ public class Review {
         String new_username,
         LocalDate new_creation_date,
         String new_store,
+        String new_content
+    ){
+        this.id = new ObjectId();
+        this.gamename = new_gamename; 
+        this.username = new_username; 
+        this.creationDate = new_creation_date; 
+        this.store = new_store; 
+        this.content = new_content; 
+
+        //GOG default
+        this.rating = -1; 
+        this.title = ""; 
+
+        //Steam default
+        this.helpful = -1;
+        this.positive = false; 
+    }
+
+    public Review(
+        String new_gamename,
+        String new_username,
+        LocalDate new_creation_date,
+        String new_store,
         String new_content,
         int new_rating,
         String new_title,
@@ -56,7 +79,6 @@ public class Review {
         this.store = new_store; 
         this.content = new_content; 
 
-        //TO_CHECK
         //GOG
         this.rating = new_rating; 
         this.title = new_title; 
@@ -68,11 +90,11 @@ public class Review {
 
     public Review(Document doc){
         this.id = doc.getObjectId("_id");
-        this.gamename = doc.getString("name"); 
+        this.gamename = doc.getString("game_name");
         this.username = doc.getString("username"); 
         this.creationDate = doc.getDate("creation_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
         this.content = doc.getString("content"); 
-        this.store = (doc.getString("title") == null) ? "Steam" : "GOG" ; //TODO prendere direttaente dallo DB
+        this.store = doc.getString("store");
 
         if(this.store.equals("GOG")){
             //GOG
@@ -171,6 +193,26 @@ public class Review {
                 this.helpful,
                 this.positive
         ));
+        game.update();
+    }
+
+    public static Review get(String gamename, String username){
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
+
+        System.out.println("Searching review by "+username+" of "+gamename);
+        FindIterable<Document> reviewDocs = reviewsColl.find(
+                Filters.and(
+                        Filters.eq("game_name", gamename),
+                        Filters.eq("username", username)
+                )
+        );
+        Review ret = new Review(reviewDocs.first());
+
+        if(reviewDocs.first() == null){
+            System.out.println("The user hasn't reviewed this game");
+        }
+        return ret;
     }
 
     public void update(){
@@ -210,9 +252,10 @@ public class Review {
         doc.append("game_name", this.gamename); 
         doc.append("username", this.username); 
         doc.append("creation_date", this.creationDate); 
-        doc.append("content", this.content); 
+        doc.append("content", this.content);
+        doc.append("store", this.store);
 
-        
+
         if(this.store.equals("GOG")){
             //GOG
             doc.append("rating", this.rating); 
@@ -241,7 +284,28 @@ public class Review {
 
         for(Document doc : reviewDocs) {
             Review rev = new Review(doc);
-            System.out.println(rev.content);
+            //System.out.println(rev.content);
+            reviews.add(rev);
+        }
+
+        return reviews;
+    }
+
+    public static List<Review> getReviewsByUser(String username){
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
+
+        FindIterable<Document> reviewDocs = reviewsColl.find(Filters.eq("username", username));
+
+        List<Review> reviews = new ArrayList<>();
+
+        if (reviewDocs == null) {
+            return reviews;
+        }
+
+        for(Document doc : reviewDocs) {
+            Review rev = new Review(doc);
+            //System.out.println(rev.content);
             reviews.add(rev);
         }
 

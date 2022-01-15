@@ -43,7 +43,7 @@ public class GameSearchController implements Initializable{
 
         game.clear();
 
-        // TO_DO FRA search games in db
+        // Search games in db
         String searchedString = searchBar.getText();
         List<Game> games = Game.getGamesByNamePart(searchedString);
 
