@@ -45,6 +45,7 @@ for i, element in enumerate(data):
         review["game_name"] = element["name"] 
         review["username"]  = element['reviews'][i]["name"]
         review["creation_date"]  = element['reviews'][i]["creation_date"]
+        review["store"] = "GOG"
         review["content"]  = element['reviews'][i]["content"]
         review["rating"]  = int(element['reviews'][i]["rating"])
         review["title"]  = element['reviews'][i]["title"]

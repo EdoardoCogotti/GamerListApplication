@@ -160,6 +160,7 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       review["username"] = random.choice(usernames)
     usernamesUsed.append(review["username"])
     review["creation_date"] = game['reviews'][-1]["creation_date"]
+    review["store"] = "Steam"
     review["helpful"] = game['reviews'][-1]["helpful"]
     review["positive"] = game['reviews'][-1]["positive"]
     review["content"] = rowR[1]
