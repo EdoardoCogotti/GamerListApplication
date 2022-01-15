@@ -194,7 +194,7 @@ public class Game {
 
     public void setLanguages(List<String> newValue){ this.languages = newValue;}
 
-    public void setAchievement(int newValue){  this.achievements = newValue;}
+    public void setAchievements(int newValue){  this.achievements = newValue;}
 
     public void setGenres(List<String> newValue){   this.genres = newValue;}
 
@@ -221,21 +221,21 @@ public class Game {
         this.player_rating = newValue;
     }
 
-    public void  oses(List<String> newValue){   
+    public void  setOses(List<String> newValue){
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
         this.oses = newValue;
     }
 
-    public void  size(String newValue){ 
+    public void setSize(String newValue){
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
         this.size = newValue;
     }
 
-    public void  in_development(boolean newValue){  
+    public void  setInDevelopment(boolean newValue){
         if(this.store.equals("Steam")){
             throw new RuntimeException("ERROR: tried to access a GOG game field in a Steam game");
         } 
@@ -244,21 +244,21 @@ public class Game {
 
 
     //STEAM GET
-    public void  game_description(String newValue){ 
+    public void  setGameDescription(String newValue){
         if(this.store.equals("GOG")){
             throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
         } 
         this.game_description = newValue;
     }
 
-    public void  minimum_requirements(String newValue){ 
+    public void  setMinimumRequirements(String newValue){
         if(this.store.equals("GOG")){
             throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
         } 
         this.minimum_requirements = newValue;
     }
 
-    public void  recommended_requirements(String newValue){ 
+    public void  setRecommendedRequirements(String newValue){
         if(this.store.equals("GOG")){
             throw new RuntimeException("ERROR: tried to access a Steam game field in a GOG game");
         } 

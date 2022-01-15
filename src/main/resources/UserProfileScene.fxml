@@ -10,17 +10,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
+<AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="270.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
    <children>
       <VBox prefHeight="513.0" prefWidth="800.0">
          <children>
             <HBox prefHeight="488.0" prefWidth="600.0">
                <children>
-                  <VBox prefHeight="488.0" prefWidth="651.0" />
-                  <VBox minWidth="220.0" prefHeight="473.0" prefWidth="220.0">
+                  <VBox prefHeight="488.0" prefWidth="0.0" />
+                  <VBox minWidth="220.0" prefHeight="473.0" prefWidth="269.0">
                      <children>
-                        <HBox alignment="CENTER" maxHeight="100.0" maxWidth="227.0" minHeight="100.0" minWidth="223.0" prefHeight="100.0" prefWidth="227.0">
+                        <HBox alignment="CENTER" maxHeight="100.0" maxWidth="270.0" minHeight="100.0" minWidth="223.0" prefHeight="100.0" prefWidth="270.0">
                            <children>
                               <StackPane fx:id="profilePic" prefHeight="92.0" prefWidth="73.0">
                                  <children>
@@ -42,69 +43,72 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox fillHeight="false" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" minWidth="223.0" prefHeight="40.0" prefWidth="200.0">
+                        <HBox fillHeight="false" maxHeight="40.0" maxWidth="270.0" minHeight="40.0" minWidth="223.0" prefHeight="40.0" prefWidth="270.0">
                            <children>
-                              <Label fx:id="nameLabel" alignment="CENTER" maxHeight="41.0" prefHeight="40.0" prefWidth="227.0" text="usernameValue" wrapText="true">
+                              <Label id="nameLabel" fx:id="nameLabel" alignment="CENTER" maxHeight="41.0" prefHeight="40.0" prefWidth="268.0" text="usernameValue" wrapText="true">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <padding>
                                     <Insets top="15.0" />
                                  </padding>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox fx:id="followBox" alignment="CENTER" fillHeight="false" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" minWidth="220.0" prefHeight="40.0" prefWidth="200.0" visible="false">
+                        <HBox fx:id="followBox" alignment="CENTER" fillHeight="false" maxHeight="40.0" maxWidth="273.0" minHeight="40.0" minWidth="220.0" prefHeight="40.0" prefWidth="273.0" visible="false">
                            <children>
                               <Button fx:id="followButton" alignment="CENTER" mnemonicParsing="false" onAction="#follow" prefHeight="31.0" prefWidth="120.0" stylesheets="@css/buttons.css" text="FOLLOW" />
                            </children>
                         </HBox>
-                        <HBox fx:id="firstNameBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox fx:id="firstNameBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="268.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="268.0">
                            <children>
                               <Label maxHeight="41.0" maxWidth="90.0" minHeight="41.0" minWidth="90.0" prefHeight="41.0" prefWidth="90.0" text="First Name:" />
-                              <Label fx:id="firstNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="41.0" prefWidth="110.0" text="firstNameValue" />
+                              <Label fx:id="firstNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="35.0" prefWidth="178.0" text="firstNameValue" />
                            </children>
                         </HBox>
-                        <HBox fx:id="lastNameBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox fx:id="lastNameBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="270.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="270.0">
                            <children>
                               <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Last Name:" />
-                              <Label fx:id="lastNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="41.0" prefWidth="110.0" text="lastNameValue" />
+                              <Label fx:id="lastNameValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="35.0" prefWidth="180.0" text="lastNameValue" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="269.0" minHeight="35.0" minWidth="269.0" prefHeight="35.0" prefWidth="269.0">
                            <children>
                               <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Gender:" />
-                              <Label fx:id="genderValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="57.0" prefWidth="110.0" text="genderValue" />
+                              <Label fx:id="genderValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="35.0" prefWidth="181.0" text="genderValue" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="269.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
                               <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Country:" />
-                              <Label fx:id="countryValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="43.0" prefWidth="110.0" text="countryValue" />
+                              <Label fx:id="countryValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="35.0" prefWidth="178.0" text="countryValue" />
                            </children>
                         </HBox>
-                        <HBox fx:id="emailBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox fx:id="emailBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="269.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label maxHeight="36.0" prefHeight="43.0" prefWidth="40.0" text="Email:" />
-                              <Label fx:id="emailValue" alignment="CENTER_RIGHT" minWidth="180.0" prefHeight="40.0" prefWidth="151.0" text="emailValue" wrapText="true" />
+                              <Label maxHeight="36.0" prefHeight="35.0" prefWidth="110.0" text="Email:" />
+                              <Label fx:id="emailValue" alignment="CENTER_RIGHT" minWidth="180.0" prefHeight="35.0" prefWidth="230.0" text="emailValue" wrapText="true" />
                            </children>
                         </HBox>
-                        <HBox fx:id="phoneBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox fx:id="phoneBox" alignment="CENTER_LEFT" fillHeight="false" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="269.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
                               <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Phone:" />
-                              <Label fx:id="phoneValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="47.0" prefWidth="110.0" text="phoneValue" />
+                              <Label fx:id="phoneValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="35.0" prefWidth="182.0" text="phoneValue" />
                            </children>
                         </HBox>
-                        <HBox fx:id="birthdayBox" alignment="CENTER_LEFT" fillHeight="false" layoutX="10.0" layoutY="444.0" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox fx:id="birthdayBox" alignment="CENTER_LEFT" fillHeight="false" layoutX="10.0" layoutY="444.0" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="269.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
                               <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Birthday:" />
-                              <Label fx:id="birthdayValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="43.0" prefWidth="110.0" text="birthdayValue" />
+                              <Label fx:id="birthdayValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="35.0" prefWidth="184.0" text="birthdayValue" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" fillHeight="false" layoutX="10.0" layoutY="452.0" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="220.0" prefHeight="35.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" fillHeight="false" layoutX="10.0" layoutY="452.0" maxHeight="35.0" maxWidth="200.0" minHeight="35.0" minWidth="269.0" prefHeight="35.0" prefWidth="200.0">
                            <children>
-                              <Label maxHeight="36.0" prefHeight="43.0" prefWidth="90.0" text="Registered: " />
-                              <Label fx:id="registrationValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="51.0" prefWidth="110.0" text="registrationValue" />
+                              <Label maxHeight="36.0" prefHeight="35.0" prefWidth="109.0" text="Registered: " />
+                              <Label fx:id="registrationValue" alignment="CENTER_RIGHT" minWidth="130.0" prefHeight="51.0" prefWidth="185.0" text="registrationValue" />
                            </children>
                         </HBox>
                      </children>

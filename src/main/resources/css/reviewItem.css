@@ -9,6 +9,13 @@
     -fx-background-color: #DDDDDD;
 }
 
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+    -fx-pref-height: 10;
+    -fx-padding: 2;
+}
+
 .infoGog{
     -fx-background-radius: 20;
     -fx-background-color: #aa2cb2;

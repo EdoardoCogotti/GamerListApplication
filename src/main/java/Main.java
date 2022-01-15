@@ -18,6 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+
         // set starting page/scene
         Parent root = FXMLLoader.load(getClass().getResource("/SigninScene.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/GameInfoScene.fxml"));
@@ -48,12 +49,12 @@ public class Main extends Application {
     public void stop(){
 
         // close connections
-        /*utils.MongoDriver mongoDriver = utils.MongoDriver.getInstance();
-        utils.Neo4jDriver neoDriver = utils.Neo4jDriver.getInstance();
+        //utils.MongoDriver mongoDriver = utils.MongoDriver.getInstance();
+        //utils.Neo4jDriver neoDriver = utils.Neo4jDriver.getInstance();
 
-        mongoDriver.close();
-        neoDriver.close();
-        */
+        //mongoDriver.close();
+        //neoDriver.close();
+
 
     }
 

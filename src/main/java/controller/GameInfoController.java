@@ -4,14 +4,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import model.Game;
 import model.Review;
+import org.controlsfx.control.PopOver;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -30,12 +34,31 @@ public class GameInfoController implements Initializable {
     private Pane myReview;
     @FXML
     private Label gameValue, storeValue, developerValue, publisherValue,
-            genresValue, languagesValue, gameDetailsValue;
+                gameDetailsValue, ratingValue, achievementsValue;
+    @FXML
+    private Text genresValue, languagesValue, urlValue;
+
+    @FXML
+    private Label inDevelopmentValue, sizeValue;
+    @FXML
+    private Text osValue;
+
+    @FXML
+    private Text descriptionValue, minimumRequirementValue, recommendRequirementValue;
+
+    @FXML
+    private HBox steamBoxRecommendedRequirements, steamBoxMinimumRequirements, steamBoxDescription;
+    @FXML
+    private HBox gogBoxOses, gogBoxSize, gogBoxInDevelopment;
+
     @FXML
     private Button gamelistButton,deleteButton ;
 
     private boolean inGamelist;
     private boolean reviewed;
+
+    private PopOver popOverLang, popOverGenre;
+    private Label langPopup, genrePopup;
 
     private List<Review> reviews = new ArrayList<>() ;
     private List<Review> getSteamData(){
@@ -45,7 +68,10 @@ public class GameInfoController implements Initializable {
             Review review = new Review();
             review.setUsername("edo");
             review.setStore("Steam");
-            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
+            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti" +
+                    "Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti" +
+                    "Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
+            //review.setContent("Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
             review.setHelpful(3);
             review.setPositive(false);
@@ -60,7 +86,8 @@ public class GameInfoController implements Initializable {
             Review review = new Review();
             review.setUsername("edo");
             review.setStore("Gog");
-            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
+            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti"
+            + "Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
             review.setTitle("Awesome shooter if you do the following");
             review.setRating(3);
@@ -76,7 +103,8 @@ public class GameInfoController implements Initializable {
             Review review = new Review();
             review.setUsername("edo");
             review.setStore("Gamerlist");
-            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
+            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti"
+            +"Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
             review.setCreationDate(LocalDate.now());
             reviews.add(review);
         }
@@ -89,17 +117,24 @@ public class GameInfoController implements Initializable {
 
         Game g = new Game();
         g.setName("Portal 2");
+        g.setUrl("https://store.steampowered.com/app/10090/Call_of_Duty_World_at_War/");
         g.setStore("Steam");
         g.setDeveloper("Valve inc.");
         g.setPublisher("Valve inc.");
         List<String> genres = new ArrayList<>();
         genres.add("adventure");
-        genres.add("puzzle");
+        for(int i=0; i<6; i++){
+            genres.add("puzzle");
+        }
+
         g.setGenres(genres);
         List<String> languages = new ArrayList<>();
         languages.add("english");
         languages.add("spanish");
         languages.add("italian");
+        for(int i=0; i<5; i++){
+            languages.add("japanese");
+        }
         g.setLanguages(languages);
         g.setSinglePlayer(true);
         g.setMultiPlayer(false);
@@ -108,9 +143,26 @@ public class GameInfoController implements Initializable {
         g.setCloudSaves(false);
         g.setAchievement(true);
 
+        g.setAchievements(10);
+        g.setRating("PEGI Rating: 12+ (Violence)");
+
+        /*
+        g.setSize("2.5 GB");
+        g.setInDevelopment(false);
+        List<String> oses = new ArrayList<>();
+        for(int i=0; i<3; i++)
+            oses.add("Windows (7 8 10)");
+        g.setOses(oses);
+        */
+
+        g.setGameDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
+        g.setMinimumRequirements("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
+        g.setRecommendedRequirements("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
+
         Session.getInstance().setCurrentGame(g);
 
         gameValue.setText(g.getName());
+        urlValue.setText(g.getUrl());
         storeValue.setText(g.getStore());
         developerValue.setText(g.getDeveloper());
         publisherValue.setText(g.getPublisher());
@@ -124,6 +176,7 @@ public class GameInfoController implements Initializable {
             strLang.append(lang).append("; ");
         strLang.delete(strLang.length()-2, strLang.length());
         languagesValue.setText(String.valueOf(strLang));
+        System.out.println((Text)languagesValue.lookup(".text"));
         JSONObject gameDetails = g.getGameDetails();
         StringBuilder strGameDetails = new StringBuilder();
         Iterator<String> keys = gameDetails.keys();
@@ -138,6 +191,37 @@ public class GameInfoController implements Initializable {
         }
         strGameDetails.delete(strGameDetails.length()-1, strGameDetails.length());
         gameDetailsValue.setText(String.valueOf(strGameDetails));
+        ratingValue.setText(g.getRating());
+        achievementsValue.setText(String.valueOf(g.getAchievements()));
+
+        if(g.getStore().equals("Gog")) {
+            sizeValue.setText(String.valueOf(g.getSize()));
+            inDevelopmentValue.setText(String.valueOf(g.getInDevelopment()));
+            List<String> osList = g.getOses();
+            StringBuilder s = new StringBuilder();
+            for (String os : osList)
+                s.append(os).append(",\n");
+            osValue.setText(s.toString());
+
+            steamBoxDescription.setManaged(false);
+            steamBoxMinimumRequirements.setManaged(false);
+            steamBoxRecommendedRequirements.setManaged(false);
+            steamBoxDescription.setVisible(false);
+            steamBoxMinimumRequirements.setVisible(false);
+            steamBoxRecommendedRequirements.setVisible(false);
+        }
+        else{
+            descriptionValue.setText(g.getGameDescription());
+            minimumRequirementValue.setText(g.getMinimumRequirements());
+            recommendRequirementValue.setText(g.getRecommendedRequirements());
+
+            gogBoxSize.setManaged(false);
+            gogBoxInDevelopment.setManaged(false);
+            gogBoxOses.setManaged(false);
+            gogBoxSize.setVisible(false);
+            gogBoxInDevelopment.setVisible(false);
+            gogBoxOses.setVisible(false);
+        }
 
         if(g.getStore().equals("Steam")) //a
             reviews.addAll(getSteamData());
@@ -149,20 +233,26 @@ public class GameInfoController implements Initializable {
         int col=0;
         int row=1;
         try {
+
             for(Review r : reviews){
                 FXMLLoader loader = new FXMLLoader();
-                if(g.getStore().equals("Steam")) //a
+                AnchorPane anchorPane;
+                if(r.getStore().equals("Steam")) {
                     loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
-                else if(g.getStore().equals("Gog"))
+                }
+                else if(r.getStore().equals("Gog")) {
                     loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
-                else
+                }
+                else {
                     loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
-                AnchorPane anchorPane = loader.load();
+                }
+                anchorPane = loader.load();
 
+                // TRE LOADER
                 ReviewItemController reviewItemController = loader.getController();
-                if(g.getStore().equals("Steam")) //a
+                if(r.getStore().equals("Steam")) //a
                     reviewItemController.setSteamData(r);
-                else if(g.getStore().equals("Gog"))
+                else if(r.getStore().equals("Gog"))
                     reviewItemController.setGogData(r);
                 else
                     reviewItemController.setGamerlistData(r);
@@ -185,6 +275,16 @@ public class GameInfoController implements Initializable {
                 GridPane.setMargin(anchorPane, new Insets(20));
             }
         } catch (IOException e) {e.printStackTrace();}
+
+        //init popovers
+        /*String originalString = strLang.toString();
+        Text textNode = (Text) .lookup(".languagesValue"); // "text" is the style class of Text
+        String actualString = textNode.getText();
+        boolean langOverrunCheck = !originalString.equals(actualString);
+        if(langOverrunCheck) {
+            langPopup = new Label(originalString);
+            createPopup(languagesValue, langPopup);
+        }*/
 
     }
 
@@ -210,16 +310,26 @@ public class GameInfoController implements Initializable {
                 gamelistButton.setText("ADD IN GAMELIST");
         }
 
-        //TO_DO check if game reviewed by the username
+        //TO_DO check if game reviewed by the username and in case retrieve content
         reviewed= true;
+        String content = "Prova";
         try {
             FXMLLoader loader_review = new FXMLLoader();
+            AnchorPane anchorPane;
             if (reviewed) {
                 loader_review.setLocation(getClass().getResource("/MyReview.fxml"));
+                anchorPane = loader_review.load();
+
+                MyReviewController myReviewController = loader_review.getController();
+                myReviewController.setContent(content);
             } else {
                 loader_review.setLocation(getClass().getResource("/ReviewForm.fxml"));
+                anchorPane = loader_review.load();
+
+                ReviewFormController reviewFormController = loader_review.getController();
+                reviewFormController.setEditFlag(false); //it won't be reviewed in this case
             }
-            AnchorPane anchorPane = loader_review.load();
+
             myReview.getChildren().add(anchorPane);
         }
         catch (IOException e){e.printStackTrace();}
@@ -243,5 +353,21 @@ public class GameInfoController implements Initializable {
         String gamename = gameValue.getText();
 
         //TO_DO delete game in db
+    }
+
+    private void createPopup(Label value, Label popup){
+        value.setOnMouseEntered(mouseEvent -> {
+            popup.setWrapText(true);
+            popup.setTextAlignment(TextAlignment.CENTER);
+            VBox vBox= new VBox(popup);
+            vBox.setPrefWidth(400);
+            vBox.setStyle("-fx-background-color: white;");
+            popOverLang = new PopOver(vBox);
+            popOverLang.show(popup);
+        });
+
+        languagesValue.setOnMouseExited(mouseEvent -> {
+            popOverLang.hide();
+        });
     }
 }

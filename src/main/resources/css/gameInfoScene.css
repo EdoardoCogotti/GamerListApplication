@@ -1,5 +1,6 @@
 .root{
     -fx-font-family: "Consolas";
+    -fx-text-fill: black;
 
 }
 
@@ -35,4 +36,12 @@
 
 .left-bar{
     -fx-background-color: #D3D3D3;
+}
+
+#gameInfoVBox{
+    -fx-background-color: #D3D3D3;
+}
+
+#gameInfoVBox .label{
+    -fx-text-fill: black;
 }
