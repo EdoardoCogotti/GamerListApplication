@@ -227,6 +227,7 @@ public class GameInfoController implements Initializable {
             reviews.addAll(getGamerListData());
 
         
+        /*
         int col=0;
         int row=1;
         try {
@@ -271,6 +272,7 @@ public class GameInfoController implements Initializable {
                 GridPane.setMargin(anchorPane, new Insets(20));
             }
         } catch (IOException e) {e.printStackTrace();}
+        */
 
     }
 
