@@ -1,15 +1,24 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import model.Game;
 import org.controlsfx.control.CheckComboBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
@@ -22,7 +31,7 @@ public class GameFormController implements Initializable {
     @FXML
     private GridPane gridPane;
     @FXML
-    private TextField gamenameTextField, publisherTextField, developerTextField;
+    private TextField gamenameTextField, publisherTextField, developerTextField, ratingTextField, urlTextField, achievementsTextField;
     @FXML
     private RadioButton rButtonSteam, rButtonGog;
     @FXML
@@ -36,18 +45,33 @@ public class GameFormController implements Initializable {
 
     CheckComboBox<String> checkComboBoxGameDetails, checkComboBoxGenres, checkComboBoxLanguages;
 
-    public void submit(){
+    // game fields
+    private String gamename, publisher, developer, store, url, rating;
+    private LocalDate releaseDate;
+    private int achievements;
 
-        String gamename = gamenameTextField.getText();
-        String publisher = publisherTextField.getText();
-        String developer = developerTextField.getText();
-        String store;
-        LocalDate releaseDate;
+    private Stage stage;
+    private Scene scene;
+
+    public void next() throws IOException {
+
+        gamename = gamenameTextField.getText();
+        publisher = publisherTextField.getText();
+        developer = developerTextField.getText();
+        url = urlTextField.getText();
+        rating = ratingTextField.getText();
 
         //GAME NAME
         if(gamename.equals("")){
             errorLabel.setVisible(true);
             errorLabel.setText("You must choose game name");
+            return;
+        }
+
+        //URL
+        if(!url.startsWith("https://")){
+            errorLabel.setVisible(true);
+            errorLabel.setText("You must set correct url (\"https://\")");
             return;
         }
 
@@ -62,6 +86,13 @@ public class GameFormController implements Initializable {
         if(publisher.equals("")){
             errorLabel.setVisible(true);
             errorLabel.setText("You must choose game publisher");
+            return;
+        }
+
+        //RATING
+        if(rating.equals("")){
+            errorLabel.setVisible(true);
+            errorLabel.setText("You must set rating");
             return;
         }
 
@@ -102,6 +133,9 @@ public class GameFormController implements Initializable {
             return;
         }
 
+        //ACHIVEMENTS
+        achievements = Integer.parseInt(achievementsTextField.getText());
+
         // DATE
         releaseDate = releaseDatePicker.getValue();
         if(releaseDate==null) {
@@ -141,6 +175,32 @@ public class GameFormController implements Initializable {
         );
 
         newGame.insert();
+        switchToNextPage();
+
+    }
+
+    public void switchToNextPage() throws IOException {
+
+        String path;
+        if(store.equals("Steam"))
+            path = "/GameFormSteamScene.fxml";
+        else
+            path = "/GameFormGogScene.fxml";
+
+        stage = (Stage) (gridPane.getScene().getWindow());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+        Parent root = loader.load();
+        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
+
+        GameFormNextController gameFormNextController = loader.getController();
+        gameFormNextController.setCommonGameInfo(gamename, publisher, developer, store, releaseDate, url, rating, achievements);
+
+        scene = new Scene(newRoot);
+        String css = this.getClass().getResource("/css/signupScene.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        stage.setScene(scene);
+        stage.show();
+
     }
 
     @Override
@@ -166,9 +226,19 @@ public class GameFormController implements Initializable {
         checkComboBoxLanguages = new CheckComboBox<>(languagesList);
 
         checkComboBoxGameDetails.setShowCheckedCount(false);
-        gridPane.add(checkComboBoxGameDetails,2,4);
-        gridPane.add(checkComboBoxGenres,2,5);
-        gridPane.add(checkComboBoxLanguages,2,6);
+        gridPane.add(checkComboBoxGameDetails,2,6);
+        gridPane.add(checkComboBoxGenres,2,7);
+        gridPane.add(checkComboBoxLanguages,2,8);
 
+        // force the field to be numeric only
+        achievementsTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    achievementsTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
     }
 }

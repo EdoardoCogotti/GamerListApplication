@@ -21,7 +21,7 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="titleLabel" alignment="CENTER" prefHeight="70.0" prefWidth="600.0" text="Sign Up" />
+                  <Label fx:id="titleLabel" alignment="CENTER" prefHeight="70.0" prefWidth="600.0" text="Game Form" />
                </children>
             </HBox>
             <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="428.0" prefWidth="576.0" vgap="10.0">
@@ -35,19 +35,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="105.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="32.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="200.0" text="Game Name:" textAlignment="RIGHT" GridPane.columnIndex="1" />
                   <TextField fx:id="gamenameTextField" GridPane.columnIndex="2" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="209.0" text="Developer:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="209.0" text="Publisher:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="212.0" text="Store: " textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="209.0" text="Developer:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="209.0" text="Publisher:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="212.0" text="Store: " textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <children>
                         <RadioButton fx:id="rButtonSteam" mnemonicParsing="false" text="Steam">
                            <toggleGroup>
@@ -61,12 +64,12 @@
                         </RadioButton>
                      </children>
                   </VBox>
-                  <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="149.0" text="Game Details:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="199.0" text="Genres:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Label alignment="CENTER_RIGHT" contentDisplay="TOP" prefHeight="17.0" prefWidth="191.0" text="Release Date:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <DatePicker fx:id="releaseDatePicker" promptText="Enter a date" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="151.0" text="Languages:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                  <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="149.0" text="Game Details:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="199.0" text="Genres:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="TOP" prefHeight="17.0" prefWidth="191.0" text="Release Date:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                  <DatePicker fx:id="releaseDatePicker" promptText="Enter a date" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="151.0" text="Languages:" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6">
                      <children>
                         <CheckBox fx:id="singlePlayerCheckBox" mnemonicParsing="false" text="single_player" />
                         <CheckBox fx:id="multiPlayerCheckBox" mnemonicParsing="false" text="multi_player" />
@@ -82,8 +85,14 @@
                         <Insets />
                      </GridPane.margin>
                   </VBox>
-                  <TextField fx:id="developerTextField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <TextField fx:id="publisherTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <TextField fx:id="developerTextField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <TextField fx:id="publisherTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Label alignment="CENTER_RIGHT" layoutX="123.0" layoutY="114.0" prefHeight="17.0" prefWidth="209.0" text="Rating" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="ratingTextField" layoutX="272.0" layoutY="110.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <Label alignment="CENTER_RIGHT" layoutX="123.0" layoutY="102.0" prefHeight="17.0" prefWidth="209.0" text="Url:" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="urlTextField" layoutX="272.0" layoutY="98.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER_RIGHT" layoutX="123.0" layoutY="320.0" prefHeight="17.0" prefWidth="151.0" text="Achievements:" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                  <TextField fx:id="achievementsTextField" layoutX="272.0" layoutY="85.0" promptText="Only Numeric" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                </children>
             </GridPane>
             <HBox alignment="CENTER" focusTraversable="true" prefHeight="52.0" prefWidth="600.0">
@@ -96,7 +105,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#submit" stylesheets="@css/buttons.css" text="SUBMIT">
+                  <Button mnemonicParsing="false" onAction="#next" stylesheets="@css/buttons.css" text="NEXT">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import model.Game;
 import model.Review;
+import org.neo4j.driver.internal.InternalPath;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -18,21 +19,28 @@ public class ReviewFormController {
     @FXML
     private TextArea reviewTextArea;
 
+    private boolean editFlag;
+
     public void addMyReview() throws IOException {
         String content = reviewTextArea.getText();
         String username = Session.getInstance().getLoggedUser().getUsername();
         String gameName = Session.getInstance().getCurrentGame().getName();
-        // TO_DO FRA add my review in db
-        System.out.print("ADD REVIEW :" + username + " " + gameName + " " + content);
-        Review review = new Review(
-                gameName,
-                username,
-                new Date(System.currentTimeMillis()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                "GamerList",
-                content
-        );
-        System.out.println(gameName);
-        review.insert(Game.getGamesByNamePart(gameName).get(0));
+
+        if(editFlag)
+            ;//TO_DO update my review in db
+        else{
+            // TO_DO FRA add my review in db
+            System.out.print("ADD REVIEW :" + username + " " + gameName + " " + content);
+            Review review = new Review(
+                    gameName,
+                    username,
+                    new Date(System.currentTimeMillis()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                    "GamerList",
+                    content
+            );
+            System.out.println(gameName);
+            review.insert(Game.getGamesByNamePart(gameName).get(0));
+        }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MyReview.fxml"));
 
@@ -46,4 +54,5 @@ public class ReviewFormController {
     public void setContent(String content) {
         reviewTextArea.setText(content);
     }
+    public void setEditFlag(boolean editFlag) {this.editFlag = editFlag;}
 }

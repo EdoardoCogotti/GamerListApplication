@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane minHeight="250.0" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReviewItemController">
    <children>
@@ -70,11 +72,22 @@
                <children>
                   <VBox fx:id="reviewVbox" prefHeight="162.0" prefWidth="186.0">
                      <children>
-                        <Label fx:id="contentReview" alignment="CENTER" prefHeight="194.0" prefWidth="180.0" styleClass="content" stylesheets="@css/reviewItem.css" text=" ContentPlaceholde" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Consolas Italic" size="12.0" />
-                           </font>
-                        </Label>
+                        <ScrollPane fx:id="scrollPane" fitToHeight="true" hbarPolicy="NEVER" prefHeight="162.0" prefWidth="180.0" vbarPolicy="ALWAYS">
+                           <content>
+                              <HBox fx:id="reviewHBox" alignment="CENTER" fillHeight="false" maxHeight="299.0" minWidth="165.0" prefHeight="299.0" prefWidth="170.0" styleClass="content" stylesheets="@css/reviewItem.css">
+                                 <children>
+                                    <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti&quot; +                    &quot;Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti&quot; +                    &quot;Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti&quot;);" wrappingWidth="157.0">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </VBox>
                </children>

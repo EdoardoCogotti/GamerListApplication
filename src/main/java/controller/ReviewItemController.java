@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,12 +9,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.Review;
@@ -33,17 +36,19 @@ public class ReviewItemController implements Initializable {
     @FXML
     private ImageView thumbImage;
     @FXML
-    private Label titleValue, ratingValue;
+    private Label ratingValue; // titleValue;
     @FXML
     private HBox usernameBar;
     @FXML
-    private VBox reviewVbox;
+    private HBox reviewHBox;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Text text, titleValue;
 
     private PopOver popOver;
     private Label contentPopup, titlePopup;
     private boolean firstPopup;
-
-    private double targetX, targetY;
 
     private Review review;
     private Stage stage;
@@ -52,7 +57,8 @@ public class ReviewItemController implements Initializable {
     public void setSteamData(Review review){
         this.review = review;
         usernameValue.setText(review.getUsername());
-        contentReview.setText(review.getContent());
+        //contentReview.setText(review.getContent());
+        text.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
 
         helpfulValue.setText(String.valueOf(review.getHelpful()));
@@ -60,12 +66,15 @@ public class ReviewItemController implements Initializable {
             thumbImage.setImage(new Image("/images/Like-icon.png"));
         else
             thumbImage.setImage(new Image("/images/Dislike-icon.png"));
+
+        //text.wrappingWidthProperty().bind(scrollPane.widthProperty());
     }
 
     public void setGogData(Review review){
         this.review = review;
         usernameValue.setText(review.getUsername());
-        contentReview.setText(review.getContent());
+        //contentReview.setText(review.getContent());
+        text.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
 
         titleValue.setText(review.getTitle());
@@ -75,7 +84,8 @@ public class ReviewItemController implements Initializable {
     public void setGamerlistData(Review review){
         this.review = review;
         usernameValue.setText(review.getUsername());
-        contentReview.setText(review.getContent());
+        text.setText(review.getContent());
+        //contentReview.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
     }
 
@@ -95,6 +105,7 @@ public class ReviewItemController implements Initializable {
             }
         });
 
+        /*
         firstPopup = true;
         reviewVbox.setOnMouseEntered(mouseEvent -> {
             if(firstPopup){
@@ -122,7 +133,7 @@ public class ReviewItemController implements Initializable {
 
         reviewVbox.setOnMouseExited(mouseEvent -> {
             popOver.hide();
-        });
+        });*/
     }
 
     public void switchToUser(MouseEvent event, String user) throws IOException {

@@ -32,7 +32,8 @@ public class GameSearchController implements Initializable{
     @FXML
     private TextField searchBar;
     
-    private String[] games = {"Layton", "Dark Souls", "Peggle", "Pokemon", "prova1", "prova2",  "prova3", "prova4", "prova1", "prova2",  "prova3", "prova4","prova1", "prova2",  "prova3", "prova4", "prova1", "prova2",  "prova3", "prova4"};
+    private String[] games = {"Layton", "Dark Souls", "Peggle", "Pokemon", "titololungo apposta per controllare lo spazio del titolo",
+            "prova2",  "prova3", "prova4", "prova1", "prova2",  "prova3", "prova4","prova1", "prova2",  "prova3", "prova4", "prova1", "prova2",  "prova3", "prova4"};
     private ObservableList game = FXCollections.observableArrayList();
     private String currentGame;
 
@@ -87,7 +88,7 @@ public class GameSearchController implements Initializable{
 
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/gameInfoScene.css").toExternalForm();
-        scene.getStylesheets().add(css);
+        //scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
     }

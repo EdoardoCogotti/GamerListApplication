@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane cache="true" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameInfoController">
    <children>
@@ -19,74 +20,286 @@
          <left>
             <VBox prefHeight="80.0" prefWidth="309.0" styleClass="left-bar" stylesheets="@css/gameInfoScene.css" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox minHeight="100.0" prefHeight="126.0" prefWidth="309.0">
                      <children>
-                        <Label fx:id="gameValue" alignment="CENTER" prefHeight="143.0" prefWidth="319.0" text="Name">
+                        <Label fx:id="gameValue" alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="299.0" text="Name" textAlignment="CENTER" wrapText="true">
                            <font>
-                              <Font name="Consolas Bold" size="40.0" />
+                              <Font name="Consolas Bold" size="28.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
-                  <VBox prefHeight="364.0" prefWidth="259.0">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="496.0" prefWidth="289.0" style="-fx-background-color: transparent;" stylesheets="@css/reviewItem.css" vbarPolicy="ALWAYS">
+                     <content>
+                        <VBox fx:id="gameInfoVBox" prefWidth="276.0" spacing="5.0">
+                           <children>
+                              <HBox prefHeight="40.0" prefWidth="259.0">
+                                 <children>
+                                    <Label prefHeight="54.0" prefWidth="85.0" text="Store:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="storeValue" prefHeight="40.0" prefWidth="227.0" text="storeValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="50.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="50.0" prefWidth="85.0" style="-fx-text-fill: black;" text="Url:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="urlValue" strokeType="OUTSIDE" strokeWidth="0.0" text="urlValue" wrappingWidth="193.203125">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="50.0" prefWidth="85.0" text="Released:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="releaseDateValue" prefHeight="40.0" prefWidth="225.0" text="releaseDateValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="176.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="48.0" prefWidth="85.0" text="Publisher:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="publisherValue" prefHeight="40.0" prefWidth="220.0" text="publisherValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="181.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="60.0" prefWidth="85.0" text="Developer:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="developerValue" prefHeight="40.0" prefWidth="219.0" text="developerValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="309.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="49.0" prefWidth="85.0" text="Languages:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="languagesValue" strokeType="OUTSIDE" strokeWidth="0.0" text="languagesValue" wrappingWidth="188.73046875">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="314.0" prefHeight="40.0" prefWidth="250.0">
+                                 <children>
+                                    <Label prefHeight="60.0" prefWidth="85.0" text="Genres:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="genresValue" strokeType="OUTSIDE" strokeWidth="0.0" text="genresValue" wrappingWidth="193.203125">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="108.0" prefWidth="276.0">
+                                 <children>
+                                    <Label alignment="TOP_LEFT" prefHeight="108.0" prefWidth="111.0" text="GameDetails:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="gameDetailsValue" alignment="TOP_LEFT" prefHeight="126.0" prefWidth="221.0" text="gameDetailsValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="370.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="40.0" prefWidth="137.0" text="Achievements:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="achievementsValue" prefHeight="40.0" prefWidth="225.0" text="achievementsValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="756.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="50.0" prefWidth="85.0" text="Ratings:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="ratingValue" prefHeight="40.0" prefWidth="225.0" text="ratingValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="416.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="40.0" prefWidth="121.0" text="Tot Reviews:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="totReviewsValue" prefHeight="40.0" prefWidth="225.0" text="totReviewsValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="steamBoxDescription" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label layoutX="10.0" layoutY="10.0" text="Description:">
+                                       <font>
+                                          <Font name="Lucida Console" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="descriptionValue" layoutX="120.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="descriptionValue" wrappingWidth="189.13671875">
+                                       <font>
+                                          <Font name="Lucida Console" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="steamBoxMinimumRequirements" layoutX="10.0" layoutY="638.0" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="31.0" prefWidth="95.0" text="Minimum requirements:" wrapText="true">
+                                       <font>
+                                          <Font name="Lucida Console" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="minimumRequirementValue" strokeType="OUTSIDE" strokeWidth="0.0" text="minimumRequirementValue" wrappingWidth="178.13671875">
+                                       <font>
+                                          <Font name="Lucida Console" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="steamBoxRecommendedRequirements" layoutX="10.0" layoutY="738.0" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="36.0" prefWidth="108.0" text="Recommend requirements:" wrapText="true">
+                                       <font>
+                                          <Font name="Lucida Console" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="recommendRequirementValue" strokeType="OUTSIDE" strokeWidth="0.0" text="recommendRequirementValue" wrappingWidth="168.13671875">
+                                       <font>
+                                          <Font name="Lucida Console" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gogBoxInDevelopment" layoutX="10.0" layoutY="130.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="40.0" prefWidth="148.0" text="In development:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="inDevelopmentValue" prefHeight="40.0" prefWidth="219.0" text="developmentValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gogBoxSize" layoutX="10.0" layoutY="358.0" prefHeight="40.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="40.0" prefWidth="148.0" text="Size:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="sizeValue" prefHeight="40.0" prefWidth="219.0" text="sizeValue" wrapText="true">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="gogBoxOses" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="250.0">
+                                 <children>
+                                    <Label prefHeight="40.0" prefWidth="43.0" text="OS:">
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Text fx:id="osValue" strokeType="OUTSIDE" strokeWidth="0.0" text="osValue" wrappingWidth="234.203125">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Consolas" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
                      <VBox.margin>
-                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" />
                      </VBox.margin>
+                  </ScrollPane>
+                  <HBox alignment="CENTER" prefHeight="47.0" prefWidth="259.0" spacing="10.0">
                      <children>
-                        <HBox prefHeight="40.0" prefWidth="259.0">
-                           <children>
-                              <Label prefHeight="54.0" prefWidth="85.0" text="Store:" />
-                              <Label fx:id="storeValue" prefHeight="46.0" prefWidth="175.0" text="storeValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
-                           <children>
-                              <Label prefHeight="50.0" prefWidth="85.0" text="Released:" />
-                              <Label fx:id="releaseDateValue" prefHeight="46.0" prefWidth="178.0" text="releaseDateValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="10.0" layoutY="176.0" prefHeight="40.0" prefWidth="200.0">
-                           <children>
-                              <Label prefHeight="48.0" prefWidth="85.0" text="Publisher:" />
-                              <Label fx:id="publisherValue" prefHeight="46.0" prefWidth="174.0" text="publisherValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="10.0" layoutY="181.0" prefHeight="40.0" prefWidth="200.0">
-                           <children>
-                              <Label prefHeight="60.0" prefWidth="85.0" text="Developer:" />
-                              <Label fx:id="developerValue" prefHeight="47.0" prefWidth="179.0" text="developerValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="10.0" layoutY="309.0" prefHeight="40.0" prefWidth="200.0">
-                           <children>
-                              <Label prefHeight="49.0" prefWidth="85.0" text="Languages:" />
-                              <Label fx:id="languagesValue" prefHeight="47.0" prefWidth="174.0" text="languagesValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox layoutX="10.0" layoutY="314.0" prefHeight="40.0" prefWidth="250.0">
-                           <children>
-                              <Label prefHeight="60.0" prefWidth="85.0" text="Genres:" />
-                              <Label fx:id="genresValue" prefHeight="47.0" prefWidth="175.0" text="genresValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="126.0" prefWidth="259.0">
-                           <children>
-                              <Label alignment="TOP_LEFT" prefHeight="131.0" prefWidth="85.0" text="GameDetails:" />
-                              <Label fx:id="gameDetailsValue" alignment="TOP_LEFT" prefHeight="131.0" prefWidth="174.0" text="gameDetailsValue" wrapText="true" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="259.0" spacing="10.0">
-                           <children>
-                              <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteGame" stylesheets="@css/buttons.css" text="DELETE" />
-                              <Button fx:id="gamelistButton" alignment="CENTER" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#updateGamelist" stylesheets="@css/buttons.css" text="ADD IN GAMELIST">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </Button>
-                           </children>
-                        </HBox>
+                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteGame" stylesheets="@css/buttons.css" text="DELETE" />
+                        <Button fx:id="gamelistButton" alignment="CENTER" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#updateGamelist" stylesheets="@css/buttons.css" text="ADD IN GAMELIST">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </Button>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
             </VBox>
          </left>
@@ -102,19 +315,23 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Pane fx:id="myReview" minHeight="200.0" />
                   <HBox alignment="CENTER" prefHeight="506.0" prefWidth="891.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <ScrollPane prefHeight="355.0" prefWidth="800.0" styleClass="transparent" stylesheets="@css/gameInfoScene.css">
+                        <ScrollPane prefHeight="553.0" prefWidth="811.0" styleClass="transparent" stylesheets="@css/gameInfoScene.css">
                            <HBox.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="10.0" top="10.0" />
                            </HBox.margin>
                            <content>
-                              <GridPane fx:id="grid">
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                                 </rowConstraints>
-                              </GridPane>
+                              <VBox alignment="CENTER" prefHeight="548.0" prefWidth="775.0">
+                                 <children>
+                                    <Pane fx:id="myReview" minHeight="200.0" />
+                                    <GridPane fx:id="grid">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
                            </content>
                         </ScrollPane>
                      </children>
