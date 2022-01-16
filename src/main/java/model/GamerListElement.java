@@ -8,6 +8,18 @@ public class GamerListElement {
     private String developer;
     private int friendsCount;
 
+    public GamerListElement(String name, String publisher, String developer, int friendsCount) {
+        this.name = name;
+        this.publisher = publisher;
+        this.developer = developer;
+        this.friendsCount = friendsCount;
+    }
+
+    public GamerListElement() {
+
+    }
+
+
     public String getName() {
         return name;
     }
