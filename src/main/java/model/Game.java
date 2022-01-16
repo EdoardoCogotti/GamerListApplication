@@ -289,6 +289,8 @@ public class Game {
 
     public String getRating(){  return  this.rating;}
 
+    public int getTotReviews(){  return  this.tot_reviews;}
+
     public boolean getSinglePlayer(){   return  this.single_player;}
 
     public boolean getMultiPlayer(){    return  this.multi_player;}

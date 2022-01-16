@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,10 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Game;
+
 import org.controlsfx.control.CheckComboBox;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class GameFormNextController {
     private String gamename, publisher, developer, store, url, rating;
     private LocalDate releaseDate;
     private int achievements;
+    ObservableList<String> checkedGameDetailsList, checkedGenreList, checkedLanguagesList;
 
     private String gameDescription, minimumRequirements, recommendRequirements;
     private String windowsOS, linuxOS, macOS;
@@ -67,7 +72,36 @@ public class GameFormNextController {
             return;
         }
 
-        //TO_DO add new game in db
+        //DONE add new game in db
+        ArrayList details = new ArrayList<String>(checkedGameDetailsList);
+        Game newGame = new Game(
+            store,
+            url,
+            gamename,
+            java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+            developer,
+            publisher,
+            new ArrayList<String>(checkedLanguagesList),
+            achievements,
+            new ArrayList<String>(checkedGenreList),
+            rating,
+            0,
+            details.contains("single_player"),
+            details.contains("multi_player"),
+            details.contains("coop"),
+            details.contains("controller_support"),
+            details.contains("cloud_saves"),
+            details.contains("achievement"),
+            Double.parseDouble(rating),
+            new ArrayList<String>(),
+            size,
+            inDevelopment,
+            gameDescription,
+            minimumRequirements,
+            recommendRequirements
+        );
+
+        newGame.insert();
 
         switchToUserProfile();
     }
@@ -102,11 +136,40 @@ public class GameFormNextController {
             oses.add("Mac OS X (" + macOS + ")");
 
         //TO_DO add new game in db
+        ArrayList details = new ArrayList<String>(checkedGameDetailsList);
+        Game newGame = new Game(
+                store,
+                url,
+                gamename,
+                java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+                developer,
+                publisher,
+                new ArrayList<String>(checkedLanguagesList),
+                achievements,
+                new ArrayList<String>(checkedGenreList),
+                rating,
+                0,
+                details.contains("single_player"),
+                details.contains("multi_player"),
+                details.contains("coop"),
+                details.contains("controller_support"),
+                details.contains("cloud_saves"),
+                details.contains("achievement"),
+                Double.parseDouble(rating),
+                new ArrayList<String>(),
+                size,
+                inDevelopment,
+                gameDescription,
+                minimumRequirements,
+                recommendRequirements
+        );
+
+        newGame.insert();
 
         switchToUserProfile();
     }
 
-    public void setCommonGameInfo(String gamename,String publisher,String developer,String store,LocalDate releaseDate, String url, String rating, int achievements){
+    public void setCommonGameInfo(String gamename, String publisher, String developer, String store, LocalDate releaseDate, String url, String rating, int achievements, ObservableList<String> checkComboBoxGameDetails, ObservableList<String> checkComboBoxGenres, ObservableList<String> checkComboBoxLanguages){
         this.gamename=gamename;
         this.publisher=publisher;
         this.developer=developer;
@@ -115,7 +178,10 @@ public class GameFormNextController {
         this.url = url;
         this.rating = rating;
         this.achievements = achievements;
-    }
+        this.checkedGameDetailsList = checkComboBoxGameDetails;
+        this.checkedGenreList = checkComboBoxGenres;
+        this.checkedLanguagesList = checkComboBoxLanguages;
+}
 
     public void switchToUserProfile() throws IOException {
         Stage stage = (Stage) (gridPane.getScene().getWindow()); // MenuItem isn't child of Node class, use FXML injection

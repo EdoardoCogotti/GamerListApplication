@@ -49,6 +49,7 @@ public class GameFormController implements Initializable {
     private String gamename, publisher, developer, store, url, rating;
     private LocalDate releaseDate;
     private int achievements;
+    ObservableList<String> checkedGameDetailsList, checkedGenreList, checkedLanguagesList;
 
     private Stage stage;
     private Scene scene;
@@ -107,7 +108,7 @@ public class GameFormController implements Initializable {
         }
 
         //GAME_DETAILS
-        ObservableList<String> checkedGameDetailsList = FXCollections.observableArrayList();
+        checkedGameDetailsList = FXCollections.observableArrayList();
         checkedGameDetailsList = checkComboBoxGameDetails.getCheckModel().getCheckedItems();
         if(checkedGameDetailsList.isEmpty()){
             errorLabel.setVisible(true);
@@ -116,7 +117,7 @@ public class GameFormController implements Initializable {
         }
 
         // GENRES
-        ObservableList<String> checkedGenreList = FXCollections.observableArrayList();
+        checkedGenreList = FXCollections.observableArrayList();
         checkedGenreList = checkComboBoxGenres.getCheckModel().getCheckedItems();
         if(checkedGenreList.isEmpty()){
             errorLabel.setVisible(true);
@@ -125,7 +126,7 @@ public class GameFormController implements Initializable {
         }
 
         // LANGUAGES
-        ObservableList<String> checkedLanguagesList = FXCollections.observableArrayList();
+        checkedLanguagesList = FXCollections.observableArrayList();
         checkedLanguagesList = checkComboBoxLanguages.getCheckModel().getCheckedItems();
         if(checkedLanguagesList.isEmpty()){
             errorLabel.setVisible(true);
@@ -144,37 +145,6 @@ public class GameFormController implements Initializable {
             return;
         }
 
-        //Add new game in db
-        ArrayList details = new ArrayList<String>(checkedGameDetailsList);
-        //TO_DO FRA inserire campi aggiuntivi per sostituire le info template
-        Game newGame = new Game(
-            store,
-            "www.google.com",
-            gamename,
-            java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
-            developer,
-            publisher,
-            new ArrayList<String>(checkedLanguagesList),
-            0,
-            new ArrayList<String>(checkedGenreList),
-            "PEGI 18",
-            0,
-            details.contains("single_player"),
-            details.contains("multi_player"),
-            details.contains("coop"),
-            details.contains("controller_support"),
-            details.contains("cloud_saves"),
-            details.contains("achievement"),
-            0,
-            new ArrayList<String>(),
-            "temp MB",
-            true,
-            "temp",
-            "temp",
-            "temp"
-        );
-
-        newGame.insert();
         switchToNextPage();
 
     }
@@ -193,7 +163,7 @@ public class GameFormController implements Initializable {
         Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
 
         GameFormNextController gameFormNextController = loader.getController();
-        gameFormNextController.setCommonGameInfo(gamename, publisher, developer, store, releaseDate, url, rating, achievements);
+        gameFormNextController.setCommonGameInfo(gamename, publisher, developer, store, releaseDate, url, rating, achievements, checkedGameDetailsList, checkedGenreList, checkedLanguagesList);
 
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/signupScene.css").toExternalForm();

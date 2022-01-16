@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +37,7 @@ public class GameInfoController implements Initializable {
     private Pane myReview;
     @FXML
     private Label gameValue, storeValue, developerValue, publisherValue, 
-                gameDetailsValue, releseDateValue, ratingValue, achievementsValue;
+                gameDetailsValue, releaseDateValue, ratingValue, achievementsValue, totReviewsValue;
     @FXML
     private Text genresValue, languagesValue, urlValue;
 
@@ -113,6 +115,7 @@ public class GameInfoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        /*
         Game g = new Game();
         g.setName("Portal 2");
         g.setUrl("https://store.steampowered.com/app/10090/Call_of_Duty_World_at_War/");
@@ -144,14 +147,12 @@ public class GameInfoController implements Initializable {
         g.setAchievement(10);
         g.setRating("PEGI Rating: 12+ (Violence)");
 
-        /*
         g.setSize("2.5 GB");
         g.setInDevelopment(false);
         List<String> oses = new ArrayList<>();
         for(int i=0; i<3; i++)
             oses.add("Windows (7 8 10)");
         g.setOses(oses);
-        */
 
         g.setGameDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
         g.setMinimumRequirements("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
@@ -225,8 +226,9 @@ public class GameInfoController implements Initializable {
             reviews.addAll(getGogData());
         else
             reviews.addAll(getGamerListData());
+        */
 
-        
+
         /*
         int col=0;
         int row=1;
@@ -321,6 +323,9 @@ public class GameInfoController implements Initializable {
     }
 
     public void setGameScene(String name){
+        String pattern = "MM/dd/yyyy HH:mm:ss";
+        DateFormat df = new SimpleDateFormat(pattern);
+
         String currentUser = Session.getInstance().getLoggedUser().getUsername();
 
         //Get game info from db
@@ -329,6 +334,8 @@ public class GameInfoController implements Initializable {
         Session.getInstance().setCurrentGame(game);
 
         this.gameValue.setText(game.getName());
+        this.urlValue.setText(game.getUrl());
+        this.releaseDateValue.setText(df.format(game.getReleaseDate()));
         this.storeValue.setText(game.getStore());
         this.developerValue.setText(game.getDeveloper());
         this.publisherValue.setText(game.getPublisher());
@@ -337,7 +344,33 @@ public class GameInfoController implements Initializable {
         this.languagesValue.setText(game.getLanguages().stream()
                 .collect(Collectors.joining(", ", "", "")));
         this.gameDetailsValue.setText(game.getGameDetailsString());
-        //TO_DO this.releseDateValue
+        this.totReviewsValue.setText(String.valueOf(game.getTotReviews()));
+        if(game.getStore().equals("GOG")){
+            this.ratingValue.setText(game.getRating());
+            this.osValue.setText(game.getOses().stream().collect(Collectors.joining(", ", "", "")));
+            this.sizeValue.setText(game.getSize());
+            this.inDevelopmentValue.setText((game.getInDevelopment())?"true":"false");
+
+            steamBoxDescription.setManaged(false);
+            steamBoxMinimumRequirements.setManaged(false);
+            steamBoxRecommendedRequirements.setManaged(false);
+            steamBoxDescription.setVisible(false);
+            steamBoxMinimumRequirements.setVisible(false);
+            steamBoxRecommendedRequirements.setVisible(false);
+        }
+        if(game.getStore().equals("Steam")){
+            this.descriptionValue.setText(game.getGameDescription());
+            this.minimumRequirementValue.setText(game.getMinimumRequirements());
+            this.recommendRequirementValue.setText(game.getRecommendedRequirements());
+
+            gogBoxSize.setManaged(false);
+            gogBoxInDevelopment.setManaged(false);
+            gogBoxOses.setManaged(false);
+            gogBoxSize.setVisible(false);
+            gogBoxInDevelopment.setVisible(false);
+            gogBoxOses.setVisible(false);
+        }
+        //TO_DO this.releaseDateValue
 
 
         //Get reviews from db
