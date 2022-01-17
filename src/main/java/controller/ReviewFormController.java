@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import model.Game;
@@ -9,8 +10,10 @@ import model.Review;
 import org.neo4j.driver.internal.InternalPath;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 public class ReviewFormController {
 
@@ -26,9 +29,12 @@ public class ReviewFormController {
         String username = Session.getInstance().getLoggedUser().getUsername();
         String gameName = Session.getInstance().getCurrentGame().getName();
 
-        if(editFlag)
-            ;//TO_DO update my review in db
-        else{
+        if(editFlag){
+            //TO_DO update my review in db
+            Review review = Review.get(gameName, username);
+            review.setContent(content);
+            review.update();
+        }else{
             // TO_DO FRA add my review in db
             System.out.print("ADD REVIEW :" + username + " " + gameName + " " + content);
             Review review = new Review(
