@@ -8,15 +8,15 @@ public class GamerListElement {
     private String developer;
     private int friendsCount;
 
+    public GamerListElement() {
+
+    }
+
     public GamerListElement(String name, String publisher, String developer, int friendsCount) {
         this.name = name;
         this.publisher = publisher;
         this.developer = developer;
         this.friendsCount = friendsCount;
-    }
-
-    public GamerListElement() {
-
     }
 
 
