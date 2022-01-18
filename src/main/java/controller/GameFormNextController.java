@@ -49,6 +49,8 @@ public class GameFormNextController {
     private List<String> oses;
     private boolean inDevelopment;
 
+    boolean newGameFlag = true;
+
     public void submitSteam() throws IOException {
 
         gameDescription = gameDescriptionTextField.getText();
@@ -92,7 +94,7 @@ public class GameFormNextController {
             details.contains("controller_support"),
             details.contains("cloud_saves"),
             details.contains("achievement"),
-            Double.parseDouble(rating),
+            0.0,
             new ArrayList<String>(),
             size,
             inDevelopment,
@@ -101,7 +103,13 @@ public class GameFormNextController {
             recommendRequirements
         );
 
-        newGame.insert();
+        if(newGameFlag) {
+            newGame.insert();
+        }
+        else{
+            //TO_DO UPDATE GAME
+            newGame.update();
+        }
 
         switchToUserProfile();
     }
@@ -155,7 +163,7 @@ public class GameFormNextController {
                 details.contains("controller_support"),
                 details.contains("cloud_saves"),
                 details.contains("achievement"),
-                Double.parseDouble(rating),
+                0.0,
                 new ArrayList<String>(),
                 size,
                 inDevelopment,
@@ -164,7 +172,12 @@ public class GameFormNextController {
                 recommendRequirements
         );
 
-        newGame.insert();
+        if(newGameFlag) {
+            newGame.insert();
+        }
+        else {
+            newGame.update();
+        }
 
         switchToUserProfile();
     }
@@ -181,7 +194,7 @@ public class GameFormNextController {
         this.checkedGameDetailsList = checkComboBoxGameDetails;
         this.checkedGenreList = checkComboBoxGenres;
         this.checkedLanguagesList = checkComboBoxLanguages;
-}
+    }
 
     public void switchToUserProfile() throws IOException {
         Stage stage = (Stage) (gridPane.getScene().getWindow()); // MenuItem isn't child of Node class, use FXML injection
@@ -199,6 +212,34 @@ public class GameFormNextController {
         scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void loadFields(String name){
+        newGameFlag = false;
+        //GET INFO FROM DB
+
+        if(store.equals("Steam")){
+            // PLACEHOLDERS
+            gameDescription = "gameDescriptionPlaceholder";
+            minimumRequirements = "minimumRequirementsPlaceholder";
+            recommendRequirements = "recommendedRequirementsPlaceholder";
+
+            gameDescriptionTextField.setText(gameDescription);
+            minimumRequirementsTextField.setText(minimumRequirements);
+            recommendRequirementsTextField.setText(recommendRequirements);
+        }
+        else if(store.equals("Gog")){
+            // PLACEHOLDERS
+            size = "sizePlaceholder";
+            inDevelopment = true;
+            windowsOS = "(7 8 10)";
+
+            sizeTextField.setText(size);
+            inDevelopmentCheckBox.setSelected(inDevelopment);
+            windowsTextField.setText(windowsOS);
+            linuxTextField.setText(linuxOS);
+            macTextField.setText(macOS);
+        }
     }
 
 }

@@ -28,6 +28,7 @@
                   <Menu mnemonicParsing="false" text="Find">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#switchToSearchUser" text="User" />
+                        <MenuItem mnemonicParsing="false" onAction="#switchToSearchGame" text="Game" />
                      </items>
                   </Menu>
                </menus>

@@ -69,7 +69,10 @@ public class GameSearchController implements Initializable{
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
                     try {
-                        switchToGameInfo(mouseEvent, currentGame);
+                        if(Session.getInstance().getLoggedUser().getAdmin())
+                            switchToGameEdit(mouseEvent, currentGame);
+                        else
+                            switchToGameInfo(mouseEvent, currentGame);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -89,6 +92,21 @@ public class GameSearchController implements Initializable{
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/gameInfoScene.css").toExternalForm();
         //scene.getStylesheets().add(css);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToGameEdit(MouseEvent event, String currentGame) throws IOException {
+        stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameFormScene.fxml"));
+        Parent root = loader.load();
+        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
+        GameFormController gameFormController = loader.getController();
+        gameFormController.loadFields(currentGame);
+
+        scene = new Scene(newRoot);
+        String css = this.getClass().getResource("/css/signupScene.css").toExternalForm();
+        scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
     }

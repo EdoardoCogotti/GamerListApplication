@@ -47,7 +47,8 @@ public class AdminMenubarController {
 
     public void switchToGameForm() throws IOException{
         stage = (Stage) (profileMenuBar.getScene().getWindow()); // MenuItem isn't child of Node class, use FXML injection
-        Parent root = FXMLLoader.load(getClass().getResource("/GameFormScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameFormScene.fxml"));
+        Parent root = loader.load();
         Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
 
         scene = new Scene(newRoot);
@@ -87,6 +88,19 @@ public class AdminMenubarController {
         stage.show();
     }
 
+
+    public void switchToSearchGame() throws IOException {
+        stage = (Stage) (profileMenuBar.getScene().getWindow()); // MenuItem isn't child of Node class, use FXML injection
+        Parent root = FXMLLoader.load(getClass().getResource("/GameSearchScene.fxml"));
+        Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
+
+        scene = new Scene(newRoot);
+        String css = this.getClass().getResource("/css/searchScene.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void switchToSignin() throws IOException{
         Session.getInstance().logout();
 
@@ -98,5 +112,6 @@ public class AdminMenubarController {
         stage.setScene(scene);
         stage.show();
     }
+
 
 }
