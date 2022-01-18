@@ -495,7 +495,6 @@ public class Game {
         }
     }
 
-
     //Get  list of games
     public static List<Game> getGamesByNamePart(String searchWord ){
         MongoDriver mgDriver = MongoDriver.getInstance();

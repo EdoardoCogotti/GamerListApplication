@@ -54,6 +54,8 @@ public class GameFormController implements Initializable {
     private Stage stage;
     private Scene scene;
 
+    private boolean newGameFlag;
+
     public void next() throws IOException {
 
         gamename = gamenameTextField.getText();
@@ -164,6 +166,8 @@ public class GameFormController implements Initializable {
 
         GameFormNextController gameFormNextController = loader.getController();
         gameFormNextController.setCommonGameInfo(gamename, publisher, developer, store, releaseDate, url, rating, achievements, checkedGameDetailsList, checkedGenreList, checkedLanguagesList);
+        if(!newGameFlag)
+            gameFormNextController.loadFields(gamename);
 
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/signupScene.css").toExternalForm();
@@ -210,5 +214,46 @@ public class GameFormController implements Initializable {
                 }
             }
         });
+
+        newGameFlag=true;
+
     }
+
+    public void loadFields(String name){
+        newGameFlag = false;
+
+        gamename = name;
+        //GET INFO FROM DB
+
+        /*PLACEHOLDERS*/
+        publisher = "publisherPlaceholder";
+        developer = "developerPlaceholder";
+        store = "Steam";
+        url = "https://urlPlaceholder";
+        rating = "ratingPlaceholder";
+        releaseDate = LocalDate.now();
+        achievements = 1;
+        String[] gameDetailsCheck =  {"single_player", "controller_support"};
+        String[] genresCheck = {"action", "card game"};
+        String[] languagesCheck = {"english", "italian"};
+
+        gamenameTextField.setText(gamename);
+        publisherTextField.setText(publisher);
+        developerTextField.setText(developer);
+        if(store.equals("Steam"))
+            rButtonSteam.setSelected(true);
+        else if(store.equals("Gog"))
+            rButtonGog.setSelected(true);
+        urlTextField.setText(url);
+        ratingTextField.setText(rating);
+        releaseDatePicker.setValue(releaseDate);
+        achievementsTextField.setText(String.valueOf(achievements));
+        for(String s: gameDetailsCheck)
+            checkComboBoxGameDetails.getCheckModel().toggleCheckState(s);
+        for(String s: genresCheck)
+            checkComboBoxGenres.getCheckModel().toggleCheckState(s);
+        for(String s: languagesCheck)
+            checkComboBoxLanguages.getCheckModel().toggleCheckState(s);
+    }
+
 }
