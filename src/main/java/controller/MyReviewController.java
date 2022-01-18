@@ -41,21 +41,10 @@ public class MyReviewController implements Initializable {
         ReviewFormController reviewFormController = loader.getController();
         reviewFormController.setContent(contentReview.getText());
         reviewFormController.setEditFlag(true);
-
-        // TO_DO FRA update review in db
-        /*
-        String username = Session.getInstance().getLoggedUser().getUsername();
-        String gameName = Session.getInstance().getCurrentGame().getName();
-
-        Review review = Review.get(gameName, username);
-        review.setContent(contentReview.getText());
-        review.update();
-        */
-        // TO_DO update review in db
     }
 
     public void deleteMyReview() throws IOException {
-        // TO_DO FRA delete review in db
+        // DONE FRA delete review in db
         String username = Session.getInstance().getLoggedUser().getUsername();
         String gameName = Session.getInstance().getCurrentGame().getName();
 

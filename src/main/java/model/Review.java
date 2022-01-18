@@ -3,9 +3,11 @@ package model;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.*;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
+import org.bson.BsonDocument;
+import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -14,6 +16,7 @@ import utils.MongoDriver;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Review {
@@ -310,5 +313,21 @@ public class Review {
         }
 
         return reviews;
+    }
+
+    public static int getRankingPosition(String username){
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
+
+        reviewsColl.aggregate(
+                Arrays.asList(
+                        //Aggregates.match(Filters.eq("username", username)),
+                        Aggregates.group("$username", new BsonField("rating", new BsonDocument("$avg", new BsonString("$rating")))),
+                        Aggregates.sort(Sorts.ascending("rating"))
+                )
+        ).forEach(doc -> System.out.println(doc.toJson()));
+
+
+        return 77;
     }
 }

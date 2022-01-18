@@ -30,12 +30,12 @@ public class ReviewFormController {
         String gameName = Session.getInstance().getCurrentGame().getName();
 
         if(editFlag){
-            //TO_DO update my review in db
+            //DONE update my review in db
             Review review = Review.get(gameName, username);
             review.setContent(content);
             review.update();
         }else{
-            // TO_DO FRA add my review in db
+            // DONE FRA add my review in db
             System.out.print("ADD REVIEW :" + username + " " + gameName + " " + content);
             Review review = new Review(
                     gameName,

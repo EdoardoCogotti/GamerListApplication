@@ -135,7 +135,7 @@ public class GameFormNextController {
         if(!macOS.equals(""))
             oses.add("Mac OS X (" + macOS + ")");
 
-        //TO_DO add new game in db
+        //DONE add new game in db
         ArrayList details = new ArrayList<String>(checkedGameDetailsList);
         Game newGame = new Game(
                 store,
