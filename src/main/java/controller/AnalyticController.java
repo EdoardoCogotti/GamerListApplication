@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import model.Game;
+import model.Review;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ public class AnalyticController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //TO_DO get Percentile of the average score of each user’s last year reviews
-        percentile = 80;
+        String username = Session.getInstance().getLoggedUser().getUsername();
+
+        percentile = Review.getRankingPosition(username);
         userRankValue.setText(percentile+"%");
         if(percentile<30)
             userRankValue.setStyle("-fx-text-fill: red");

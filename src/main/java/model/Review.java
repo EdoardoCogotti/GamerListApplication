@@ -1,11 +1,14 @@
 package model;
 
 import com.mongodb.MongoException;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.*;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
+import org.bson.BsonDocument;
+import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -14,6 +17,7 @@ import utils.MongoDriver;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Review {
@@ -25,6 +29,7 @@ public class Review {
     private LocalDate creationDate;
     private String content;
     private String store;
+    private int helpful;
 
     //GOG
     private int rating;
@@ -43,7 +48,8 @@ public class Review {
         String new_username,
         LocalDate new_creation_date,
         String new_store,
-        String new_content
+        String new_content,
+        int new_helpful
     ){
         this.id = new ObjectId();
         this.gamename = new_gamename; 
@@ -51,6 +57,7 @@ public class Review {
         this.creationDate = new_creation_date; 
         this.store = new_store; 
         this.content = new_content; 
+        this.helpful = new_helpful;
 
         //GOG default
         this.rating = -1; 
@@ -95,6 +102,7 @@ public class Review {
         this.creationDate = doc.getDate("creation_date").toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); 
         this.content = doc.getString("content"); 
         this.store = doc.getString("store");
+        this.helpful = doc.getInteger("helpful");
 
         if(this.store.equals("GOG")){
             //GOG
@@ -103,7 +111,6 @@ public class Review {
         }
         if(this.store.equals("Steam")){
             //Steam
-            this.helpful = doc.getInteger("helpful");
             this.positive = doc.getBoolean("positive");
         }
 
@@ -121,6 +128,7 @@ public class Review {
     public void setCreationDate(LocalDate creationDate) {this.creationDate = creationDate;}
     public void setGamename(String gamename) {this.gamename = gamename;}
     public void setStore(String store) {this.store = store;}
+    public void setHelpful(int helpful) {this.helpful = helpful;}
 
     //GOG GET
     public void setPositive(boolean positive) {
@@ -128,12 +136,6 @@ public class Review {
             throw new RuntimeException("ERROR: tried to access a Steam review field in a GOG review");
         }
         this.positive = positive;
-    }
-    public void setHelpful(int helpful) {
-        if(this.store.equals("GOG")){
-            throw new RuntimeException("ERROR: tried to access a Steam review field in a GOG review");
-        } 
-        this.helpful = helpful;
     }
 
     //Steam GET
@@ -155,9 +157,9 @@ public class Review {
     public LocalDate getCreationDate() {return this.creationDate;}
     public String getGamename() {return this.gamename;}
     public String getStore() { return store; }
+    public int getHelpful() {return this.helpful;}
 
     // Steam GETs
-    public int getHelpful() {return this.helpful;}
     public boolean getPositive() {return this.positive;}
 
     // Gog GETs
@@ -254,6 +256,7 @@ public class Review {
         doc.append("creation_date", this.creationDate); 
         doc.append("content", this.content);
         doc.append("store", this.store);
+        doc.append("helpful", this.helpful);
 
 
         if(this.store.equals("GOG")){
@@ -263,7 +266,6 @@ public class Review {
         }
         if(this.store.equals("Steam")){
             //Steam
-            doc.append("helpful", this.helpful);
             doc.append("positive", this.positive); 
         }
 
@@ -312,4 +314,32 @@ public class Review {
         return reviews;
     }
 
+    public static int getRankingPosition(String username){
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
+
+        AggregateIterable<Document> result = reviewsColl.aggregate(
+                Arrays.asList(
+                        //Aggregates.match(Filters.eq("username", username)),
+                        Aggregates.group("$username", new BsonField("helpful", new BsonDocument("$avg", new BsonString("$helpful")))),
+                        Aggregates.sort(Sorts.ascending("helpful"))
+                )
+        );
+        //).forEach(doc -> System.out.println(doc.toJson()));
+
+        int pos = 0;
+        int length = 0;
+
+        for(Document doc: result){
+            if(doc.getString("_id").equals(username)){
+                pos = length;
+            }
+            length++;
+            System.out.println(doc.getString("_id"));
+        }
+
+        System.out.println(pos);
+
+        return (pos*100)/length;
+    }
 }

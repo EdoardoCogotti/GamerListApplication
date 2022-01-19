@@ -217,6 +217,8 @@ public class Game {
 
     public void setRating(String newValue){ this.rating = newValue;}
 
+    public void setTotalReviews(int newValue){ this.tot_reviews = newValue;}
+
     public void setSinglePlayer(boolean newValue) { this.single_player = newValue;}
 
     public void setMultiPlayer(boolean newValue) {  this.multi_player = newValue;}

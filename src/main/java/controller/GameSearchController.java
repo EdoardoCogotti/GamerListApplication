@@ -104,6 +104,8 @@ public class GameSearchController implements Initializable{
         GameFormController gameFormController = loader.getController();
         gameFormController.loadFields(currentGame);
 
+        Session.getInstance().setCurrentGame(Game.getGamesByNamePart(currentGame).get(0));
+
         scene = new Scene(newRoot);
         String css = this.getClass().getResource("/css/signupScene.css").toExternalForm();
         scene.getStylesheets().add(css);

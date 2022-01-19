@@ -17,6 +17,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Game;
 import org.controlsfx.control.CheckComboBox;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +26,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class GameFormController implements Initializable {
@@ -40,8 +44,11 @@ public class GameFormController implements Initializable {
     private Label errorLabel;
 
     private final String[] gameDetails = {"single_player", "multi_player", "controller_support", "coop", "cloud_saves", "achievements"};
-    private final String[] genres = {"action", "adventure",  "card game", "fps", "indie", "platform", "puzzle"};
-    private final String[] languages = {"english", "italian", "spanish", "french", "chinese", "japanese"};
+    private final String[] genres = {"action", "adventure",  "card game", "fps", "indie", "platform", "puzzle",
+            "turn-based", "fantasy", "strategy"};
+    private final String[] languages = {"english", "italian", "spanish", "french", "chinese", "japanese", "german",
+            "spanish - spain", "simplified chinese", "traditional chinese", "korean", "polish", "portuguese",
+            "russian", "czech"};
 
     CheckComboBox<String> checkComboBoxGameDetails, checkComboBoxGenres, checkComboBoxLanguages;
 
@@ -224,25 +231,38 @@ public class GameFormController implements Initializable {
 
         gamename = name;
         //GET INFO FROM DB
+        Game game = Game.getGamesByNamePart(gamename).get(0);
 
         /*PLACEHOLDERS*/
-        publisher = "publisherPlaceholder";
-        developer = "developerPlaceholder";
-        store = "Steam";
-        url = "https://urlPlaceholder";
-        rating = "ratingPlaceholder";
-        releaseDate = LocalDate.now();
-        achievements = 1;
-        String[] gameDetailsCheck =  {"single_player", "controller_support"};
-        String[] genresCheck = {"action", "card game"};
-        String[] languagesCheck = {"english", "italian"};
+        publisher = game.getPublisher();
+        developer = game.getDeveloper();
+        store = game.getStore();
+        url = game.getUrl();
+        rating = game.getRating();
+        releaseDate = game.getReleaseDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        achievements = game.getAchievements();
+        ArrayList<String> genresCheck = new ArrayList<String>(game.getGenres());
+        ArrayList<String> languagesCheck = new ArrayList<String>(game.getLanguages());
+
+        JSONObject details = game.getGameDetails();
+        Iterator x = details.keys();
+        ArrayList<String> gameDetailsCheck = new ArrayList<String>();
+        while (x.hasNext()){
+            String key = (String) x.next();
+            //System.out.println(details.get(key));
+            if(details.get(key).toString().equals("true"))
+                gameDetailsCheck.add(key);
+        }
+
+        //String[] gameDetailsCheck =  ;
+        
 
         gamenameTextField.setText(gamename);
         publisherTextField.setText(publisher);
         developerTextField.setText(developer);
         if(store.equals("Steam"))
             rButtonSteam.setSelected(true);
-        else if(store.equals("Gog"))
+        else if(store.equals("GOG"))
             rButtonGog.setSelected(true);
         urlTextField.setText(url);
         ratingTextField.setText(rating);
@@ -250,10 +270,13 @@ public class GameFormController implements Initializable {
         achievementsTextField.setText(String.valueOf(achievements));
         for(String s: gameDetailsCheck)
             checkComboBoxGameDetails.getCheckModel().toggleCheckState(s);
-        for(String s: genresCheck)
-            checkComboBoxGenres.getCheckModel().toggleCheckState(s);
-        for(String s: languagesCheck)
-            checkComboBoxLanguages.getCheckModel().toggleCheckState(s);
+        for(String s: genresCheck) {
+            System.out.println(s);
+            checkComboBoxGenres.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
+        }
+        for(String s: languagesCheck){
+            checkComboBoxLanguages.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
+        }
     }
 
 }
