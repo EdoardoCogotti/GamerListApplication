@@ -1,6 +1,7 @@
 import json
 import pymongo
 import datetime
+import random
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["GamerList"]
@@ -8,6 +9,20 @@ mycol = mydb["games"]
 reviewCol = mydb["reviews"]
 
 MAX_ITER = 3
+
+language_translation = {
+    "English": "English",
+    "中文": "Simplified Chinese",
+    "Deutsch" : "German",
+    "español" : "Spanish - Spain",
+    "français" : "French",
+    "italiano" : "Italian",
+    "nederlands" : "Dutch",
+    "polski" : "Polish",
+    "português": "Portuguese",
+    "русский" : "Russian",
+    "český": "Czech"
+}
  
 # Opening JSON file
 f = open('games_GOG.json', encoding='utf8')
@@ -46,6 +61,7 @@ for i, element in enumerate(data):
         review["username"]  = element['reviews'][i]["name"]
         review["creation_date"]  = element['reviews'][i]["creation_date"]
         review["store"] = "GOG"
+        review["helpful"] = int(random.random()*50)
         review["content"]  = element['reviews'][i]["content"]
         review["rating"]  = int(element['reviews'][i]["rating"])
         review["title"]  = element['reviews'][i]["title"]
@@ -59,7 +75,11 @@ for i, element in enumerate(data):
 
     simpLanguages = []
     for language in element["languages"]:
-        simpLanguages.append(language["name"])
+        if language_translation[language["name"]]:
+            simpLanguages.append(language_translation[language["name"]])
+        else:
+            simpLanguages.append(language["name"])
+            print(language["name"])
     element["languages"] = simpLanguages
 
     element["achievements"] = len(element["achievements"])

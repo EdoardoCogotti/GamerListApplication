@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameFormNextController {
 
@@ -74,40 +75,45 @@ public class GameFormNextController {
             return;
         }
 
-        //DONE add new game in db
         ArrayList details = new ArrayList<String>(checkedGameDetailsList);
-        Game newGame = new Game(
-            store,
-            url,
-            gamename,
-            java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
-            developer,
-            publisher,
-            new ArrayList<String>(checkedLanguagesList),
-            achievements,
-            new ArrayList<String>(checkedGenreList),
-            rating,
-            0,
-            details.contains("single_player"),
-            details.contains("multi_player"),
-            details.contains("coop"),
-            details.contains("controller_support"),
-            details.contains("cloud_saves"),
-            details.contains("achievement"),
-            0.0,
-            new ArrayList<String>(),
-            size,
-            inDevelopment,
-            gameDescription,
-            minimumRequirements,
-            recommendRequirements
-        );
+            Game newGame = new Game(
+                store,
+                url,
+                gamename,
+                java.util.Date.from(releaseDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+                developer,
+                publisher,
+                new ArrayList<String>(checkedLanguagesList),
+                achievements,
+                new ArrayList<String>(checkedGenreList),
+                rating,
+                0,
+                details.contains("single_player"),
+                details.contains("multi_player"),
+                details.contains("coop"),
+                details.contains("controller_support"),
+                details.contains("cloud_saves"),
+                details.contains("achievement"),
+                0.0,
+                new ArrayList<String>(),
+                size,
+                inDevelopment,
+                gameDescription,
+                minimumRequirements,
+                recommendRequirements
+            );
 
         if(newGameFlag) {
+            //DONE add new game in db
             newGame.insert();
         }
         else{
-            //TO_DO UPDATE GAME
+            //DONE UPDATE GAME
+            String gameName = Session.getInstance().getCurrentGame().getName();
+            Game gameToUpdate = Game.getGamesByNamePart(gameName).get(0);
+            newGame.setId(gameToUpdate.getId());
+            newGame.setTotalReviews(gameToUpdate.getTotReviews());
+
             newGame.update();
         }
 
@@ -176,6 +182,11 @@ public class GameFormNextController {
             newGame.insert();
         }
         else {
+            String gameName = Session.getInstance().getCurrentGame().getName();
+            Game gameToUpdate = Game.getGamesByNamePart(gameName).get(0);
+            newGame.setId(gameToUpdate.getId());
+            newGame.setTotalReviews(gameToUpdate.getTotReviews());
+
             newGame.update();
         }
 
@@ -214,15 +225,16 @@ public class GameFormNextController {
         stage.show();
     }
 
-    public void loadFields(String name){
+    public void loadFields(String gameName){
         newGameFlag = false;
         //GET INFO FROM DB
+        Game game = Game.getGamesByNamePart(gameName).get(0);
 
         if(store.equals("Steam")){
             // PLACEHOLDERS
-            gameDescription = "gameDescriptionPlaceholder";
-            minimumRequirements = "minimumRequirementsPlaceholder";
-            recommendRequirements = "recommendedRequirementsPlaceholder";
+            gameDescription = game.getGameDescription();
+            minimumRequirements = game.getMinimumRequirements();
+            recommendRequirements = game.getRecommendedRequirements();
 
             gameDescriptionTextField.setText(gameDescription);
             minimumRequirementsTextField.setText(minimumRequirements);
@@ -230,9 +242,9 @@ public class GameFormNextController {
         }
         else if(store.equals("Gog")){
             // PLACEHOLDERS
-            size = "sizePlaceholder";
-            inDevelopment = true;
-            windowsOS = "(7 8 10)";
+            size = game.getSize();
+            inDevelopment = game.getInDevelopment();
+            windowsOS = game.getOses().stream().collect(Collectors.joining(", ", "", ""));
 
             sizeTextField.setText(size);
             inDevelopmentCheckBox.setSelected(inDevelopment);

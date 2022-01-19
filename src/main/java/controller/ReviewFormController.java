@@ -42,7 +42,8 @@ public class ReviewFormController {
                     username,
                     new Date(System.currentTimeMillis()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
                     "GamerList",
-                    content
+                    content,
+                    0
             );
             System.out.println(gameName);
             review.insert(Game.getGamesByNamePart(gameName).get(0));

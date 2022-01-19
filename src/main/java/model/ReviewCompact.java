@@ -8,13 +8,13 @@ public class ReviewCompact {
     //General parameters
     private String platform;
     private Date creation_date;
+    private int helpfull;
     
     //GOG
     private String name;
     private int rating;
     
     //STEAM
-    private int helpfull;
     private boolean positive;
 
     public ReviewCompact(
@@ -38,10 +38,13 @@ public class ReviewCompact {
         this.platform = newValue;
     }
 	public void setName(String newValue) {
-		this.name = newValue;
+        this.name = newValue;
 	}
     public void setCreationDate(Date newValue) {
         this.creation_date = newValue;
+    }
+    public void setHelpfull(int newValue) {
+        this.helpfull = newValue;
     }
 
     //GOG SET
@@ -50,9 +53,6 @@ public class ReviewCompact {
     }
 
     //STEAM SET
-    public void setHelpfull(int newValue) {
-        this.helpfull = newValue;
-    }
     public void setPositive(boolean newValue) {
         this.positive = newValue;
     }
@@ -67,6 +67,9 @@ public class ReviewCompact {
     public Date getCreationDate() {
         return  this.creation_date;
     }
+    public int getHelpfull() {
+        return  this.helpfull;
+    }
 
     //GOG GETs
     public int getRating() {
@@ -74,9 +77,6 @@ public class ReviewCompact {
     }
 
     //STEAM GETs
-    public int getHelpfull() {
-        return  this.helpfull;
-    }
     public boolean getPositive() {
         return  this.positive;
     }
