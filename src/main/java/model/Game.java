@@ -1,10 +1,15 @@
 package model;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 
@@ -14,11 +19,22 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import utils.MongoDriver;
+
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Accumulators.*;
+import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
 
 public class Game {
 
@@ -520,6 +536,96 @@ public class Game {
         }
 
         return games;
+    }
+
+    /*
+    Top k games with positive reviews for each genre in the last year
+    (per steam positive/negative e per gog rating>=3)
+    */
+    public static ArrayList<Document> getTopKByGenre(int k) throws ParseException {
+        ArrayList<Document> listGames = new ArrayList<Document>();
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
+
+        // to reduce fields in the unwind phase
+        Bson projection = project(fields(
+                include("name", "reviews.rating", "reviews.positive", "reviews.creation_date", "genres"),
+                excludeId()));
+
+        // review unwind
+        Bson reviewUnwind = unwind("$reviews");
+
+        //review of the last year
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date myDate = sdf.parse(String.valueOf(LocalDate.now().minusYears(5)));
+        Bson myDateMatch = gte("reviews.creation_date", myDate);
+
+        //rating >=3 oppure positive
+        Bson myRatingMatch = or(
+                and(exists("reviews.positive"),eq("reviews.positive", true)),
+                and(exists("reviews.rating"),gte("reviews.rating", 3))
+        );
+
+        Bson myMatch = match(and(myDateMatch,myRatingMatch));
+
+        // group by name and genre considering the number of positive reviews
+        Bson groupByNameAndGenre = new Document("$group",
+                new Document("_id", new Document("name", "$name")
+                        .append("genres", "$genres"))
+                        .append("totalPositiveReview", new Document("$sum", 1)));
+
+        // consider each game for each of own genres
+        Bson genreUnwind = unwind("$_id.genres");
+
+        // group by genre and get an array of documents in form {gamename, totalPositiveReview)
+        Bson groupByGenre = new Document("$group",
+                new Document("_id", "$_id.genres")
+                        .append("totalPositiveReviewArray", new Document("$push",
+                                new Document("totalPositiveReview","$totalPositiveReview").append("name","$_id.name"))));
+
+        // sort array in descending order
+        Bson sortArray = sort(new BasicDBObject("totalPositiveReviewArray.totalPositiveReview", 1));
+
+        // consider only the first k elements of each array in each document
+        List array = Arrays.asList("$totalPositiveReviewArray",k);
+        Bson projectionFields = new Document("$project",
+                new Document("totalPositiveReviewArray",
+                    new Document("$slice", array)));
+
+        // unwind w.r.t. totalPositiveReviewArray
+        Bson topKUnwind = unwind("$totalPositiveReviewArray");
+
+        try {
+            MongoCursor<Document> cursor = gamesColl.aggregate(Arrays.asList(
+                    projection,
+                    reviewUnwind,
+                    myMatch, //date and rating
+                    groupByNameAndGenre,
+                    genreUnwind,
+                    groupByGenre,
+                    sortArray,
+                    projectionFields
+                    //,topKUnwind*/
+            )).iterator();
+
+            System.out.println("inizio");
+            try {
+                while (cursor.hasNext()) {
+
+                    Document document = cursor.next();
+                    System.out.println(document.toJson());
+                    listGames.add(document);
+                }
+            } finally {
+                cursor.close();
+            }
+        System.out.println("fine");
+
+            return listGames;
+        }
+        catch(Exception e){e.printStackTrace();}
+        return null;
+
     }
 
 }

@@ -43,6 +43,8 @@ public class Main extends Application {
         //prova.delete();
         //Review provRev = Review.getReviewsByGame(prova).get(0);
         //prova.update();
+
+        Game.getTopKByGenre(1);
     }
 
     @Override
