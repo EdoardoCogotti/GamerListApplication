@@ -36,7 +36,6 @@ public class Review {
     private String title;
 
     //Steam
-    private int helpful;
     private boolean positive;
 
     public Review(){
