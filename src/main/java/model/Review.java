@@ -4,9 +4,11 @@ import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.*;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
+import impl.org.controlsfx.tableview2.filter.parser.aggregate.AggregatorsParser;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
@@ -14,11 +16,17 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import utils.MongoDriver;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.mongodb.client.model.Aggregates.project;
+import static com.mongodb.client.model.Projections.*;
 
 public class Review {
 
@@ -317,27 +325,42 @@ public class Review {
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
 
+        long earlier = System.currentTimeMillis() ;
         AggregateIterable<Document> result = reviewsColl.aggregate(
                 Arrays.asList(
-                        //Aggregates.match(Filters.eq("username", username)),
                         Aggregates.group("$username", new BsonField("helpful", new BsonDocument("$avg", new BsonString("$helpful")))),
                         Aggregates.sort(Sorts.ascending("helpful"))
                 )
         );
+        MongoCursor<Document> iterator = result.iterator();
         //).forEach(doc -> System.out.println(doc.toJson()));
+        long later = System.currentTimeMillis();
+        System.out.println("1: "+ ( later - earlier));
 
+
+
+        long early1 = System.currentTimeMillis();
         int pos = 0;
         int length = 0;
 
-        for(Document doc: result){
+        while (iterator.hasNext()) {
+            earlier = System.nanoTime();
+
+            Document doc = iterator.next();
             if(doc.getString("_id").equals(username)){
                 pos = length;
             }
             length++;
-            System.out.println(doc.getString("_id"));
+
+            later = System.nanoTime();
+            System.out.println("2: "+(later - earlier));
         }
 
-        System.out.println(pos);
+        long later1 = System.currentTimeMillis();
+
+        System.out.println("3: "+(later1 - early1));
+
+
 
         return (pos*100)/length;
     }

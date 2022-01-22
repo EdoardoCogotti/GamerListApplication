@@ -8,6 +8,7 @@ import datetime
 import pandas as pd
 import random
 import time
+import numpy as np
 
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -20,7 +21,8 @@ MAX_GAMES = 4
 
 #Load usernames
 uf = open('usernames.json', encoding='utf8')
-usernames = json.load(uf)
+usernames = np.array(json.load(uf))
+print(len(usernames))
 
 
 
@@ -61,11 +63,14 @@ f = open("./match/games.csv", encoding="utf-8", newline='')
 reader = csv.reader(f)
 rowG = next(reader)
 reader = csv.DictReader(f, rowG)
+bulkReviews = []
 with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
   matchReviewsFile = csv.reader(mgf)
-
+  
   gId = None
   usernamesUsed = []
+  usernamesToGet = []
+  skip = False
   for rowR in matchReviewsFile:
     i+=1
 
@@ -74,13 +79,12 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       print(rowR)
       continue
 
-    if i > MAX_GAMES:
+    #if i > MAX_GAMES:
       #matchReviewsFile.writerow(row)
-      break
+      #break
 
     id = int(rowR[0])
     #print(str(id) + "  -  "+str(gId))
-    
     if gId != id:
       f = open("./match/games.csv", encoding="utf-8", newline='')
       reader = csv.reader(f)
@@ -94,23 +98,37 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       print("Found "+str(gId)+"!!!")
 
       #same the previus game an reset the object
+      
       if game:
+        game["tot_reviews"] = len(game['reviews'])
         mycol.insert_one(game)
       game = {}
       usernamesUsed = []
+      usernamesToGet = usernames.copy()
+      
 
       #set the game filds
       #game["_id"] = gId
       game["url"] = rowG['url']
       game["store"] = "Steam"
       game["name"] = rowG['name']
-      if rowG["release_date"] == "2019":
-        game["release_date"] = datetime.datetime.strptime(rowG["release_date"], "%y")
+      #if rowG["release_date"] == "2019":
+      #  game["release_date"] = datetime.datetime.strptime(rowG["release_date"], "%y")
+      #else:
+      if rowG["release_date"] != "NaN":
+        exCount = 0
+        for fmt in ("%b %d, %Y", "%y", "%b %Y"):
+          try:
+            game["release_date"] = datetime.datetime.strptime(rowG["release_date"], fmt)
+            break
+          except ValueError:
+            exCount+=1
+            if exCount >= 3:
+              raise ValueError('no valid date format found for ' + rowG["release_date"])
+            pass
       else:
-        if rowG["release_date"] != "NaN":
-          game["release_date"] = datetime.datetime.strptime(rowG["release_date"], "%b %d, %Y")
-        else:
-          game["release_date"] = random_date("1/1/2008", "1/08/2021", random.random())
+        game["release_date"] = random_date("1/1/2008", "1/08/2021", random.random())
+
       game['developer'] = rowG['developer']
       game['publisher'] = rowG['publisher']
       game['game_details'] = {
@@ -133,16 +151,40 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       if game["rating"] == "NaN":
         game["rating"] = None
         
+      '''
       if rowG["all_reviews"] == "NaN":
-        game["tot_reviews"] = None
+        game["tot_reviews"] = 0
         game["all_reviews"] = None
       else:
         game["tot_reviews"] = int(rowG["all_reviews"][rowG["all_reviews"].find('(')+1 :  rowG["all_reviews"].find(')')].replace(",",""))
         game["all_reviews"] = rowG["all_reviews"]
+      '''
+
       game["game_description"] = rowG["game_description"]
+      if game["game_description"] == "NaN":
+        game["game_description"] = ""
+
       game["minimum_requirements"] = rowG["minimum_requirements"]
+      if game["minimum_requirements"] == "NaN":
+        game["minimum_requirements"] = ""
+
       game["recommended_requirements"] = rowG["recommended_requirements"]
+      if game["recommended_requirements"] == "NaN":
+        game["recommended_requirements"] = ""
+
       game['reviews'] = []
+
+    if skip :
+      if id != 223330:
+        continue
+      else:
+        skip = False
+
+    
+    if len(usernamesToGet) <= 100:
+      continue
+
+    #print(len(usernamesToGet))
 
     game['reviews'].append({
       #"username":string"elbmek",
@@ -154,10 +196,17 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
     #make review object to insert into Mongo
     review = {}
 
+
     review["game_name"] = game["name"]
-    review["username"] = random.choice(usernames)
-    while review["username"] in usernamesUsed:
-      review["username"] = random.choice(usernames)
+    randIndex = int(random.random()*len(usernamesToGet))
+    review["username"] = usernamesToGet[randIndex]
+    usernamesToGet = np.delete(usernamesToGet, randIndex)
+
+    #st = time.time()
+    #while review["username"] in usernamesUsed:
+    #  review["username"] = random.choice(usernames)
+    #print(str(i) + ": done in " + str(round(time.time() - st, 4)*1000) + " time...")
+    
     usernamesUsed.append(review["username"])
     review["creation_date"] = game['reviews'][-1]["creation_date"]
     review["store"] = "Steam"
@@ -165,11 +214,21 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
     review["positive"] = game['reviews'][-1]["positive"]
     review["content"] = rowR[1]
 
-    mycolReview.insert_one(review)
+    #insert many reviews at once for performance reasons
+    if len(bulkReviews) >= 1000:
+      mycolReview.insert_many(bulkReviews)
+      bulkReviews = []
+    else:
+      bulkReviews.append(review)
+    
 
 
   if game:
+    game["tot_reviews"] = len(game['reviews'])
     mycol.insert_one(game)
+
+  if len(bulkReviews) >= 0:
+      mycolReview.insert_many(bulkReviews)
 
 
 
