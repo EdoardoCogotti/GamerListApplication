@@ -317,12 +317,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="506.0" prefWidth="891.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <ScrollPane prefHeight="553.0" prefWidth="811.0" styleClass="transparent" stylesheets="@css/gameInfoScene.css">
+                        <ScrollPane fx:id="scrollPane" prefHeight="553.0" prefWidth="811.0" styleClass="transparent" stylesheets="@css/gameInfoScene.css">
                            <HBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </HBox.margin>
                            <content>
-                              <VBox alignment="CENTER" prefHeight="548.0" prefWidth="775.0">
+                              <VBox fx:id="reviewVBox" alignment="CENTER" prefHeight="548.0" prefWidth="775.0">
                                  <children>
                                     <Pane fx:id="myReview" minHeight="200.0" />
                                     <GridPane fx:id="grid">
@@ -330,6 +330,12 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                        </rowConstraints>
                                     </GridPane>
+                                    <HBox alignment="CENTER" prefHeight="43.0" prefWidth="775.0" spacing="10.0">
+                                       <children>
+                                          <Button fx:id="prevButton" mnemonicParsing="false" onAction="#prev" stylesheets="@css/buttons.css" text="PREV" />
+                                          <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" stylesheets="@css/buttons.css" text="NEXT" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </content>

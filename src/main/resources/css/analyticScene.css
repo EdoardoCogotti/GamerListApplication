@@ -29,3 +29,12 @@
 .statValue{
     -fx-font-size: 24;
 }
+
+.choice-box .label{
+    -fx-text-fill: black;
+    -fx-font-size: 11;
+}
+
+.choice-box .context-menu{
+    -fx-pref-height: 200;
+}

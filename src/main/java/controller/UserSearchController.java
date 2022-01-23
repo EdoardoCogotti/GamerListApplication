@@ -64,6 +64,9 @@ public class UserSearchController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
                     try {
+                        if(currentUser==null || currentUser.equals(""))
+                            return;
+
                         if(Session.getInstance().getLoggedUser().getAdmin())
                             switchToEditUser(mouseEvent);
                         else

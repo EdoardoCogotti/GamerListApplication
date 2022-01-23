@@ -44,7 +44,25 @@ public class Main extends Application {
         //Review provRev = Review.getReviewsByGame(prova).get(0);
         //prova.update();
 
-        Game.getTopKByGenre(1);
+        long startTime, stopTime;
+
+        //String[] genresArray = {"", "Action", "Adventure", "Animation & Modeling", "Arcade", "Audio Production", "Building", "Casual", "Chess", "Combat", "Comedy", "Design & Illustration", "Detective-mystery", "Early Access", "Economic", "Education", "Educational", "Espionage", "Exploration", "FPP", "Fantasy", "Fighting", "Free to Play", "Game Development", "Gore", "Hidden Object", "Historical", "Horror", "Indie", "JRPG", "Managerial", "Massively Multiplayer", "Metroidvania", "Modern", "Mystery", "Narrative", "Naval", "Off-road", "Open World", "Photo Editing", "Pinball", "Platformer", "Point-and-click", "Programming", "Puzzle", "RPG", "Racing", "Rally", "Real-time", "Roguelike", "Role-playing", "Sandbox", "Sci-fi", "Sexual Content", "Shooter", "Simulation", "Soccer", "Software Training", "Sports", "Stealth", "Strategy", "Survival", "TPP", "Tactical", "Team sport", "Touring", "Turn-based", "Utilities", "Video Production", "Violent", "Virtual life", "Visual Novel", "Web Publishing"};
+
+        /*for(String genre : genresArray){
+            startTime = System.currentTimeMillis();
+            Game.getTopKByGenre(3, genre);
+            stopTime = System.currentTimeMillis();
+            System.out.println(genre + " :" + (stopTime - startTime));
+        }*/
+
+        /*
+        long startTime = System.currentTimeMillis();
+        Game.getTopKByGenre(3);
+        long stopTime = System.currentTimeMillis();
+        System.out.println(stopTime - startTime);
+        */
+
+        //Game.getAll();
     }
 
     @Override

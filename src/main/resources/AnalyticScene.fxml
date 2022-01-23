@@ -5,13 +5,13 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@css/analyticScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnalyticController">
    <children>
@@ -35,9 +35,9 @@
                   </ImageView>
                </children>
             </HBox>
-            <HBox prefHeight="474.0" prefWidth="800.0">
+            <HBox alignment="TOP_CENTER" prefHeight="474.0" prefWidth="800.0">
                <children>
-                  <BarChart fx:id="barChart" prefHeight="474.0" prefWidth="797.0" title="Top 3 games with more positive reviews this year">
+                  <BarChart fx:id="barChart" prefHeight="474.0" prefWidth="641.0" title="Top 3 games with more positive reviews this year">
                     <xAxis>
                       <CategoryAxis label="Genre" side="BOTTOM" />
                     </xAxis>
@@ -45,6 +45,11 @@
                       <NumberAxis label="Positive reviews" side="LEFT" />
                     </yAxis>
                   </BarChart>
+                  <ListView fx:id="genreListView" maxHeight="300.0" stylesheets="@css/searchScene.css">
+                     <HBox.margin>
+                        <Insets right="30.0" top="30.0" />
+                     </HBox.margin>
+                  </ListView>
                </children>
             </HBox>
          </children>

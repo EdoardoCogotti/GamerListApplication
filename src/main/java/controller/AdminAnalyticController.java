@@ -75,6 +75,8 @@ public class AdminAnalyticController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
                     try {
+                        if(currentUser==null || currentUser.equals(""))
+                            return;
 
                         if(rButtonLastYear.isSelected() || rButtonAlways.isSelected()) {
                             //TO_DO find analytic of current User

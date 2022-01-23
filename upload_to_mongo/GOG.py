@@ -21,12 +21,37 @@ language_translation = {
     "polski" : "Polish",
     "português": "Portuguese",
     "русский" : "Russian",
-    "český": "Czech"
+    "český": "Czech",
+    "Dansk":"Danish",
+    "Türkçe":"Turkish",
+    "한국어":"Korean",
+    "日本語":"Japanese",
+    "日本語,":"Japanese",
+    "Українська": "Ukrainian",
+    "norsk": "Norwegian",
+    "Português do Brasil":"Portuguese - Brazil",
+    "svenska":"Swedish",
+    "Español (AL)":"Spanish - Latin America",
+    "magyar":"Hungarian",
+    "български":"Bulgarian",
+    "Ελληνικά" : "Greek",
+    "Suomi" :"Finnish",
+    "română" :"Romanian",
+    "العربية": "Arabic",
+
+    # additional languages
+    "slovenský": "Slovak",
+    "català": "Catalan",
+    "Српска": "Serbian",
+    "Íslenska": "Icelandic"
 }
- 
+
+
 # Opening JSON file
-f = open('games_GOG.json', encoding='utf8')
- 
+#games.csv da modificare
+f = open('./match/games_GOG.json', encoding='utf-8')
+# MouseCraft﻿
+
 # returns JSON object as
 # a dictionary
 data = json.load(f)
@@ -34,9 +59,9 @@ data = json.load(f)
 game_details_attr = ["single_player", "multi_player", "coop","controller_support","cloud_saves", "achievement"]
 game_reviews_attr_to_rem = ['count', 'reviews_count', 'verified_owner', 'title', 'content']
 
-attr_to_remove = ['price', 'overlay', 'leaderboard'] 
+attr_to_remove = ['price', 'overlay', 'leaderboard']
 attr_to_add = ['id','store','tot_reviews', 'game_details']
-#attr_to_rename = {'name':'username'} 
+#attr_to_rename = {'name':'username'}
 
 id = 2028850+1
 
@@ -45,19 +70,19 @@ id = 2028850+1
 tot_reviews=-1
 
 for i, element in enumerate(data):
-    if i>= MAX_ITER:
-        break
+    #if i>= MAX_ITER:
+    #    break
     print(element["name"])
         #remove
     for attr in attr_to_remove:
-        del element[attr] 
+        del element[attr]
     tot_reviews = len(element['reviews'])
     for i in range(tot_reviews):
         element['reviews'][i]['creation_date'] = datetime.datetime.strptime(str(element['reviews'][i]['creation_date']), "%B %d, %Y")
-        
+
         #add the review to the review collection in MongoDB
         review = {}
-        review["game_name"] = element["name"] 
+        review["game_name"] = element["name"]
         review["username"]  = element['reviews'][i]["name"]
         review["creation_date"]  = element['reviews'][i]["creation_date"]
         review["store"] = "GOG"
@@ -66,11 +91,11 @@ for i, element in enumerate(data):
         review["rating"]  = int(element['reviews'][i]["rating"])
         review["title"]  = element['reviews'][i]["title"]
         reviewCol.insert_one(review)
-        
+
 
         for attr in game_reviews_attr_to_rem:
             #print(element['reviews'][i]['creation_date'])
-            del element['reviews'][i][attr] 
+            del element['reviews'][i][attr]
 
 
     simpLanguages = []
@@ -78,8 +103,8 @@ for i, element in enumerate(data):
         if language_translation[language["name"]]:
             simpLanguages.append(language_translation[language["name"]])
         else:
-            simpLanguages.append(language["name"])
-            print(language["name"])
+        simpLanguages.append(language["name"])
+        #print(language["name"])
     element["languages"] = simpLanguages
 
     element["achievements"] = len(element["achievements"])
@@ -93,8 +118,9 @@ for i, element in enumerate(data):
     element["store"]="GOG"
     element["tot_reviews"]=tot_reviews
 
-    #to date 
-    element['release_date'] = datetime.datetime.strptime( element['release_date'], "%Y-%m-%dT%H:%M:%S%z")
+    #to date
+    if "release_date" in element:
+        element['release_date'] = datetime.datetime.strptime( element['release_date'], "%Y-%m-%dT%H:%M:%S%z")
 
     #move in game_details
     element["game_details"] = {}

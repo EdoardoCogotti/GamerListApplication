@@ -585,8 +585,9 @@ public class Game {
                         .append("totalPositiveReviewArray", new Document("$push",
                                 new Document("totalPositiveReview","$totalPositiveReview").append("name","$_id.name"))));
 
-        // sort array in descending order
-        Bson sortArray = sort(new BasicDBObject("totalPositiveReviewArray.totalPositiveReview", 1));
+        // sort in descending order
+        Bson sort = new Document("$sort",
+                new Document("_id.genres",1).append("totalPositiveReview",-1));
 
         // consider only the first k elements of each array in each document
         List array = Arrays.asList("$totalPositiveReviewArray",k);
@@ -604,13 +605,12 @@ public class Game {
                     myMatch, //date and rating
                     groupByNameAndGenre,
                     genreUnwind,
+                    sort,
                     groupByGenre,
-                    sortArray,
                     projectionFields
                     //,topKUnwind*/
             )).iterator();
 
-            System.out.println("inizio");
             try {
                 while (cursor.hasNext()) {
 
@@ -621,7 +621,6 @@ public class Game {
             } finally {
                 cursor.close();
             }
-        System.out.println("fine");
 
             return listGames;
         }
@@ -630,4 +629,135 @@ public class Game {
 
     }
 
+    public static ArrayList<Document> getTopKByGenre(int k, String genre) throws ParseException {
+        ArrayList<Document> listGames = new ArrayList<Document>();
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
+
+        Bson matchGenre = match(in("genres", genre));
+
+        // to reduce fields in the unwind phase
+        Bson projection = project(fields(
+                include("name", "reviews.rating", "reviews.positive", "reviews.creation_date", "genres"),
+                excludeId()));
+
+        // review unwind
+        Bson reviewUnwind = unwind("$reviews");
+
+        //review of the last year
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date myDate = sdf.parse(String.valueOf(LocalDate.now().minusYears(5)));
+        Bson myDateMatch = gte("reviews.creation_date", myDate);
+
+        //rating >=3 oppure positive
+        Bson myRatingMatch = or(
+                and(exists("reviews.positive"),eq("reviews.positive", true)),
+                and(exists("reviews.rating"),gte("reviews.rating", 3))
+        );
+
+        Bson myMatch = match(and(myDateMatch,myRatingMatch));
+
+        // group by name and genre considering the number of positive reviews
+        Bson groupByName = new Document("$group",
+                new Document("_id", new Document("name", "$name"))
+                        .append("totalPositiveReview", new Document("$sum", 1)));
+
+        // consider each game for each of own genres
+        Bson genreUnwind = unwind("$_id.genres");
+
+        // group by genre and get an array of documents in form {gamename, totalPositiveReview)
+        Bson groupByGenre = new Document("$group",
+                new Document("_id", "$_id.genres")
+                        .append("totalPositiveReviewArray", new Document("$push",
+                                new Document("totalPositiveReview","$totalPositiveReview").append("name","$_id.name"))));
+
+        // sort in descending order
+        Bson sort = sort(descending("totalPositiveReview"));
+
+        Bson limit = limit(k);
+
+        try {
+            MongoCursor<Document> cursor = gamesColl.aggregate(Arrays.asList(
+                    matchGenre,
+                    projection,
+                    reviewUnwind,
+                    myMatch, //date and rating
+                    groupByName,
+                    sort,
+                    limit
+            )).iterator();
+
+            //System.out.println("inizio");
+            try {
+                while (cursor.hasNext()) {
+
+                    Document document = cursor.next();
+                    System.out.println(document.toJson());
+                    listGames.add(document);
+                }
+            } finally {
+                cursor.close();
+            }
+            //System.out.println("fine");
+
+            return listGames;
+        }
+        catch(Exception e){e.printStackTrace();}
+        return null;
+
+    }
+
+    public static ArrayList<Document> getAll(){
+        ArrayList<Document> listGames = new ArrayList<Document>();
+        MongoDriver mgDriver = MongoDriver.getInstance();
+        MongoCollection<Document> gamesColl =  mgDriver.getCollection("users");
+
+        String field = "state"; //languages
+        // to reduce fields in the unwind phase
+        Bson projection = project(fields(
+                include(field)
+        ));
+
+        // review unwind
+        Bson reviewUnwind = unwind("$"+field);
+
+        // group by name and genre considering the number of positive reviews
+        Bson groupByField = group("$"+field, sum("tot", "$_id"));
+
+        Bson push = new Document("$group",
+                        new Document("_id", "$tot")
+                                .append(field+"Array", new Document("$push", "$_id")));
+        //new Document("languages","$_id"))));
+
+        Bson sort = sort(ascending("_id"));
+
+        Bson gogMatch = match(eq("store", "GOG"));
+        Bson steamMatch = match(eq("store", "Steam"));
+
+        try {
+            MongoCursor<Document> cursor = gamesColl.aggregate(Arrays.asList(
+                    //steamMatch,
+                    //projection, gg
+                    //reviewUnwind, gg
+                    groupByField,
+                    sort,
+                    push
+            )).iterator();
+
+            try {
+                while (cursor.hasNext()) {
+
+                    Document document = cursor.next();
+                    System.out.println(document.toJson());
+                    listGames.add(document);
+                }
+            } finally {
+                cursor.close();
+            }
+
+            return listGames;
+        }
+        catch(Exception e){e.printStackTrace();}
+        return null;
+    }
 }

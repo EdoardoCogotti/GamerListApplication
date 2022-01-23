@@ -8,8 +8,11 @@ public final class Session {
     private static Session session = null;
     private User loggedUser = null;
     private Game currentGame;
+    private int percentile;
 
-    private Session() {}
+    private Session() {
+        percentile=-1;
+    }
 
     public static Session getInstance() {
         if(session == null)
@@ -49,7 +52,16 @@ public final class Session {
         }
     }
 
+    public int getPercentile() {
+        return percentile;
+    }
+
+    public void setPercentile(int percentile) {
+        this.percentile = percentile;
+    }
+
     public void logout(){
         loggedUser = null;
+        percentile = -1;
     }
 }

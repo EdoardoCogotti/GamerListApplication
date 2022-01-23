@@ -69,6 +69,9 @@ public class GameSearchController implements Initializable{
             public void handle(MouseEvent mouseEvent) {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
                     try {
+                        if(currentGame==null || currentGame.equals(""))
+                            return;
+
                         if(Session.getInstance().getLoggedUser().getAdmin())
                             switchToGameEdit(mouseEvent, currentGame);
                         else

@@ -1,21 +1,32 @@
 package controller;
 
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Callback;
 import model.Game;
 import model.Review;
+import org.controlsfx.control.GridCell;
+import org.controlsfx.control.GridView;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.cell.ColorGridCell;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -56,9 +67,16 @@ public class GameInfoController implements Initializable {
 
     @FXML
     private Button gamelistButton,deleteButton ;
+    @FXML
+    private Button prevButton, nextButton;
+
+    private GridView<AnchorPane> gridView;
+    private ObservableList<AnchorPane> anchors = FXCollections.observableArrayList();
 
     private boolean inGamelist;
     private boolean reviewed;
+    private final int ITEM_PER_PAGE=12;
+    private int itemCounter;
 
     private List<Review> reviews = new ArrayList<>() ;
     private List<Review> getSteamData(){
@@ -276,23 +294,32 @@ public class GameInfoController implements Initializable {
         } catch (IOException e) {e.printStackTrace();}
         */
 
+        /*
+        gridView = new GridView<>(anchors);
+        reviewVBox.getChildren().add(gridView);
+        gridView.setCellFactory(new Callback<GridView<AnchorPane>, GridCell<AnchorPane>>() {
+            public GridCell<AnchorPane> call(GridView<AnchorPane> gridView) {
+                return new AnchorPane();
+            }
+        });
+         */
+
     }
 
     private void viewReviews(Game game){
         int col=0;
         int row=1;
+        int counter=0;
         try {
             for(Review r : reviews){
                 FXMLLoader loader = new FXMLLoader();
-                AnchorPane anchorPane;
-                if(game.getStore().equals("Steam")) //a
+                if(r.getStore().equals("Steam")) //a
                     loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
-                else if(game.getStore().equals("Gog"))
+                else if(r.getStore().equals("Gog"))
                     loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
                 else
                     loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
-                anchorPane = loader.load();
-
+                AnchorPane anchorPane = loader.load();
                 ReviewItemController reviewItemController = loader.getController();
                 if(r.getStore().equals("Steam")) //a
                     reviewItemController.setSteamData(r);
@@ -306,20 +333,35 @@ public class GameInfoController implements Initializable {
                     row++;
                 }
 
+                if(row==5) { //gg
+                    break;
+                }
+
+                /*
+                anchors.add(anchorPane);
+                gridView.setMinWidth(Region.USE_COMPUTED_SIZE);
+                gridView.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                gridView.setMaxWidth(Region.USE_COMPUTED_SIZE);
+                gridView.setMinHeight(Region.USE_COMPUTED_SIZE);
+                gridView.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                gridView.setMaxHeight(Region.USE_COMPUTED_SIZE);
+                */
+
                 grid.add(anchorPane, col++, row); // (child, column, row)
-
-                grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-                grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-                grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-                grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
                 GridPane.setMargin(anchorPane, new Insets(20));
             }
+            grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+            grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+            grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
+
+            grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+            grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
         } catch (IOException e) {e.printStackTrace();}
 
+        prevButton.setDisable(true);
+        if(itemCounter==reviews.size())
+            nextButton.setDisable(true);
     }
 
     public void setGameScene(String name){
@@ -370,8 +412,6 @@ public class GameInfoController implements Initializable {
             gogBoxInDevelopment.setVisible(false);
             gogBoxOses.setVisible(false);
         }
-        //TO_DO this.releaseDateValue
-
 
         //Get reviews from db
         this.reviews = Review.getReviewsByGame(game);
@@ -404,7 +444,7 @@ public class GameInfoController implements Initializable {
         reviewed = false;
         List<Review> reviewByCurrentUser = Review.getReviewsByUser(currentUser);
         for(Review review : reviewByCurrentUser) {
-            System.out.println(review.getContent());
+            //System.out.println(review.getContent());
             if(review.getGamename().equals(game.getName())){
                 reviewed = true;
             }
@@ -452,5 +492,68 @@ public class GameInfoController implements Initializable {
         //Delete game in db
         Game game = Game.getGamesByNamePart(gamename).get(0);
         game.delete();
+    }
+
+    public void prev(){
+        newPage(true);
+        nextButton.setDisable(false);
+    }
+    public void next(){
+        newPage(false);
+        prevButton.setDisable(false);
+    }
+
+    public void newPage(boolean isPrev) {
+        grid.getChildren().clear();
+        int col=0;
+        int row=1;
+        int counter;
+        if(isPrev)
+            counter=itemCounter-ITEM_PER_PAGE;
+        else
+            counter=itemCounter+ITEM_PER_PAGE;
+
+        int toIndex = Math.min(counter+ITEM_PER_PAGE,reviews.size());
+        if(reviews.size()<=counter+ITEM_PER_PAGE)
+            nextButton.setDisable(true);
+        if(counter<=0){
+            counter=0;
+            prevButton.setDisable(true);
+        }
+        try {
+            for(Review r : reviews.subList(counter,toIndex)){
+                FXMLLoader loader = new FXMLLoader();
+                AnchorPane anchorPane;
+                if(r.getStore().equals("Steam"))//a
+                    loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
+                else if(r.getStore().equals("Gog"))
+                    loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
+                else
+                    loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
+                anchorPane = loader.load();
+
+                ReviewItemController reviewItemController = loader.getController();
+                if(r.getStore().equals("Steam")) //a
+                    reviewItemController.setSteamData(r);
+                else if(r.getStore().equals("Gog"))
+                    reviewItemController.setGogData(r);
+                else
+                    reviewItemController.setGamerlistData(r);
+
+                if(col==3){
+                    col=0;
+                    row++;
+                }
+
+                grid.add(anchorPane, col++, row); // (child, column, row)
+
+                GridPane.setMargin(anchorPane, new Insets(20));
+            }
+        } catch (IOException e) {e.printStackTrace();}
+
+        if(isPrev)
+            itemCounter-=ITEM_PER_PAGE;
+        else
+            itemCounter+=ITEM_PER_PAGE;
     }
 }
