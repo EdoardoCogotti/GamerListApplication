@@ -72,11 +72,10 @@ public class Review {
         this.helpful = new_helpful;
 
         //GOG default
-        this.rating = -1; 
+        this.rating = -1;
         this.title = ""; 
 
         //Steam default
-        this.helpful = -1;
         this.positive = false; 
     }
 
@@ -96,14 +95,14 @@ public class Review {
         this.username = new_username; 
         this.creationDate = new_creation_date; 
         this.store = new_store; 
-        this.content = new_content; 
+        this.content = new_content;
+        this.helpful = new_helpful;
 
         //GOG
         this.rating = new_rating; 
         this.title = new_title; 
 
         //Steam
-        this.helpful = new_helpful;
         this.positive = new_positive; 
     }
 
@@ -258,6 +257,11 @@ public class Review {
         } catch (MongoException me) {
             System.err.println("ERROR: Unable to delete the review due to an error: " + me);
         }
+
+        //Delete the review from the game to
+        Game game = Game.getGamesByNamePart(this.gamename).get(0);
+        game.deleteReview(this.username);
+        game.update();
     }
 
     public Document toDocument(){

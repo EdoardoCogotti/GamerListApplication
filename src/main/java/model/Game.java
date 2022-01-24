@@ -181,11 +181,11 @@ public class Game {
         for(Document review :reviews){
             String store = (review.getInteger("rating") == null)?"Steam":"GOG";
             Date creation_date = review.getDate("creation_date");
+            helpful =  review.getInteger("helpful");
+            username= review.getString("name");
             if(store.equals("GOG")){
                 rating = review.getInteger("rating");
-                username= review.getString("name");
             }else{
-                helpful =  review.getInteger("helpful");
                 positive = review.getBoolean("positive");
             }
             this.reviews.add(new ReviewCompact(store, creation_date, username, rating, helpful, positive));
@@ -400,9 +400,23 @@ public class Game {
     //for reviews
     public List<ReviewCompact> getReviews(){ return this.reviews;}
 
-    public void addReview(ReviewCompact rc){
+    protected void addReview(ReviewCompact rc){
         this.reviews.add(rc);
         this.tot_reviews++;
+    }
+
+    protected void deleteReview(String username){
+        ReviewCompact rcToRemove = null;
+        for(ReviewCompact rc : this.reviews){
+            System.out.println(rc.getName());
+            if(rc.getName().equals(username)){
+                rcToRemove = rc;
+            }
+        }
+        if(rcToRemove == null){
+            throw new RuntimeException(username+" never reviewed the game "+this.name);
+        }
+        this.reviews.remove(rcToRemove);
     }
 
     private Document toDocument(){
@@ -451,11 +465,13 @@ public class Game {
             Document reviewDoc = new Document();
 
             reviewDoc.append("creation_date", review.getCreationDate());
+            reviewDoc.append("helpful", review.getHelpfull());
+            reviewDoc.append("name", review.getName());
+
             if(this.store.equals("GOG")){
                 reviewDoc.append("rating", review.getRating());
             }else{
                 //Steam
-                reviewDoc.append("helpful", review.getHelpfull());
                 reviewDoc.append("positive", review.getPositive());
             }
 

@@ -80,7 +80,6 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       continue
 
     #if i > MAX_GAMES:
-      #matchReviewsFile.writerow(row)
       #break
 
     id = int(rowR[0])
@@ -186,17 +185,8 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
 
     #print(len(usernamesToGet))
 
-    game['reviews'].append({
-      #"username":string"elbmek",
-      "creation_date": random_date(game["release_date"].strftime("%d/%m/%Y"), "01/10/2021", random.random()),
-      "positive": rowR[2] == "1",
-      "helpful": int(rowR[3]),
-    })
-
     #make review object to insert into Mongo
     review = {}
-
-
     review["game_name"] = game["name"]
     randIndex = int(random.random()*len(usernamesToGet))
     review["username"] = usernamesToGet[randIndex]
@@ -207,12 +197,21 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
     #  review["username"] = random.choice(usernames)
     #print(str(i) + ": done in " + str(round(time.time() - st, 4)*1000) + " time...")
     
+    game['reviews'].append({
+      #"username":string"elbmek",
+      "creation_date": random_date(game["release_date"].strftime("%d/%m/%Y"), "01/10/2021", random.random()),
+      "helpful": int(rowR[3]),
+      "positive": rowR[2] == "1",
+    })
+
     usernamesUsed.append(review["username"])
     review["creation_date"] = game['reviews'][-1]["creation_date"]
     review["store"] = "Steam"
     review["helpful"] = game['reviews'][-1]["helpful"]
     review["positive"] = game['reviews'][-1]["positive"]
     review["content"] = rowR[1]
+
+    game['reviews'][-1]["name"] = review["username"]
 
     #insert many reviews at once for performance reasons
     if len(bulkReviews) >= 1000:

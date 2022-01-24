@@ -49,7 +49,7 @@ language_translation = {
 
 # Opening JSON file
 #games.csv da modificare
-f = open('./match/games_GOG.json', encoding='utf-8')
+f = open('games_GOG.json', encoding='utf-8')
 # MouseCraft﻿
 
 # returns JSON object as
@@ -71,7 +71,7 @@ tot_reviews=-1
 
 for i, element in enumerate(data):
     #if i>= MAX_ITER:
-    #    break
+        #break
     print(element["name"])
         #remove
     for attr in attr_to_remove:
@@ -92,6 +92,7 @@ for i, element in enumerate(data):
         review["title"]  = element['reviews'][i]["title"]
         reviewCol.insert_one(review)
 
+        element['reviews'][i]['helpful'] = review["helpful"]
 
         for attr in game_reviews_attr_to_rem:
             #print(element['reviews'][i]['creation_date'])
@@ -103,7 +104,7 @@ for i, element in enumerate(data):
         if language_translation[language["name"]]:
             simpLanguages.append(language_translation[language["name"]])
         else:
-        simpLanguages.append(language["name"])
+            simpLanguages.append(language["name"])
         #print(language["name"])
     element["languages"] = simpLanguages
 

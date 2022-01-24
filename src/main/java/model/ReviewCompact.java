@@ -9,9 +9,9 @@ public class ReviewCompact {
     private String platform;
     private Date creation_date;
     private int helpfull;
+    private String name;
     
     //GOG
-    private String name;
     private int rating;
     
     //STEAM
