@@ -342,21 +342,20 @@ public class Review {
         }
         catch(ParseException e){e.printStackTrace();}
 
-        long earlier = System.currentTimeMillis() ;
+        //long earlier = System.currentTimeMillis() ;
         AggregateIterable<Document> result = reviewsColl.aggregate(
                 Arrays.asList(
                         Aggregates.match(Filters.gte("creation_date", myDate)),
-                        //Aggregates.sort(Sorts.ascending("username")),
-                        Aggregates.group("$username", new BsonField("helpful", new BsonDocument("$avg", new BsonString("$helpful"))))//,
-                        //Aggregates.sort(Sorts.ascending("helpful"))
+                        Aggregates.group("$username", new BsonField("helpful", new BsonDocument("$avg", new BsonString("$helpful")))),
+                        Aggregates.sort(Sorts.ascending("helpful"))
                 )
         );
         MongoCursor<Document> iterator = result.iterator();
 
-        long later = System.currentTimeMillis();
-        System.out.println("1: "+ ( later - earlier));
+        //long later = System.currentTimeMillis();
+        //System.out.println("1: "+ ( later - earlier));
 
-        long early1 = System.currentTimeMillis();
+        //long early1 = System.currentTimeMillis();
         int pos = 0;
         int length = 0;
 
@@ -365,18 +364,15 @@ public class Review {
             //earlier = System.nanoTime();
 
             Document doc = iterator.next();
+            System.out.println(doc);
             if(doc.getString("_id").equals(username)){
                 pos = length;
             }
             length++;
 
-            //later = System.nanoTime();
-            //System.out.println("2: "+(later - earlier));
         }
 
-        long later1 = System.currentTimeMillis();
-
-        System.out.println("2: "+(later1 - early1));
+        //long later1 = System.currentTimeMillis();
 
         System.out.println(pos);
         System.out.println(length);

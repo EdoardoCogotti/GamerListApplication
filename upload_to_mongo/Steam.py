@@ -16,7 +16,7 @@ mydb = myclient["GamerList"]
 mycol = mydb["games"]
 mycolReview = mydb["reviews"]
 
-MAX_GAMES = 4
+MAX_GAMES = 4500
 
 
 #Load usernames
@@ -79,8 +79,8 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
       print(rowR)
       continue
 
-    #if i > MAX_GAMES:
-      #break
+    if i > MAX_GAMES:
+      break
 
     id = int(rowR[0])
     #print(str(id) + "  -  "+str(gId))
@@ -200,7 +200,7 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
     game['reviews'].append({
       #"username":string"elbmek",
       "creation_date": random_date(game["release_date"].strftime("%d/%m/%Y"), "01/10/2021", random.random()),
-      "helpful": int(rowR[3]),
+      "helpful": int(random.random()*50),
       "positive": rowR[2] == "1",
     })
 
