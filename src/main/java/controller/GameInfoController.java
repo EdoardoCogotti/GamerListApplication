@@ -315,7 +315,7 @@ public class GameInfoController implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 if(r.getStore().equals("Steam")) //a
                     loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
-                else if(r.getStore().equals("Gog"))
+                else if(r.getStore().equals("GOG"))
                     loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
                 else
                     loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
@@ -323,7 +323,7 @@ public class GameInfoController implements Initializable {
                 ReviewItemController reviewItemController = loader.getController();
                 if(r.getStore().equals("Steam")) //a
                     reviewItemController.setSteamData(r);
-                else if(r.getStore().equals("Gog"))
+                else if(r.getStore().equals("GOG"))
                     reviewItemController.setGogData(r);
                 else
                     reviewItemController.setGamerlistData(r);
@@ -336,6 +336,7 @@ public class GameInfoController implements Initializable {
                 if(row==5) { //gg
                     break;
                 }
+                counter++;
 
                 /*
                 anchors.add(anchorPane);
@@ -360,7 +361,7 @@ public class GameInfoController implements Initializable {
         } catch (IOException e) {e.printStackTrace();}
 
         prevButton.setDisable(true);
-        if(itemCounter==reviews.size())
+        if(reviews.size()<=ITEM_PER_PAGE)
             nextButton.setDisable(true);
     }
 

@@ -364,7 +364,6 @@ public class Review {
             //earlier = System.nanoTime();
 
             Document doc = iterator.next();
-            System.out.println(doc);
             if(doc.getString("_id").equals(username)){
                 pos = length;
             }

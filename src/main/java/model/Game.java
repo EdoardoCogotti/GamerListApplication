@@ -651,8 +651,9 @@ public class Game {
         MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
 
         Bson matchGenre = match(in("genres", genre));
+        Bson matchGenreText = match(text(genre));
 
-        // to reduce fields in the unwind phase
+            // to reduce fields in the unwind phase
         Bson projection = project(fields(
                 include("name", "reviews.rating", "reviews.positive", "reviews.creation_date", "genres"),
                 excludeId()));
