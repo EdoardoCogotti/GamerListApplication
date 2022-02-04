@@ -388,6 +388,7 @@ public class GameInfoController implements Initializable {
                 .collect(Collectors.joining(", ", "", "")));
         this.gameDetailsValue.setText(game.getGameDetailsString());
         this.totReviewsValue.setText(String.valueOf(game.getTotReviews()));
+        this.achievementsValue.setText(String.valueOf(game.getAchievements()));
         if(game.getStore().equals("GOG")){
             this.ratingValue.setText(game.getRating());
             this.osValue.setText(game.getOses().stream().collect(Collectors.joining(", ", "", "")));
