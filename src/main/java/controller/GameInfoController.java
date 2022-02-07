@@ -64,6 +64,8 @@ public class GameInfoController implements Initializable {
     private HBox steamBoxRecommendedRequirements, steamBoxMinimumRequirements, steamBoxDescription;
     @FXML
     private HBox gogBoxOses, gogBoxSize, gogBoxInDevelopment;
+    @FXML
+    private HBox ratingBox;
 
     @FXML
     private Button gamelistButton,deleteButton ;
@@ -358,7 +360,7 @@ public class GameInfoController implements Initializable {
             grid.setMinHeight(Region.USE_COMPUTED_SIZE);
             grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
             grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (Exception e) {e.printStackTrace();}
 
         prevButton.setDisable(true);
         if(reviews.size()<=ITEM_PER_PAGE)
@@ -389,8 +391,12 @@ public class GameInfoController implements Initializable {
         this.gameDetailsValue.setText(game.getGameDetailsString());
         this.totReviewsValue.setText(String.valueOf(game.getTotReviews()));
         this.achievementsValue.setText(String.valueOf(game.getAchievements()));
+        this.ratingValue.setText(game.getRating());
+        if(this.ratingValue.getText()==null){
+            ratingBox.setManaged(false);
+            ratingBox.setVisible(false);
+        }
         if(game.getStore().equals("GOG")){
-            this.ratingValue.setText(game.getRating());
             this.osValue.setText(game.getOses().stream().collect(Collectors.joining(", ", "", "")));
             this.sizeValue.setText(game.getSize());
             this.inDevelopmentValue.setText((game.getInDevelopment())?"true":"false");
@@ -416,7 +422,10 @@ public class GameInfoController implements Initializable {
         }
 
         //Get reviews from db
+        long before = System.currentTimeMillis();
         this.reviews = Review.getReviewsByGame(game);
+        long later = System.currentTimeMillis();
+        System.out.println("review time:" + (later-before));
         //exclude review by current user (it's visualize on top instead)
         Review toRemove = null;
         for(Review review : this.reviews) {
@@ -452,6 +461,7 @@ public class GameInfoController implements Initializable {
             }
         }
 
+        before = System.currentTimeMillis();
         try {
             FXMLLoader loader_review = new FXMLLoader();
             AnchorPane anchorPane;
@@ -473,6 +483,8 @@ public class GameInfoController implements Initializable {
         }
         catch (IOException e){e.printStackTrace();}
 
+        later = System.currentTimeMillis();
+        System.out.println("personal review: "+ (later-before));
     }
 
     public void updateGamelist(){
@@ -525,7 +537,7 @@ public class GameInfoController implements Initializable {
         try {
             for(Review r : reviews.subList(counter,toIndex)){
                 FXMLLoader loader = new FXMLLoader();
-                AnchorPane anchorPane;
+                AnchorPane anchorPane=null;
                 if(r.getStore().equals("Steam"))//a
                     loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
                 else if(r.getStore().equals("Gog"))
@@ -551,7 +563,7 @@ public class GameInfoController implements Initializable {
 
                 GridPane.setMargin(anchorPane, new Insets(20));
             }
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (Exception e) {e.printStackTrace();}
 
         if(isPrev)
             itemCounter-=ITEM_PER_PAGE;

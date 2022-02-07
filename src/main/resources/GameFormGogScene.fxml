@@ -62,7 +62,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#submitGog" stylesheets="@css/buttons.css" text="NEXT">
+                  <Button mnemonicParsing="false" onAction="#submitGog" stylesheets="@css/buttons.css" text="SUBMIT">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

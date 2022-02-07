@@ -292,11 +292,18 @@ public class Review {
     public static List<Review> getReviewsByGame(Game game){
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
-
-        FindIterable<Document> reviewDocs = reviewsColl.find(Filters.eq("game_name", game.getName()));
-
         List<Review> reviews = new ArrayList<>();
+        //FindIterable<Document> reviewDocs = reviewsColl.find(Filters.eq("game_name", game.getName()));
 
+        try(MongoCursor<Document> reviewDocs =
+                    reviewsColl.find(Filters.eq("game_name", game.getName())).iterator())
+        {
+            while(reviewDocs.hasNext()){
+                reviews.add(new Review(reviewDocs.next()));
+            }
+        }
+
+        /*
         if (reviewDocs == null) {
             return reviews;
         }
@@ -305,7 +312,7 @@ public class Review {
             Review rev = new Review(doc);
             //System.out.println(rev.content);
             reviews.add(rev);
-        }
+        }*/
 
         return reviews;
     }
@@ -342,7 +349,7 @@ public class Review {
         }
         catch(ParseException e){e.printStackTrace();}
 
-        //long earlier = System.currentTimeMillis() ;
+        long earlier = System.currentTimeMillis() ;
         AggregateIterable<Document> result = reviewsColl.aggregate(
                 Arrays.asList(
                         Aggregates.match(Filters.gte("creation_date", myDate)),
@@ -351,9 +358,8 @@ public class Review {
                 )
         );
         MongoCursor<Document> iterator = result.iterator();
-
-        //long later = System.currentTimeMillis();
-        //System.out.println("1: "+ ( later - earlier));
+        long later = System.currentTimeMillis();
+        System.out.println("1: "+ ( later - earlier));
 
         //long early1 = System.currentTimeMillis();
         int pos = 0;
