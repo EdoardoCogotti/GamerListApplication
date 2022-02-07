@@ -527,6 +527,18 @@ public class Game {
         } catch (MongoException me) {
             System.err.println("ERROR: Unable to delete the review due to an error: " + me);
         }
+
+        //Delete all reviews relative to the game
+        MongoCollection<Document> reviewColl =  mgDriver.getCollection("reviews");
+        bsonFilter = Filters.eq("game_name", this.name);
+        try {
+            DeleteResult result = reviewColl.deleteOne(bsonFilter);
+            System.out.println("Deleted document count: " + result.getDeletedCount());
+        } catch (MongoException me) {
+            System.err.println("ERROR: Unable to delete the review associated with the game due to an error: " + me);
+        }
+
+        //TODO: delete instance of the game from graphDB
     }
 
     //Get  list of games

@@ -45,7 +45,7 @@ public class GameFormController implements Initializable {
 
     private final String[] gameDetails = {"single_player", "multi_player", "controller_support", "coop", "cloud_saves", "achievements"};
     private final String[] genres = {"action", "adventure",  "card game", "fps", "indie", "platform", "puzzle",
-            "turn-based", "fantasy", "strategy"};
+            "turn-based", "fantasy", "strategy", "shooter"};
     private final String[] languages = {"english", "italian", "spanish", "french", "chinese", "japanese", "german",
             "spanish - spain", "simplified chinese", "traditional chinese", "korean", "polish", "portuguese",
             "russian", "czech"};

@@ -28,7 +28,7 @@ public class User {
 
     public User(String username){
         this.username=username;
-        this.admin = false;
+        this.admin = true;
         //TO_DO populate other fields querying db with username
     }
 
