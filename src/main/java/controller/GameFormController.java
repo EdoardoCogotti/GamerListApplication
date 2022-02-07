@@ -44,11 +44,24 @@ public class GameFormController implements Initializable {
     private Label errorLabel;
 
     private final String[] gameDetails = {"single_player", "multi_player", "controller_support", "coop", "cloud_saves", "achievements"};
-    private final String[] genres = {"action", "adventure",  "card game", "fps", "indie", "platform", "puzzle",
-            "turn-based", "fantasy", "strategy", "shooter"};
+    private final String[] genres =
+            //{"action", "adventure",  "card game", "fps", "indie", "platform", "puzzle", "turn-based", "fantasy", "strategy"};
+            {"action", "adventure", "animation & modeling", "arcade", "audio production", "building", "casual", "combat", "comedy",
+            "design & illustration", "detective-mystery", "early access", "economic", "education", "educational", "espionage", "fpp",
+            "fantasy", "fighting", "free to play", "game development", "hidden object", "historical", "horror", "indie",  "managerial",
+            "massively multiplayer", "metroidvania", "modern", "mystery", "narrative", "naval", "off-road", "open world", "photo editing",
+            "pinball", "platformer", "point-and-click",  "puzzle", "rpg", "racing", "rally", "real-time", "roguelike", "role-playing",
+            "sandbox", "sci-fi",  "shooter", "simulation", "soccer", "software training", "sports", "stealth", "strategy", "survival",
+            "tpp", "tactical", "turn-based", "utilities", "video production", "virtual life", "visual novel", "web publishing"};
+
     private final String[] languages = {"english", "italian", "spanish", "french", "chinese", "japanese", "german",
             "spanish - spain", "simplified chinese", "traditional chinese", "korean", "polish", "portuguese",
-            "russian", "czech"};
+            "russian", "czech", "dutch",
+            "danish", "turkish", "ukrainian", "swedish", "norwegian", "arabic", "romanian",
+            "finnish", "greek", "bulgarian", "hungarian", "spanish - latin america", "portuguese - brazil","slovak", "catalan","serbian", "icelandic"};
+
+
+
 
     CheckComboBox<String> checkComboBoxGameDetails, checkComboBoxGenres, checkComboBoxLanguages;
 
@@ -271,10 +284,11 @@ public class GameFormController implements Initializable {
         for(String s: gameDetailsCheck)
             checkComboBoxGameDetails.getCheckModel().toggleCheckState(s);
         for(String s: genresCheck) {
-            System.out.println(s);
+            //System.out.println(s);
             checkComboBoxGenres.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
         }
         for(String s: languagesCheck){
+            //System.out.println(s);
             checkComboBoxLanguages.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
         }
     }
