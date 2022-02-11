@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import model.GamerListElement;
+import model.User;
 import utils.Session;
 import utils.UtilityMenu;
 
@@ -48,6 +49,7 @@ public class GamerListController implements Initializable {
 
         //DONE find gamelist from db
         for(GamerListElement g: Session.getInstance().getLoggedUser().getGamerList()){
+            g.setFriendsCount(User.howManyFollowingPlayGame(Session.getInstance().getLoggedUser().getUsername(),g.getName()));
             gameList.add(g);
         }
 

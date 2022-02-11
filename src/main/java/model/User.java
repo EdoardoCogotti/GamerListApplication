@@ -44,8 +44,8 @@ public class User {
     private String sha256;
 
     /*private List<String> followed;
-    private List<String> following;*/
-    private String favoriteGenre;
+    private List<String> following;
+    private String favoriteGenre;*/
 
     private String DUMMY;
 
@@ -61,7 +61,7 @@ public class User {
         // DONE
         User foundUser = getUserByName(username);
         if (foundUser != null) {    //&& !foundUser.admin l'utente può essere admin
-            this.id = foundUser.getId();
+            //this.id = foundUser.getId();
             this.firstName = foundUser.getFirstName();
             this.lastName = foundUser.getLastName();
             this.gender = foundUser.getGender();
@@ -128,8 +128,8 @@ public class User {
             String gPublisher = gameItem.getString("publisher");
             String gDeveloper = gameItem.getString("developer");
             // DONE
-            int gFriendsCount = User.howManyFollowingPlayGame(this.getUsername(), gName);
-            System.out.println("count: " + gFriendsCount);
+            int gFriendsCount = -1; //User.howManyFollowingPlayGame(this.getUsername(), gName);
+            //System.out.println("count: " + gFriendsCount);
             this.gamerList.add(new GamerListElement(gName, gPublisher, gDeveloper, gFriendsCount));
         }
     }
@@ -148,10 +148,9 @@ public class User {
                 List<GamerListElement> gamerList,
                 boolean admin,
                 String salt,
-                String sha256,
-                String favoriteGenre
+                String sha256
     ) {
-        //this.id = id;
+        this.id = new ObjectId();
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -167,10 +166,10 @@ public class User {
         //this.following = following;
         this.sha256 = sha256;
         this.salt = salt;
-        this.favoriteGenre = favoriteGenre;
+        //this.favoriteGenre = favoriteGenre;
     }
 
-    public void insert(){ //ADDED
+    public void insert(String favoriteGenre){ //ADDED
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> usersColl =  mgDriver.getCollection("users");
 
@@ -181,7 +180,7 @@ public class User {
         }
 
         //TODO: insert info in the graphDB if needed (DONE)
-        addUserToGraph(this.getUsername(), this.getFavoriteGenre());
+        addUserToGraph(this.getUsername(), favoriteGenre);
     }
 
     //      update dell-user nel database
@@ -724,7 +723,7 @@ public class User {
     public void setAdmin(boolean admin) {this.admin = admin;}
     //public void setFollowing(List<String> following) {this.following = following;}
     //public void setFollowed(List<String> followed) {this.followed = followed;}
-    public void setFavoriteGenre(String favoriteGenre) {this.favoriteGenre = favoriteGenre;}
+    //public void setFavoriteGenre(String favoriteGenre) {this.favoriteGenre = favoriteGenre;}
 
     public void setDUMMY(String DUMMY) {this.DUMMY = DUMMY;}
 
@@ -753,9 +752,7 @@ public class User {
     //public List<String> getFollowing() {return following;}
     //public List<String> getFollowed() {return followed;}
     //public String getMostPlayedGenre() {return mostPlayedGenre;}
-
-    public String getFavoriteGenre() {return favoriteGenre;}
-
+    //public String getFavoriteGenre() {return favoriteGenre;}
 
     // metodi statici che comunicano con il backend
 

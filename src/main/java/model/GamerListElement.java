@@ -28,9 +28,7 @@ public class GamerListElement {
     public String getDeveloper() {
         return developer;
     }
-    public int getFriendsCount() {
-        return friendsCount;
-    }
+    public int getFriendsCount() {return friendsCount;}
 
     public void setName(String name) {
         this.name = name;

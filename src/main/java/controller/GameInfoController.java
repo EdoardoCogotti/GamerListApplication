@@ -488,7 +488,7 @@ public class GameInfoController implements Initializable {
             gamelistButton.setText("REMOVE FROM GAMELIST");
 
             //DONE insert in gamelist
-            GamerListElement gle = new GamerListElement(gameValue.getText(), publisherValue.getText(), developerValue.getText(), 666);
+            GamerListElement gle = new GamerListElement(gameValue.getText(), publisherValue.getText(), developerValue.getText(), -1);
             Session.getInstance().getLoggedUser().insertInGamelist(gle);
         }
     }

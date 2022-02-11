@@ -53,7 +53,6 @@ public class UserProfileController {
         profile.setBirthday(LocalDate.now());
         profile.setRegistered(LocalDate.now());*/
 
-
         // DONE check if already follower TOCHANGE
         if(!myProfile) {
             followed = Session.getInstance().getLoggedUser().searchInFollowing(profile); //true;
@@ -93,24 +92,24 @@ public class UserProfileController {
             birthdayBox.setManaged(false);
         }
 
-
     }
 
     public void follow(){
 
         System.out.println("FOLLOW PLACEHOLDER");
-        if(followed) {
-            followed = false;
+        System.out.println("followed: " + followed);
+        if(!followed) {
+            followed = true;
             followButton.setText("UNFOLLOW");
             //Session.getInstance().getLoggedUser().unfollowUser(profile);
-            User.unfollowUser(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
+            User.addFollow(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
             // DONE delete follow in graph db
         }
         else {
-            followed = true;
+            followed = false;
             followButton.setText("FOLLOW");
             //Session.getInstance().getLoggedUser().followUser(profile);
-            User.addFollow(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
+            User.unfollowUser(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
             // DONE insert follow in graph db
         }
     }

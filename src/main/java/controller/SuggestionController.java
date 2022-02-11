@@ -108,7 +108,6 @@ public class SuggestionController implements Initializable {
         /*for(String u : users) {
             user.add(u);
         }*/
-
         userList.setItems(user);
     }
 

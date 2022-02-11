@@ -493,7 +493,8 @@ public class Game {
             throw new RuntimeException("ERROR: it was't possible to insert the game in MongoDB");
         }
 
-        //TODO: insert info in the graphDB if needed
+        //DONE insert info in the graphDB if needed
+        addGameToGraph(this);
 
     }
 
@@ -540,6 +541,14 @@ public class Game {
         }
 
         //TODO: delete instance of the game from graphDB
+        try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
+        {
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run( "MATCH (m:Game { name: $gamename}) DETACH DELETE m",
+                        parameters( "gamename", this.name));
+                return null;
+            });
+        }
     }
 
     //Get  list of games
@@ -795,6 +804,8 @@ public class Game {
     //questa funzione aggiunge un gioco al graph
     public static void addGameToGraph( final Game game)
     {
+        System.out.println("names: " + game.getName());
+        System.out.println("genere : " +game.getGenres());
         try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
         {
             session.writeTransaction((TransactionWork<Void>) tx -> {
