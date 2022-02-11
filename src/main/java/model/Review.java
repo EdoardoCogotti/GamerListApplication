@@ -8,20 +8,18 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.*;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
-import impl.org.controlsfx.tableview2.filter.parser.aggregate.AggregatorsParser;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import utils.MongoDriver;
+import org.neo4j.driver.Session;
+import org.neo4j.driver.TransactionWork;
+import driver.MongoDriver;
+import driver.Neo4jDriver;
 
 import java.text.ParseException;
-import java.time.Duration;
-import java.time.Instant;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -29,9 +27,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static com.mongodb.client.model.Aggregates.project;
-import static com.mongodb.client.model.Filters.gte;
-import static com.mongodb.client.model.Projections.*;
+import static org.neo4j.driver.Values.parameters;
 
 public class Review {
 
@@ -247,7 +243,7 @@ public class Review {
     }
 
     public void delete(){
-        //TO_DO FRA cancellare review anche da array in collezione Games
+        //DONE FRA cancellare review anche da array in collezione Games
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewColl =  mgDriver.getCollection("reviews");
         Bson bsonFilter = Filters.eq("_id", this.id);
@@ -338,7 +334,10 @@ public class Review {
         return reviews;
     }
 
-    public static int getRankingPosition(String username)  {
+    public static int getRankingPosition(String username, String type) {
+
+        String aggregator = "$"+type;
+
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
 
@@ -353,7 +352,7 @@ public class Review {
         AggregateIterable<Document> result = reviewsColl.aggregate(
                 Arrays.asList(
                         Aggregates.match(Filters.gte("creation_date", myDate)),
-                        Aggregates.group("$username", new BsonField("helpful", new BsonDocument("$avg", new BsonString("$helpful")))),
+                        Aggregates.group("$username", new BsonField("helpful", new BsonDocument(aggregator, new BsonString("$helpful")))),
                         Aggregates.sort(Sorts.ascending("helpful"))
                 )
         );
@@ -383,5 +382,44 @@ public class Review {
         System.out.println(length);
 
         return (pos*100)/length;
+    }
+
+    // METODI NEO4J
+
+    //questa funzione inserisce un gioco nella lista dei recensiti di un utente e definisce se recensione pos o neg
+    public static void addReview(final String user, final String game, boolean review) {
+
+        try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
+        {
+            String reviewType;
+            if(review)
+                reviewType = "Positive";
+            else reviewType = "Negative";
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run(
+                        "MATCH\n" +
+                                "  (a:User),\n" +
+                                "  (b:Game)\n" +
+                                "WHERE a.username = $A AND b.name = $B\n" +
+                                "MERGE (a)-[r:HAS_REVIEWED {type: $C}]->(b)\n" +
+                                "RETURN type(r)",
+                        parameters( "A", user, "B", game, "C", reviewType));
+                return null;
+            });
+        }
+    }
+
+    //questa funzione rimuove le recensioni fatte da un utente a un gioco
+    public static void removeReview(final String user, final String game) {
+        try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
+        {
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run(
+                        "MATCH (user {username: $A})-[r:HAS_REVIEWED]->(game {name: $B})\n" +
+                                "DELETE r",
+                        parameters( "A", user, "B", game));
+                return null;
+            });
+        }
     }
 }

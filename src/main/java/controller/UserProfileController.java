@@ -7,8 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.User;
-
-import java.time.LocalDate;
+import utils.Session;
 
 public class UserProfileController {
 
@@ -28,6 +27,8 @@ public class UserProfileController {
     private int id;
     private boolean followed;
 
+    User profile;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -38,22 +39,26 @@ public class UserProfileController {
             username = username.substring(0, 10) + "...";
         nameLabel.setText(username);
 
-        // TO_DO get user info from db
-        User u = new User();
-        u.setId(1);
-        u.setFirstName("Edoardo");
-        u.setLastName("Cogotti");
-        u.setGender("male");
-        u.setCountry("Italy");
-        u.setEmail("edoardocogotti@libero.it");
-        u.setPhone("3331234567");
-        u.setBirthday(LocalDate.now());
-        u.setRegistered(LocalDate.now());
+        // DONE get user info from db
+        profile = User.getUserByName(username);
 
-        // TO_DO check if already follower
-        followed = true;
+        /*User profile = new User();
+        profile.setId(1);
+        profile.setFirstName("Edoardo");
+        profile.setLastName("Cogotti");
+        profile.setGender("male");
+        profile.setCountry("Italy");
+        profile.setEmail("edoardocogotti@libero.it");
+        profile.setPhone("3331234567");
+        profile.setBirthday(LocalDate.now());
+        profile.setRegistered(LocalDate.now());*/
 
+
+        // DONE check if already follower TOCHANGE
         if(!myProfile) {
+            followed = Session.getInstance().getLoggedUser().searchInFollowing(profile); //true;
+            System.out.println("followed " + followed);
+
             followBox.setVisible(true);
             followBox.setManaged(true);
             if(followed){
@@ -66,16 +71,16 @@ public class UserProfileController {
             followBox.setManaged(false);
         }
 
-        id = u.getId();
-        firstNameValue.setText(u.getFirstName());
-        genderValue.setText(u.getGender());
-        countryValue.setText(u.getCountry());
-        registrationValue.setText(u.getRegistered().toString());
+        //id = profile.getId();
+        firstNameValue.setText(profile.getFirstName());
+        genderValue.setText(profile.getGender());
+        countryValue.setText(profile.getCountry());
+        registrationValue.setText(profile.getRegistered().toString());
         if(myProfile){
-            lastNameValue.setText(u.getLastName());
-            emailValue.setText(u.getEmail());
-            phoneValue.setText(u.getPhone());
-            birthdayValue.setText(u.getBirthday().toString());
+            lastNameValue.setText(profile.getLastName());
+            emailValue.setText(profile.getEmail());
+            phoneValue.setText(profile.getPhone());
+            birthdayValue.setText(profile.getBirthday().toString());
         }
         else{
             lastNameBox.setVisible(false);
@@ -97,12 +102,16 @@ public class UserProfileController {
         if(followed) {
             followed = false;
             followButton.setText("UNFOLLOW");
-            // TO_DO delete follow in graph db
+            //Session.getInstance().getLoggedUser().unfollowUser(profile);
+            User.unfollowUser(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
+            // DONE delete follow in graph db
         }
         else {
             followed = true;
             followButton.setText("FOLLOW");
-            // TO_DO insert follow in graph db
+            //Session.getInstance().getLoggedUser().followUser(profile);
+            User.addFollow(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
+            // DONE insert follow in graph db
         }
     }
 

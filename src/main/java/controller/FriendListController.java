@@ -18,6 +18,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.User;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,32 +30,46 @@ public class FriendListController implements Initializable {
     @FXML
     private TableView<User> tbFollowerData, tbFollowingData;
     @FXML
-    public TableColumn<User, String> userName, firstNameValue, genderValue, actionCol;
+    public TableColumn<User, String> userName, actionCol; // firstNameValue, genderValue,;
     @FXML
-    public TableColumn<User, String> userNameFollower, firstNameValueFollower, genderValueFollower;
+    public TableColumn<User, String> userNameFollower; //, firstNameValueFollower, genderValueFollower;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
+
+    private ObservableList<User> followingList = FXCollections.observableArrayList();
+    private ObservableList<User> followerList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //TO_DO find follower and following users from db
+        //DONE find follower and following users from db
+        //System.out.println("***: " + Session.getInstance().getLoggedUser().getFollowed().size());
+        //for(String s : Session.getInstance().getLoggedUser().getFollowed()){
+        for(String s : User.getFollowedList(Session.getInstance().getLoggedUser().getUsername())){
+            User u = User.getUserByName(s);
+            followerList.add(u);
+        }
+        //for(String s : Session.getInstance().getLoggedUser().getFollowing()){
+        for(String s : User.getFollowingList(Session.getInstance().getLoggedUser().getUsername())){
+            User u = User.getUserByName(s);
+            followingList.add(u);
+        }
 
-        for(int i=0; i<30; i++){
+        /*for(int i=0; i<30; i++){
             User u = new User();
             u.setUsername("Bea01");
             u.setFirstName("Beatrice");
             u.setGender("female");
             userList.add(u);
-        }
+        }*/
 
         userNameFollower.setCellValueFactory(new PropertyValueFactory<>("Username"));
-        firstNameValueFollower.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        genderValueFollower.setCellValueFactory(new PropertyValueFactory<>("Gender"));
+        //firstNameValueFollower.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
+        //genderValueFollower.setCellValueFactory(new PropertyValueFactory<>("Gender"));
 
         userName.setCellValueFactory(new PropertyValueFactory<>("Username"));
-        firstNameValue.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        genderValue.setCellValueFactory(new PropertyValueFactory<>("Gender"));
+        //firstNameValue.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
+        //genderValue.setCellValueFactory(new PropertyValueFactory<>("Gender"));
         actionCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
 
         Callback<TableColumn<User, String>, TableCell<User, String>> cellFactory
@@ -79,13 +95,19 @@ public class FriendListController implements Initializable {
                                             System.out.println("UNFOLLOWED");
                                             followed=false;
                                             btn.setText("FOLLOWED");
-                                            // TO_DO delete follower relationship
+                                            User logged = Session.getInstance().getLoggedUser();
+                                            //logged.unfollowUser(u);
+                                            User.unfollowUser(logged.getUsername(),u.getUsername());
+                                            // DONE delete follower relationship
                                         }
                                         else{
                                             System.out.println("FOLLOWED");
                                             followed=true;
                                             btn.setText("UNFOLLOW");
-                                            // TO_DO create follower relationship
+                                            User logged = Session.getInstance().getLoggedUser();
+                                            //logged.followUser(u);
+                                            User.addFollow(logged.getUsername(),u.getUsername());
+                                            // DONE create follower relationship
                                         }
                                     });
                                     setGraphic(btn);
@@ -140,8 +162,8 @@ public class FriendListController implements Initializable {
             return cell ;
         });
 
-        tbFollowerData.setItems(userList);
-        tbFollowingData.setItems(userList);
+        tbFollowerData.setItems(followerList);
+        tbFollowingData.setItems(followingList);
     }
 
     private void switchToUser(MouseEvent e, String username) throws IOException {

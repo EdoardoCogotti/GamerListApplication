@@ -14,9 +14,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Game;
+import model.User;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SuggestionController implements Initializable {
@@ -77,10 +82,15 @@ public class SuggestionController implements Initializable {
     public void fillRecommendGames(){
         game.clear();
 
-        // TO_DO find recommended games
-        for(String g : games) {
+        // DONE find recommended games TOCHANGE
+        List<String> recommended = Game.bestGamesByFollowing(Session.getInstance().getLoggedUser().getUsername());
+        for(String g: recommended ){
             game.add(g);
         }
+
+        /*for(String g : games) {
+            game.add(g);
+        }*/
 
         gameList.setItems(game);
     }
@@ -89,10 +99,15 @@ public class SuggestionController implements Initializable {
     public void fillRecommendUsers(){
         user.clear();
 
-        // TO_DO find recommended games
-        for(String u : users) {
+        // DONE find recommended users TOCHANGE
+        List<String> recommended = User.followedByFollowedSameGenre(Session.getInstance().getLoggedUser().getUsername());
+        for(String u: recommended ){
             user.add(u);
         }
+
+        /*for(String u : users) {
+            user.add(u);
+        }*/
 
         userList.setItems(user);
     }

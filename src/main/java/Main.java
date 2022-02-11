@@ -6,8 +6,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import model.Game;
-import model.Review;
+
+import driver.Neo4jDriver;
+import driver.MongoDriver;
 
 public class Main extends Application {
 
@@ -44,7 +45,7 @@ public class Main extends Application {
         //Review provRev = Review.getReviewsByGame(prova).get(0);
         //prova.update();
 
-        long startTime, stopTime;
+        //long startTime, stopTime;
 
         //String[] genresArray = {"", "Action", "Adventure", "Animation & Modeling", "Arcade", "Audio Production", "Building", "Casual", "Chess", "Combat", "Comedy", "Design & Illustration", "Detective-mystery", "Early Access", "Economic", "Education", "Educational", "Espionage", "Exploration", "FPP", "Fantasy", "Fighting", "Free to Play", "Game Development", "Gore", "Hidden Object", "Historical", "Horror", "Indie", "JRPG", "Managerial", "Massively Multiplayer", "Metroidvania", "Modern", "Mystery", "Narrative", "Naval", "Off-road", "Open World", "Photo Editing", "Pinball", "Platformer", "Point-and-click", "Programming", "Puzzle", "RPG", "Racing", "Rally", "Real-time", "Roguelike", "Role-playing", "Sandbox", "Sci-fi", "Sexual Content", "Shooter", "Simulation", "Soccer", "Software Training", "Sports", "Stealth", "Strategy", "Survival", "TPP", "Tactical", "Team sport", "Touring", "Turn-based", "Utilities", "Video Production", "Violent", "Virtual life", "Visual Novel", "Web Publishing"};
 
@@ -69,12 +70,11 @@ public class Main extends Application {
     public void stop(){
 
         // close connections
-        //utils.MongoDriver mongoDriver = utils.MongoDriver.getInstance();
-        //utils.Neo4jDriver neoDriver = utils.Neo4jDriver.getInstance();
+        MongoDriver mongoDriver = MongoDriver.getInstance();
+        Neo4jDriver neoDriver = Neo4jDriver.getInstance();
 
-        //mongoDriver.close();
-        //neoDriver.close();
-
+        mongoDriver.close();
+        neoDriver.close();
 
     }
 

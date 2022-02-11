@@ -11,8 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Game;
-
-import org.controlsfx.control.CheckComboBox;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.time.LocalDate;

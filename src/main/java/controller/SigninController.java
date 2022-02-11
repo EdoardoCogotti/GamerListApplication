@@ -9,6 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
+import org.apache.commons.codec.digest.DigestUtils;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 
@@ -28,9 +32,22 @@ public class SigninController {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
-        // TO_DO check if exist in database
+        // DONE check if exist in database ADDED
+        User u = User.getUserByName(username);
+        System.out.println("ééé: "+ u);
+        if(u == null){
+            errorLabel.setVisible(true);
+            errorLabel.setText("Username or Password incorrect");
+            return;
+        }
+        String salt = u.getSalt();
+        String hash256 = u.getSha256();
+        //Map<String, String> credentials = User.getCredentials(username);
+        //String salt = credentials.get("salt");
+        //String hash256 = credentials.get("sha256");
+        String sha256hex = DigestUtils.sha256Hex(password+salt);
 
-        if(true) {
+        if(hash256.equals(sha256hex)) {
             Session.getInstance().setLoggedUser(username);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));

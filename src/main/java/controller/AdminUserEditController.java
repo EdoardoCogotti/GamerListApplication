@@ -4,7 +4,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,16 +11,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.GamerListElement;
 import model.Review;
 import model.User;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class AdminUserEditController implements Initializable {
@@ -57,69 +54,11 @@ public class AdminUserEditController implements Initializable {
     private int currentRow;
     private String username;
 
+    private User profile;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        username = nameLabel.getText();
-
-        // TO_DO get user info from db
-        User u = new User();
-        u.setId(1);
-        u.setFirstName("Edoardo");
-        u.setLastName("Cogotti");
-        u.setGender("male");
-        u.setCountry("Italy");
-        u.setEmail("edoardocogotti@libero.it");
-        u.setPhone("3331234567");
-        u.setBirthday(LocalDate.now());
-        u.setRegistered(LocalDate.now());
-
-        int id = u.getId();
-        firstNameValue.setText(u.getFirstName());
-        genderValue.setText(u.getGender());
-        countryValue.setText(u.getCountry());
-        registrationValue.setText(u.getRegistered().toString());
-        lastNameValue.setText(u.getLastName());
-        emailValue.setText(u.getEmail());
-        phoneValue.setText(u.getPhone());
-        birthdayValue.setText(u.getBirthday().toString());
-
-        //TO_DO find gamelist from db
-        for(int i=0; i<30; i++){
-            GamerListElement g = new GamerListElement();
-            g.setName("Peggle 3");
-            g.setDeveloper("Bandai");
-            g.setPublisher("Bandai");
-            gameList.add(g);
-        }
-
-        gameName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        developerName.setCellValueFactory(new PropertyValueFactory<>("Developer"));
-        publisherName.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
-
-        tbGameData.setItems(gameList);
-
-        tbReviewData.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-
-                currentReview = tbReviewData.getSelectionModel().getSelectedItem();
-                currentRow = tbReviewData.getSelectionModel().getSelectedIndex();
-            }
-        });
-
-        for(int i=0; i<100; i++){
-            Review r = new Review();
-            r.setUsername(username);
-            r.setGamename("Peggle");
-            r.setContent(i+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dignissim massa eget augue sollicitudin, sit amet tempus ex volutpat. Quisque in tellus et purus tempus ultrices in ut leo. Proin ac viverra tortor. Etiam at arcu vel turpis ullamcorper eleifend. Fusce sit amet nunc in eros sodales vestibulum id eu elit. Phasellus vestibulum tortor eu eros blandit ullamcorper. Nunc bibendum tristique tortor a condimentum. Morbi tristique finibus turpis, vitae ullamcorper dui accumsan nec. Phasellus scelerisque leo in arcu hendrerit facilisis. Nam eget mauris facilisis justo convallis ullamcorper vel id felis. Vivamus ut faucibus massa. Mauris quis cursus sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus" );
-            reviewList.add(r);
-        }
-
-        reviewGameName.setCellValueFactory(new PropertyValueFactory<>("Gamename"));
-        reviewContentName.setCellValueFactory(new PropertyValueFactory<>("Content"));
-
-        tbReviewData.setItems(reviewList);
 
     }
 
@@ -131,7 +70,10 @@ public class AdminUserEditController implements Initializable {
     }
 
     public void deleteUser(){
-        //TO_DO Delete User
+        //DONE Delete User
+        //System.out.println("cerco di eliminare l'account di " + username);
+        //User u = User.getUserByName(username);
+        profile.delete();
 
         try {
             switchToSearchUser();
@@ -171,5 +113,76 @@ public class AdminUserEditController implements Initializable {
 
     public void displayInfo(String username){
         nameLabel.setText(username);
+        username = nameLabel.getText();
+
+        // DONE get user info from db
+        profile = User.getUserByName(username);
+
+        /*
+        User profile = new User();
+        //profile.setId(1);
+        profile.setFirstName("Edoardo");
+        profile.setLastName("Cogotti");
+        profile.setGender("male");
+        profile.setCountry("Italy");
+        profile.setEmail("edoardocogotti@libero.it");
+        profile.setPhone("3331234567");
+        profile.setBirthday(LocalDate.now());
+        profile.setRegistered(LocalDate.now());
+        */
+
+        //int id = profile.getId();
+        firstNameValue.setText(profile.getFirstName());
+        genderValue.setText(profile.getGender());
+        countryValue.setText(profile.getCountry());
+        registrationValue.setText(profile.getRegistered().toString());
+        lastNameValue.setText(profile.getLastName());
+        emailValue.setText(profile.getEmail());
+        phoneValue.setText(profile.getPhone());
+        birthdayValue.setText(profile.getBirthday().toString());
+
+        //DONE find gamelist from db
+        for(GamerListElement gle: profile.getGamerList()){
+            gameList.add(gle);
+        }
+        /*for(int i=0; i<30; i++){
+            GamerListElement g = new GamerListElement();
+            g.setName("Peggle 3");
+            g.setDeveloper("Bandai");
+            g.setPublisher("Bandai");
+            gameList.add(g);
+        }*/
+
+        gameName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        developerName.setCellValueFactory(new PropertyValueFactory<>("Developer"));
+        publisherName.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
+
+        tbGameData.setItems(gameList);
+
+        tbReviewData.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+
+                currentReview = tbReviewData.getSelectionModel().getSelectedItem();
+                currentRow = tbReviewData.getSelectionModel().getSelectedIndex();
+            }
+        });
+
+        for(Review r: Review.getReviewsByUser(username))
+            reviewList.add(r);
+        /*
+        for(int i=0; i<100; i++){
+            Review r = new Review();
+            r.setUsername(username);
+            r.setGamename("Peggle");
+            r.setContent(i+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dignissim massa eget augue sollicitudin, sit amet tempus ex volutpat. Quisque in tellus et purus tempus ultrices in ut leo. Proin ac viverra tortor. Etiam at arcu vel turpis ullamcorper eleifend. Fusce sit amet nunc in eros sodales vestibulum id eu elit. Phasellus vestibulum tortor eu eros blandit ullamcorper. Nunc bibendum tristique tortor a condimentum. Morbi tristique finibus turpis, vitae ullamcorper dui accumsan nec. Phasellus scelerisque leo in arcu hendrerit facilisis. Nam eget mauris facilisis justo convallis ullamcorper vel id felis. Vivamus ut faucibus massa. Mauris quis cursus sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus" );
+            reviewList.add(r);
+        }*/
+
+        reviewGameName.setCellValueFactory(new PropertyValueFactory<>("Gamename"));
+        reviewContentName.setCellValueFactory(new PropertyValueFactory<>("Content"));
+
+        tbReviewData.setItems(reviewList);
+
     }
 }

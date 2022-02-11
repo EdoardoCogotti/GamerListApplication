@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import model.Review;
+import utils.Session;
 
 import java.io.IOException;
 import java.net.URL;

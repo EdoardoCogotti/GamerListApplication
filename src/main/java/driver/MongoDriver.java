@@ -1,4 +1,4 @@
-package utils;
+package driver;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;

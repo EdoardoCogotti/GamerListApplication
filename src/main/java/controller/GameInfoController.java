@@ -1,33 +1,20 @@
 package controller;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.util.Callback;
 import model.Game;
+import model.GamerListElement;
 import model.Review;
-import org.controlsfx.control.GridCell;
 import org.controlsfx.control.GridView;
-import org.controlsfx.control.PopOver;
-import org.controlsfx.control.cell.ColorGridCell;
-import org.json.JSONObject;
+import utils.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -443,8 +429,8 @@ public class GameInfoController implements Initializable {
             deleteButton.setVisible(false);
             deleteButton.setManaged(false);
 
-            //TO_DO check if game in user gamerlist
-            inGamelist = true;
+            //DONE check if game in user gamerlist
+            inGamelist = Session.getInstance().getLoggedUser().searchInGameList(game.getName()); //true;
             if (inGamelist)
                 gamelistButton.setText("REMOVE FROM GAMELIST");
             else
@@ -465,7 +451,7 @@ public class GameInfoController implements Initializable {
         try {
             FXMLLoader loader_review = new FXMLLoader();
             AnchorPane anchorPane;
-            //TO_DO Must initialize the review with the currently selected one
+            //DONE Must initialize the review with the currently selected one
             if (reviewed) {
                 loader_review.setLocation(getClass().getResource("/MyReview.fxml"));
                 anchorPane = loader_review.load();
@@ -491,12 +477,19 @@ public class GameInfoController implements Initializable {
         if(inGamelist){
             inGamelist=false;
             gamelistButton.setText("ADD IN GAMELIST");
-            //TO_DO remove from gamelist
+            //DONE remove from gamelist
+
+            //GamerListElement gle = new GamerListElement(gameValue.getText(), publisherValue.getText(), developerValue.getText(), 666);
+            //Session.getInstance().getLoggedUser().removeFromGamerList(gle);
+            Session.getInstance().getLoggedUser().removeFromGamerList(gameValue.getText());
         }
         else{
             inGamelist=true;
             gamelistButton.setText("REMOVE FROM GAMELIST");
-            //TO_DO insert in gamelist
+
+            //DONE insert in gamelist
+            GamerListElement gle = new GamerListElement(gameValue.getText(), publisherValue.getText(), developerValue.getText(), 666);
+            Session.getInstance().getLoggedUser().insertInGamelist(gle);
         }
     }
 

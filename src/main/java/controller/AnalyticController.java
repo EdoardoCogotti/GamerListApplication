@@ -3,15 +3,12 @@ package controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
@@ -20,12 +17,10 @@ import javafx.scene.input.MouseEvent;
 import model.Game;
 import model.Review;
 import org.bson.Document;
+import utils.Session;
 
-import javax.print.Doc;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +49,7 @@ public class AnalyticController implements Initializable {
         if(session.getPercentile()!=-1)
             percentile=session.getPercentile();
         else {
-            percentile = Review.getRankingPosition(username);
+            percentile = Review.getRankingPosition(username, "avg");
             session.setPercentile(percentile);
         }
         userRankValue.setText(percentile+"%");

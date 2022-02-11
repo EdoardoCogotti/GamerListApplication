@@ -1,15 +1,10 @@
 package model;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 
@@ -27,7 +22,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import utils.MongoDriver;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.Result;
+import org.neo4j.driver.Session;
+import org.neo4j.driver.TransactionWork;
+import driver.MongoDriver;
+import driver.Neo4jDriver;
 
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
@@ -35,6 +35,7 @@ import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
+import static org.neo4j.driver.Values.parameters;
 
 public class Game {
 
@@ -788,5 +789,63 @@ public class Game {
         }
         catch(Exception e){e.printStackTrace();}
         return null;
+    }
+
+    // METODI NEO4J
+    //questa funzione aggiunge un gioco al graph
+    public static void addGameToGraph( final Game game)
+    {
+        try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
+        {
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run( "MERGE (p:Game {name: $N})",
+                        parameters( "N", game.getName()));
+                int i = 0;
+                for(String val : game.getGenres()) {
+                    if (i == 0) {
+                        tx.run("MERGE (p:Game {name: $N}) \n" +
+                                        "SET p.genre = [$G] \n",
+                                parameters("N", game.getName(), "G", val));
+                        i++;
+                    } else {
+                        tx.run("MERGE (p:Game {name: $N}) \n" +
+                                        "SET p.genre = [$G] + p.genre",
+                                parameters("N", game.getName(), "G", val));
+                        i++;
+                    }
+                }
+
+                return null;
+            });
+        }
+    }
+
+    //questa funzione, per un utente, stampa i giochi con più recensioni positive dai suoi following
+    public static List<String> bestGamesByFollowing(final String user) {
+
+        List<String> suggested = new ArrayList<>();
+        try ( Session session = Neo4jDriver.getInstance().getDriver().session())
+        {
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                Result positiveRev = tx.run(
+                        "MATCH (a:User)-[:FOLLOWING]-(user)-[r:HAS_REVIEWED]-(game)\n" +
+                                "WHERE a.username = $A " +
+                                "AND r.positive = true\n" +
+                                "AND NOT (a)-[:HAS_PLAYED]-(game)\n" +
+                                "RETURN game.name as name, count(*) as occurrences\n" +
+                                "ORDER BY occurrences DESC\n" +
+                                "LIMIT 3",
+                        parameters( "A", user));
+                while(positiveRev.hasNext()) {
+                    Record record = positiveRev.next();
+                    suggested.add(record.get("name").asString());
+                    System.out.println("Reviewed game: ");
+                    System.out.println(record.get("name").asString());
+                    System.out.println(record.get("occurrences").asInt());
+                }
+                return null;
+            });
+        }
+        return suggested;
     }
 }

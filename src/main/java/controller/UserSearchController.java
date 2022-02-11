@@ -17,9 +17,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserSearchController implements Initializable {
@@ -40,11 +44,15 @@ public class UserSearchController implements Initializable {
 
         user.clear();
 
-        // TO_DO search users in db
+        // DONE search users in db
         String searchedString = searchBar.getText();
 
-        for(String u : users)
-            user.add(u);
+        List<User> userlist = User.getUsersByNamePart(searchedString);
+        for(User u : userlist) {
+            user.add(u.getUsername());
+        }
+        /*for(String u : users)
+            user.add(u);*/
 
         userList.setItems(user);
     }

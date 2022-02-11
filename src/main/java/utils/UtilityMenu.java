@@ -1,25 +1,17 @@
-package controller;
+package utils;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.MenuBar;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.security.cert.PolicyNode;
 
 public class UtilityMenu {
 
     private Parent menu;
     private static UtilityMenu utilityMenu;
+    private static boolean usable;
 
     private UtilityMenu() {
         try{
@@ -35,8 +27,10 @@ public class UtilityMenu {
     }
 
     public static UtilityMenu getInstance(){
-        if(utilityMenu==null)
+        if(utilityMenu==null || !usable) {
             utilityMenu = new UtilityMenu();
+            usable = true;
+        }
         return utilityMenu;
     }
 
@@ -52,6 +46,10 @@ public class UtilityMenu {
         //System.out.println(width);
         ((AnchorPane) menu).setPrefWidth(width);
                 //prefWidthProperty().bind(stage.widthProperty());
+    }
+
+    public static void logout(){
+        usable=false;
     }
 
 }

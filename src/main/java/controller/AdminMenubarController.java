@@ -2,11 +2,12 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 
@@ -103,6 +104,7 @@ public class AdminMenubarController {
 
     public void switchToSignin() throws IOException{
         Session.getInstance().logout();
+        UtilityMenu.getInstance().logout();
 
         Parent root = FXMLLoader.load(getClass().getResource("/SigninScene.fxml"));
         stage = (Stage) (profileMenuBar.getScene().getWindow()); // MenuItem isn't child of Node class, use FXML injection

@@ -1,4 +1,4 @@
-package utils;
+package driver;
 
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
@@ -10,7 +10,7 @@ public class Neo4jDriver {
     private final Driver driver;
 
     private Neo4jDriver() {
-        driver = GraphDatabase.driver("neo4j://localhost:7687", AuthTokens.basic("username", "password"));
+        driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "root"));
     }
 
     // singleton Pattern

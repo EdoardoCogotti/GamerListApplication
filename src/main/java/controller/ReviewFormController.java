@@ -2,18 +2,15 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import model.Game;
 import model.Review;
-import org.neo4j.driver.internal.InternalPath;
+import utils.Session;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 public class ReviewFormController {
 

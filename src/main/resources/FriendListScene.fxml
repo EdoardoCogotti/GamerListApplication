@@ -31,9 +31,7 @@
                <children>
                   <TableView fx:id="tbFollowingData" maxWidth="500.0" minWidth="500.0" prefHeight="506.0" prefWidth="500.0">
                     <columns>
-                      <TableColumn fx:id="userName" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Name" />
-                        <TableColumn fx:id="firstNameValue" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="FirstName" />
-                      <TableColumn fx:id="genderValue" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Gender" />
+                      <TableColumn fx:id="userName" editable="false" maxWidth="250.0" minWidth="375.0" prefWidth="250.0" resizable="false" text="Name" />
                         <TableColumn fx:id="actionCol" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text=" " />
                     </columns>
                      <HBox.margin>
@@ -42,9 +40,7 @@
                   </TableView>
                   <TableView fx:id="tbFollowerData" maxWidth="500.0" minWidth="374.0" prefHeight="486.0" prefWidth="374.0">
                      <columns>
-                        <TableColumn fx:id="userNameFollower" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Name" />
-                        <TableColumn fx:id="firstNameValueFollower" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="FirstName" />
-                        <TableColumn fx:id="genderValueFollower" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Gender" />
+                        <TableColumn fx:id="userNameFollower" editable="false" maxWidth="125.0" minWidth="375.0" prefWidth="125.0" resizable="false" text="Name" />
                      </columns>
                      <HBox.margin>
                         <Insets bottom="20.0" left="10.0" right="20.0" />

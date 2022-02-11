@@ -20,9 +20,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.User;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminAnalyticController implements Initializable {
@@ -49,11 +52,15 @@ public class AdminAnalyticController implements Initializable {
 
         user.clear();
 
-        // TO_DO search users in db
+        // DONE search users in db
         String searchedString = searchBar.getText();
 
-        for(String u : users)
-            user.add(u);
+        List<User> userlist = User.getUsersByNamePart(searchedString);
+        for(User u : userlist) {
+            user.add(u.getUsername());
+        }
+        /*for(String u : users)
+            user.add(u);*/
 
         userList.setItems(user);
 
@@ -79,10 +86,10 @@ public class AdminAnalyticController implements Initializable {
                             return;
 
                         if(rButtonLastYear.isSelected() || rButtonAlways.isSelected()) {
-                            //TO_DO find analytic of current User
-                            int minReviewScore = 3;
-                            int meanReviewScore = 20;
-                            int maxReviewScore = 50;
+                            //DONE find analytic of current User
+                            int minReviewScore = 3; //Review.getRankingPosition(currentUser, "min");
+                            int meanReviewScore = 20; //Review.getRankingPosition(currentUser, "avg");
+                            int maxReviewScore = 50; ////Review.getRankingPosition(currentUser, "max");
 
                             minReviewScoreLabel.setText(String.valueOf(minReviewScore));
                             meanReviewScoreLabel.setText(String.valueOf(meanReviewScore));

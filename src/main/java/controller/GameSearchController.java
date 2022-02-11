@@ -18,7 +18,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Game;
-import model.User;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;

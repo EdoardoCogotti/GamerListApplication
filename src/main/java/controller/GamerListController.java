@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import model.GamerListElement;
+import utils.Session;
+import utils.UtilityMenu;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,8 +46,12 @@ public class GamerListController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //TO_DO find gamelist from db
+        //DONE find gamelist from db
+        for(GamerListElement g: Session.getInstance().getLoggedUser().getGamerList()){
+            gameList.add(g);
+        }
 
+        /*
         for(int i=0; i<50; i++){
             GamerListElement g = new GamerListElement();
             g.setName("Peggle 3");
@@ -53,7 +59,7 @@ public class GamerListController implements Initializable {
             g.setPublisher("Bandai");
             g.setFriendsCount(5);
             gameList.add(g);
-        }
+        }*/
 
         gameName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         developerName.setCellValueFactory(new PropertyValueFactory<>("Developer"));
@@ -101,18 +107,20 @@ public class GamerListController implements Initializable {
                                     setText(null);
                                 } else {
                                     btn.setOnAction(event -> {
-                                        GamerListElement g = getTableView().getItems().get(getIndex());
+                                        GamerListElement gle = getTableView().getItems().get(getIndex());
                                         if(added){
                                             System.out.println("REMOVED");
                                             added=false;
                                             btn.setText("ADD");
-                                            // TO_DO remove in db
+                                            // DONE remove in db
+                                            Session.getInstance().getLoggedUser().removeFromGamerList(gle);
                                         }
                                         else{
                                             System.out.println("ADDED");
                                             added=true;
                                             btn.setText("REMOVE");
-                                            // TO_DO add in gamelist
+                                            // DONE add in gamelist
+                                            Session.getInstance().getLoggedUser().insertInGamelist(gle);
                                         }
                                     });
                                     setGraphic(btn);
