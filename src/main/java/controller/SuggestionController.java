@@ -10,10 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Game;
 import model.User;
 import utils.Session;
@@ -29,11 +32,9 @@ public class SuggestionController implements Initializable {
     @FXML
     private ListView<String> gameList, userList;
 
-    private String[] games = {"Layton", "Dark Souls", "Peggle", "Pokemon"};
-    private ObservableList game = FXCollections.observableArrayList();
+    private ObservableList<String> game = FXCollections.observableArrayList();
     private String currentGame;
-    private String[] users = {"Edo97", "Fra97", "Anna97"};
-    private ObservableList user = FXCollections.observableArrayList();
+    private ObservableList<String> user = FXCollections.observableArrayList();
     private String currentUser;
     private Scene scene;
     private Stage stage;
@@ -82,15 +83,11 @@ public class SuggestionController implements Initializable {
     public void fillRecommendGames(){
         game.clear();
 
-        // DONE find recommended games TOCHANGE
+        // DONE find recommended games
         List<String> recommended = Game.bestGamesByFollowing(Session.getInstance().getLoggedUser().getUsername());
         for(String g: recommended ){
             game.add(g);
         }
-
-        /*for(String g : games) {
-            game.add(g);
-        }*/
 
         gameList.setItems(game);
     }
@@ -99,15 +96,12 @@ public class SuggestionController implements Initializable {
     public void fillRecommendUsers(){
         user.clear();
 
-        // DONE find recommended users TOCHANGE
+        // find recommended users
         List<String> recommended = User.followedByFollowedSameGenre(Session.getInstance().getLoggedUser().getUsername());
         for(String u: recommended ){
             user.add(u);
         }
 
-        /*for(String u : users) {
-            user.add(u);
-        }*/
         userList.setItems(user);
     }
 

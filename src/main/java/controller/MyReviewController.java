@@ -25,8 +25,6 @@ public class MyReviewController implements Initializable {
 
         Review review = Review.get(gameName, username);
 
-        //System.out.println(contentReview.getText());
-        //System.out.println(review.getContent());
         //If a review was already made, display it
         if(review != null){
             contentReview.setText(review.getContent());
@@ -45,7 +43,7 @@ public class MyReviewController implements Initializable {
     }
 
     public void deleteMyReview() throws IOException {
-        // DONE FRA delete review in db
+        // delete review in db
         String username = Session.getInstance().getLoggedUser().getUsername();
         String gameName = Session.getInstance().getCurrentGame().getName();
 

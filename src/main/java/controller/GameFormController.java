@@ -39,16 +39,22 @@ public class GameFormController implements Initializable {
     @FXML
     private Label errorLabel;
 
-    private final String[] gameDetails = {"single_player", "multi_player", "controller_support", "coop", "cloud_saves", "achievements"};
+    private final String[] gameDetails = {"single_player", "multi_player", "controller_support", "coop", "cloud_saves", "achievement"};
     private final String[] genres =
-            //{"action", "adventure",  "card game", "fps", "indie", "platform", "puzzle", "turn-based", "fantasy", "strategy"};
-            {"action", "adventure", "animation & modeling", "arcade", "audio production", "building", "casual", "combat", "comedy",
+            {"Action", "Adventure", "Animation & Modeling", "Arcade", "Audio Production", "Building", "Casual", "Combat", "Comedy",
+                    "Design & Illustration", "Detective-mystery", "Early Access", "Economic", "Education", "Educational", "Espionage", "FPP",
+                    "Fantasy", "Fighting", "Free to Play", "Game Development", "Hidden Object", "Historical", "Horror", "Indie",  "Managerial",
+                    "Massively Multiplayer", "Metroidvania", "Modern", "Mystery", "Narrative", "Naval", "Off-road", "Open World", "Photo Editing",
+                    "Pinball", "Platformer", "Point-and-click",  "Puzzle", "RPG", "Racing", "Rally", "Real-time", "Roguelike", "Role-playing",
+                    "Sandbox", "Sci-fi",  "Shooter", "Simulation", "Soccer", "Software Training", "Sports", "Stealth", "Strategy", "Survival",
+                    "TPP", "Tactical", "Turn-based", "Utilities", "Video Production", "Virtual Life", "Visual Novel", "Web Publishing"};
+            /*{"action", "adventure", "animation & modeling", "arcade", "audio production", "building", "casual", "combat", "comedy",
             "design & illustration", "detective-mystery", "early access", "economic", "education", "educational", "espionage", "fpp",
             "fantasy", "fighting", "free to play", "game development", "hidden object", "historical", "horror", "indie",  "managerial",
             "massively multiplayer", "metroidvania", "modern", "mystery", "narrative", "naval", "off-road", "open world", "photo editing",
             "pinball", "platformer", "point-and-click",  "puzzle", "rpg", "racing", "rally", "real-time", "roguelike", "role-playing",
             "sandbox", "sci-fi",  "shooter", "simulation", "soccer", "software training", "sports", "stealth", "strategy", "survival",
-            "tpp", "tactical", "turn-based", "utilities", "video production", "virtual life", "visual novel", "web publishing"};
+            "tpp", "tactical", "turn-based", "utilities", "video production", "virtual life", "visual novel", "web publishing"};*/
 
     private final String[] languages = {"english", "italian", "spanish", "french", "chinese", "japanese", "german",
             "spanish - spain", "simplified chinese", "traditional chinese", "korean", "polish", "portuguese",
@@ -239,7 +245,7 @@ public class GameFormController implements Initializable {
         newGameFlag = false;
 
         gamename = name;
-        //GET INFO FROM DB
+        //get game info from db
         Game game = Game.getGamesByNamePart(gamename).get(0);
 
         /*PLACEHOLDERS*/
@@ -258,13 +264,9 @@ public class GameFormController implements Initializable {
         ArrayList<String> gameDetailsCheck = new ArrayList<String>();
         while (x.hasNext()){
             String key = (String) x.next();
-            //System.out.println(details.get(key));
             if(details.get(key).toString().equals("true"))
                 gameDetailsCheck.add(key);
         }
-
-        //String[] gameDetailsCheck =  ;
-        
 
         gamenameTextField.setText(gamename);
         publisherTextField.setText(publisher);
@@ -277,16 +279,22 @@ public class GameFormController implements Initializable {
         ratingTextField.setText(rating);
         releaseDatePicker.setValue(releaseDate);
         achievementsTextField.setText(String.valueOf(achievements));
-        for(String s: gameDetailsCheck)
+        for(String s: gameDetailsCheck) {
             checkComboBoxGameDetails.getCheckModel().toggleCheckState(s);
+        }
         for(String s: genresCheck) {
-            //System.out.println(s);
-            checkComboBoxGenres.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
+            checkComboBoxGenres.getCheckModel().toggleCheckState(s);
+            //checkComboBoxGenres.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
         }
         for(String s: languagesCheck){
-            //System.out.println(s);
-            checkComboBoxLanguages.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
+            checkComboBoxLanguages.getCheckModel().toggleCheckState(s);
+            //checkComboBoxLanguages.getCheckModel().toggleCheckState(s.toLowerCase(Locale.ROOT));
         }
+
+        //allow disabled text fields
+        gamenameTextField.setDisable(true);
+        rButtonGog.setDisable(true);
+        rButtonSteam.setDisable(true);
     }
 
 }

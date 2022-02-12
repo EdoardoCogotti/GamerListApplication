@@ -29,10 +29,12 @@
 
 .list-view .list-cell{
     -fx-pref-height: 60;
+    -fx-pref-width: 350;
     -fx-alignment: center;
     -fx-text-alignment: CENTER;
     -fx-font-size: 16;
     -fx-font-family: "Lucida Console";
+    -fx-wrap-text: true;
 }
 
 .list-view .list-cell:even {

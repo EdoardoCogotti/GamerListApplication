@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-//Serve per fare le analytics
+//Class used to improve some analytics
 public class ReviewCompact {
 
     //General parameters

@@ -24,7 +24,6 @@ public class UserProfileController {
     @FXML
     private Button followButton;
 
-    private int id;
     private boolean followed;
 
     User profile;
@@ -39,23 +38,15 @@ public class UserProfileController {
             username = username.substring(0, 10) + "...";
         nameLabel.setText(username);
 
-        // DONE get user info from db
-        profile = User.getUserByName(username);
+        // get user info from db in needed
+        if(!myProfile)
+            profile = User.getUserByName(username);
+        else
+            profile = Session.getInstance().getLoggedUser();
 
-        /*User profile = new User();
-        profile.setId(1);
-        profile.setFirstName("Edoardo");
-        profile.setLastName("Cogotti");
-        profile.setGender("male");
-        profile.setCountry("Italy");
-        profile.setEmail("edoardocogotti@libero.it");
-        profile.setPhone("3331234567");
-        profile.setBirthday(LocalDate.now());
-        profile.setRegistered(LocalDate.now());*/
-
-        // DONE check if already follower TOCHANGE
+        // check if already follower
         if(!myProfile) {
-            followed = Session.getInstance().getLoggedUser().searchInFollowing(profile); //true;
+            followed = Session.getInstance().getLoggedUser().searchInFollowing(profile);
             System.out.println("followed " + followed);
 
             followBox.setVisible(true);
@@ -70,7 +61,6 @@ public class UserProfileController {
             followBox.setManaged(false);
         }
 
-        //id = profile.getId();
         firstNameValue.setText(profile.getFirstName());
         genderValue.setText(profile.getGender());
         countryValue.setText(profile.getCountry());
@@ -101,18 +91,15 @@ public class UserProfileController {
         if(!followed) {
             followed = true;
             followButton.setText("UNFOLLOW");
-            //Session.getInstance().getLoggedUser().unfollowUser(profile);
+            // delete follow in graph db
             User.addFollow(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
-            // DONE delete follow in graph db
         }
         else {
             followed = false;
             followButton.setText("FOLLOW");
-            //Session.getInstance().getLoggedUser().followUser(profile);
+            // insert follow in graph db
             User.unfollowUser(Session.getInstance().getLoggedUser().getUsername(),profile.getUsername());
-            // DONE insert follow in graph db
         }
     }
-
 
 }

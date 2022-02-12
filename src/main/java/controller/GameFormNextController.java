@@ -29,7 +29,7 @@ public class GameFormNextController {
     private TextField windowsTextField, linuxTextField, macTextField;
 
     @FXML
-    private TextField sizeTextField, ratingTextField;
+    private TextField sizeTextField;
     @FXML
     private CheckBox inDevelopmentCheckBox;
 
@@ -104,11 +104,11 @@ public class GameFormNextController {
             );
 
         if(newGameFlag) {
-            //DONE add new game in db
+            // add new game in db
             newGame.insert();
         }
         else{
-            //DONE UPDATE GAME
+            // update game
             String gameName = Session.getInstance().getCurrentGame().getName();
             Game gameToUpdate = Game.getGamesByNamePart(gameName).get(0);
             newGame.setId(gameToUpdate.getId());
@@ -227,7 +227,7 @@ public class GameFormNextController {
 
     public void loadFields(String gameName){
         newGameFlag = false;
-        //GET INFO FROM DB
+        //get game info from
         Game game = Game.getGamesByNamePart(gameName).get(0);
 
         if(store.equals("Steam")){

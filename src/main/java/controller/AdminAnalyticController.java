@@ -20,6 +20,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.Review;
 import model.User;
 import utils.UtilityMenu;
 
@@ -41,7 +42,6 @@ public class AdminAnalyticController implements Initializable {
     @FXML
     private HBox statHBox;
 
-    private String[] users = {"Mike98", "Raven86", "Sabaku88", "Cydonia", "Edoardo97", "Beba01", "Francesco97", "Anna97"};
     private ObservableList user = FXCollections.observableArrayList();
     private String currentUser;
 
@@ -52,15 +52,13 @@ public class AdminAnalyticController implements Initializable {
 
         user.clear();
 
-        // DONE search users in db
+        // search users in db
         String searchedString = searchBar.getText();
 
         List<User> userlist = User.getUsersByNamePart(searchedString);
         for(User u : userlist) {
             user.add(u.getUsername());
         }
-        /*for(String u : users)
-            user.add(u);*/
 
         userList.setItems(user);
 
@@ -86,10 +84,10 @@ public class AdminAnalyticController implements Initializable {
                             return;
 
                         if(rButtonLastYear.isSelected() || rButtonAlways.isSelected()) {
-                            //DONE find analytic of current User
-                            int minReviewScore = 3; //Review.getRankingPosition(currentUser, "min");
-                            int meanReviewScore = 20; //Review.getRankingPosition(currentUser, "avg");
-                            int maxReviewScore = 50; ////Review.getRankingPosition(currentUser, "max");
+                            //TODO find analytic of current User
+                            int minReviewScore = Review.getRankingPosition(currentUser, "min");
+                            int meanReviewScore = Review.getRankingPosition(currentUser, "avg");
+                            int maxReviewScore = Review.getRankingPosition(currentUser, "max");
 
                             minReviewScoreLabel.setText(String.valueOf(minReviewScore));
                             meanReviewScoreLabel.setText(String.valueOf(meanReviewScore));

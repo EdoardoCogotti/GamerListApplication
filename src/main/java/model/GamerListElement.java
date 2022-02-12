@@ -2,7 +2,6 @@ package model;
 
 public class GamerListElement {
 
-    // fields
     private String name;
     private String publisher;
     private String developer;

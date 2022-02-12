@@ -20,6 +20,14 @@ public final class Session {
         return session;
     }
 
+    public void setLoggedUser(User u) {
+        if(session != null) {
+            session.loggedUser = u;
+        } else {
+            throw new RuntimeException("You have to call getInstance once");
+        }
+    }
+
     public void setLoggedUser(String nickname) {
         if(session != null) {
             session.loggedUser = new User(nickname);

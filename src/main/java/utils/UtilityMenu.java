@@ -43,9 +43,7 @@ public class UtilityMenu {
 
     public void bind(Parent newRoot){
         double width = ((BorderPane)newRoot).getWidth();
-        //System.out.println(width);
         ((AnchorPane) menu).setPrefWidth(width);
-                //prefWidthProperty().bind(stage.widthProperty());
     }
 
     public static void logout(){

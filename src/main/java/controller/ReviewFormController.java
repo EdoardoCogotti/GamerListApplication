@@ -27,13 +27,12 @@ public class ReviewFormController {
         String gameName = Session.getInstance().getCurrentGame().getName();
 
         if(editFlag){
-            //DONE update my review in db
+            //update my review in db
             Review review = Review.get(gameName, username);
             review.setContent(content);
             review.update();
         }else{
-            // DONE FRA add my review in db
-            System.out.print("ADD REVIEW :" + username + " " + gameName + " " + content);
+            // add my review in db
             Review review = new Review(
                     gameName,
                     username,
@@ -42,7 +41,6 @@ public class ReviewFormController {
                     content,
                     0
             );
-            System.out.println(gameName);
             review.insert(Game.getGamesByNamePart(gameName).get(0));
         }
 

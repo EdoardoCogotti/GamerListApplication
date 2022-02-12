@@ -17,6 +17,7 @@ import org.neo4j.driver.Session;
 import org.neo4j.driver.TransactionWork;
 import driver.MongoDriver;
 import driver.Neo4jDriver;
+import utils.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -203,6 +206,11 @@ public class Review {
                 this.positive
         ));
         game.update();
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "Insert review" + id + " in MongoDB");
+
+        addReview(this.username, this.gamename, this.positive);
+        logger.log(Level.INFO, "Insert review" + id + " in Neo4j");
     }
 
     public static Review get(String gamename, String username){
@@ -239,7 +247,7 @@ public class Review {
             throw new RuntimeException("ERROR: you are trying to update a review that isn't in the MongoDB");
         }
 
-        //TODO: insert info in the graphDB if needed
+        //DONE insert info in the graphDB if needed
     }
 
     public void delete(){
@@ -258,6 +266,11 @@ public class Review {
         Game game = Game.getGamesByNamePart(this.gamename).get(0);
         game.deleteReview(this.username);
         game.update();
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "delete review" + id + " from MongoDB");
+
+        removeReview(this.username, this.gamename);
+        logger.log(Level.INFO, "delete review" + id + " from Neo4j");
     }
 
     public Document toDocument(){
@@ -391,19 +404,14 @@ public class Review {
 
         try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
         {
-            String reviewType;
-            if(review)
-                reviewType = "Positive";
-            else reviewType = "Negative";
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 tx.run(
                         "MATCH\n" +
                                 "  (a:User),\n" +
                                 "  (b:Game)\n" +
                                 "WHERE a.username = $A AND b.name = $B\n" +
-                                "MERGE (a)-[r:HAS_REVIEWED {type: $C}]->(b)\n" +
-                                "RETURN type(r)",
-                        parameters( "A", user, "B", game, "C", reviewType));
+                                "MERGE (a)-[r:HAS_REVIEWED {type: $C}]->(b)" ,
+                        parameters( "A", user, "B", game, "C", review));
                 return null;
             });
         }

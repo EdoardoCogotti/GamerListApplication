@@ -30,9 +30,9 @@ public class FriendListController implements Initializable {
     @FXML
     private TableView<User> tbFollowerData, tbFollowingData;
     @FXML
-    public TableColumn<User, String> userName, actionCol; // firstNameValue, genderValue,;
+    public TableColumn<User, String> userName, actionCol;
     @FXML
-    public TableColumn<User, String> userNameFollower; //, firstNameValueFollower, genderValueFollower;
+    public TableColumn<User, String> userNameFollower;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
@@ -42,34 +42,19 @@ public class FriendListController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //DONE find follower and following users from db
-        //System.out.println("***: " + Session.getInstance().getLoggedUser().getFollowed().size());
-        //for(String s : Session.getInstance().getLoggedUser().getFollowed()){
+        //find follower and following users from db
         for(String s : User.getFollowedList(Session.getInstance().getLoggedUser().getUsername())){
             User u = User.getUserByName(s);
             followerList.add(u);
         }
-        //for(String s : Session.getInstance().getLoggedUser().getFollowing()){
         for(String s : User.getFollowingList(Session.getInstance().getLoggedUser().getUsername())){
             User u = User.getUserByName(s);
             followingList.add(u);
         }
 
-        /*for(int i=0; i<30; i++){
-            User u = new User();
-            u.setUsername("Bea01");
-            u.setFirstName("Beatrice");
-            u.setGender("female");
-            userList.add(u);
-        }*/
-
         userNameFollower.setCellValueFactory(new PropertyValueFactory<>("Username"));
-        //firstNameValueFollower.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        //genderValueFollower.setCellValueFactory(new PropertyValueFactory<>("Gender"));
 
         userName.setCellValueFactory(new PropertyValueFactory<>("Username"));
-        //firstNameValue.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        //genderValue.setCellValueFactory(new PropertyValueFactory<>("Gender"));
         actionCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
 
         Callback<TableColumn<User, String>, TableCell<User, String>> cellFactory
@@ -96,18 +81,17 @@ public class FriendListController implements Initializable {
                                             followed=false;
                                             btn.setText("FOLLOWED");
                                             User logged = Session.getInstance().getLoggedUser();
-                                            //logged.unfollowUser(u);
+                                            // delete follower relationship
                                             User.unfollowUser(logged.getUsername(),u.getUsername());
-                                            // DONE delete follower relationship
                                         }
                                         else{
                                             System.out.println("FOLLOWED");
                                             followed=true;
                                             btn.setText("UNFOLLOW");
                                             User logged = Session.getInstance().getLoggedUser();
-                                            //logged.followUser(u);
+                                            // create follower relationship
                                             User.addFollow(logged.getUsername(),u.getUsername());
-                                            // DONE create follower relationship
+
                                         }
                                     });
                                     setGraphic(btn);

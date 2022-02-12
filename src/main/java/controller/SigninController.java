@@ -32,9 +32,7 @@ public class SigninController {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
-        // DONE check if exist in database ADDED
         User u = User.getUserByName(username);
-        System.out.println("ééé: "+ u);
         if(u == null){
             errorLabel.setVisible(true);
             errorLabel.setText("Username or Password incorrect");
@@ -42,23 +40,18 @@ public class SigninController {
         }
         String salt = u.getSalt();
         String hash256 = u.getSha256();
-        //Map<String, String> credentials = User.getCredentials(username);
-        //String salt = credentials.get("salt");
-        //String hash256 = credentials.get("sha256");
         String sha256hex = DigestUtils.sha256Hex(password+salt);
 
         if(hash256.equals(sha256hex)) {
-            Session.getInstance().setLoggedUser(username);
+            Session.getInstance().setLoggedUser(u);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfileScene.fxml"));
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminAnalyticScene.fxml"));
             root = loader.load();
 
             Parent newRoot = UtilityMenu.getInstance().addMenuBox(root);
 
             UserProfileController userProfileController = loader.getController();
             userProfileController.displayInfo(username, true);
-
             stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
             UtilityMenu.getInstance().bind(newRoot);
             scene = new Scene(newRoot);
@@ -84,6 +77,4 @@ public class SigninController {
         stage.setScene(scene);
         stage.show();
     }
-
-
 }

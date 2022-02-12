@@ -47,21 +47,11 @@ public class GamerListController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //DONE find gamelist from db
+        //find gamelist from db
         for(GamerListElement g: Session.getInstance().getLoggedUser().getGamerList()){
             g.setFriendsCount(User.howManyFollowingPlayGame(Session.getInstance().getLoggedUser().getUsername(),g.getName()));
             gameList.add(g);
         }
-
-        /*
-        for(int i=0; i<50; i++){
-            GamerListElement g = new GamerListElement();
-            g.setName("Peggle 3");
-            g.setDeveloper("Bandai");
-            g.setPublisher("Bandai");
-            g.setFriendsCount(5);
-            gameList.add(g);
-        }*/
 
         gameName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         developerName.setCellValueFactory(new PropertyValueFactory<>("Developer"));
@@ -114,14 +104,14 @@ public class GamerListController implements Initializable {
                                             System.out.println("REMOVED");
                                             added=false;
                                             btn.setText("ADD");
-                                            // DONE remove in db
+                                            // remove in db
                                             Session.getInstance().getLoggedUser().removeFromGamerList(gle);
                                         }
                                         else{
                                             System.out.println("ADDED");
                                             added=true;
                                             btn.setText("REMOVE");
-                                            // DONE add in gamelist
+                                            // add in gamelist
                                             Session.getInstance().getLoggedUser().insertInGamelist(gle);
                                         }
                                     });

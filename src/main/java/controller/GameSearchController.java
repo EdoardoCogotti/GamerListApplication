@@ -32,9 +32,7 @@ public class GameSearchController implements Initializable{
     private ListView<String> gameList;
     @FXML
     private TextField searchBar;
-    
-    private String[] games = {"Layton", "Dark Souls", "Peggle", "Pokemon", "titololungo apposta per controllare lo spazio del titolo",
-            "prova2",  "prova3", "prova4", "prova1", "prova2",  "prova3", "prova4","prova1", "prova2",  "prova3", "prova4", "prova1", "prova2",  "prova3", "prova4"};
+
     private ObservableList game = FXCollections.observableArrayList();
     private String currentGame;
 

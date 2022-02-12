@@ -70,9 +70,7 @@ public class AdminUserEditController implements Initializable {
     }
 
     public void deleteUser(){
-        //DONE Delete User
-        //System.out.println("cerco di eliminare l'account di " + username);
-        //User u = User.getUserByName(username);
+        //delete User
         profile.delete();
 
         try {
@@ -115,23 +113,9 @@ public class AdminUserEditController implements Initializable {
         nameLabel.setText(username);
         username = nameLabel.getText();
 
-        // DONE get user info from db
+        // get user info from db
         profile = User.getUserByName(username);
 
-        /*
-        User profile = new User();
-        //profile.setId(1);
-        profile.setFirstName("Edoardo");
-        profile.setLastName("Cogotti");
-        profile.setGender("male");
-        profile.setCountry("Italy");
-        profile.setEmail("edoardocogotti@libero.it");
-        profile.setPhone("3331234567");
-        profile.setBirthday(LocalDate.now());
-        profile.setRegistered(LocalDate.now());
-        */
-
-        //int id = profile.getId();
         firstNameValue.setText(profile.getFirstName());
         genderValue.setText(profile.getGender());
         countryValue.setText(profile.getCountry());
@@ -141,17 +125,10 @@ public class AdminUserEditController implements Initializable {
         phoneValue.setText(profile.getPhone());
         birthdayValue.setText(profile.getBirthday().toString());
 
-        //DONE find gamelist from db
+        //find gamelist from db
         for(GamerListElement gle: profile.getGamerList()){
             gameList.add(gle);
         }
-        /*for(int i=0; i<30; i++){
-            GamerListElement g = new GamerListElement();
-            g.setName("Peggle 3");
-            g.setDeveloper("Bandai");
-            g.setPublisher("Bandai");
-            gameList.add(g);
-        }*/
 
         gameName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         developerName.setCellValueFactory(new PropertyValueFactory<>("Developer"));
@@ -170,14 +147,6 @@ public class AdminUserEditController implements Initializable {
 
         for(Review r: Review.getReviewsByUser(username))
             reviewList.add(r);
-        /*
-        for(int i=0; i<100; i++){
-            Review r = new Review();
-            r.setUsername(username);
-            r.setGamename("Peggle");
-            r.setContent(i+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dignissim massa eget augue sollicitudin, sit amet tempus ex volutpat. Quisque in tellus et purus tempus ultrices in ut leo. Proin ac viverra tortor. Etiam at arcu vel turpis ullamcorper eleifend. Fusce sit amet nunc in eros sodales vestibulum id eu elit. Phasellus vestibulum tortor eu eros blandit ullamcorper. Nunc bibendum tristique tortor a condimentum. Morbi tristique finibus turpis, vitae ullamcorper dui accumsan nec. Phasellus scelerisque leo in arcu hendrerit facilisis. Nam eget mauris facilisis justo convallis ullamcorper vel id felis. Vivamus ut faucibus massa. Mauris quis cursus sem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus" );
-            reviewList.add(r);
-        }*/
 
         reviewGameName.setCellValueFactory(new PropertyValueFactory<>("Gamename"));
         reviewContentName.setCellValueFactory(new PropertyValueFactory<>("Content"));

@@ -67,230 +67,9 @@ public class GameInfoController implements Initializable {
     private int itemCounter;
 
     private List<Review> reviews = new ArrayList<>() ;
-    private List<Review> getSteamData(){
-        List<Review> reviews = new ArrayList<>();
-
-        for(int i=0; i<13; i++){
-            Review review = new Review();
-            review.setUsername("edo");
-            review.setStore("Steam");
-            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti" +
-                    "Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti" +
-                    "Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
-            //review.setContent("Un bel giochino, davvero niente male complimenti");
-            review.setCreationDate(LocalDate.now());
-            review.setHelpful(3);
-            review.setPositive(false);
-            reviews.add(review);
-        }
-        return reviews;
-    }
-    private List<Review> getGogData(){
-        List<Review> reviews = new ArrayList<>();
-
-        for(int i=0; i<13; i++){
-            Review review = new Review();
-            review.setUsername("edo");
-            review.setStore("Gog");
-            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti"
-            + "Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
-            review.setCreationDate(LocalDate.now());
-            review.setTitle("Awesome shooter if you do the following");
-            review.setRating(3);
-            reviews.add(review);
-        }
-        return reviews;
-    }
-
-    private List<Review> getGamerListData(){
-        List<Review> reviews = new ArrayList<>();
-
-        for(int i=0; i<10; i++){
-            Review review = new Review();
-            review.setUsername("edo");
-            review.setStore("Gamerlist");
-            review.setContent("Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti"
-            +"Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti Un bel giochino, davvero niente male complimenti");
-            review.setCreationDate(LocalDate.now());
-            reviews.add(review);
-        }
-        return reviews;
-    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        /*
-        Game g = new Game();
-        g.setName("Portal 2");
-        g.setUrl("https://store.steampowered.com/app/10090/Call_of_Duty_World_at_War/");
-        g.setStore("Steam");
-        g.setDeveloper("Valve inc.");
-        g.setPublisher("Valve inc.");
-        List<String> genres = new ArrayList<>();
-        genres.add("adventure");
-        for(int i=0; i<6; i++){
-            genres.add("puzzle");
-        }
-
-        g.setGenres(genres);
-        List<String> languages = new ArrayList<>();
-        languages.add("english");
-        languages.add("spanish");
-        languages.add("italian");
-        for(int i=0; i<5; i++){
-            languages.add("japanese");
-        }
-        g.setLanguages(languages);
-        g.setSinglePlayer(true);
-        g.setMultiPlayer(false);
-        g.setCoop(false);
-        g.setControllerSupport(true);
-        g.setCloudSaves(false);
-        g.setAchievement(true);
-
-        g.setAchievement(10);
-        g.setRating("PEGI Rating: 12+ (Violence)");
-
-        g.setSize("2.5 GB");
-        g.setInDevelopment(false);
-        List<String> oses = new ArrayList<>();
-        for(int i=0; i<3; i++)
-            oses.add("Windows (7 8 10)");
-        g.setOses(oses);
-
-        g.setGameDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
-        g.setMinimumRequirements("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
-        g.setRecommendedRequirements("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium mauris quis sollicitudin egestas. Fusce ultricies vitae erat in congue. Morbi id augue lobortis, ornare erat ultrices, maximus odio. Sed et lorem sed lacus porta ullamcorper eu id sem. Nam ac pharetra orci, sed elementum purus. Donec sed purus et risus fringilla condimentum id nec enim. Donec venenatis ut orci at vulputate. Cras tempus semper mauris at lobortis. Nulla facilisi. Phasellus eu mi quis lectus commodo interdum ornare nec velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ");
-
-        Session.getInstance().setCurrentGame(g);
-
-        gameValue.setText(g.getName());
-        storeValue.setText(g.getStore());
-        developerValue.setText(g.getDeveloper());
-        publisherValue.setText(g.getPublisher());
-        StringBuilder strGenre = new StringBuilder();
-        for(String genre : g.getGenres())
-            strGenre.append(genre).append("; ");
-        strGenre.delete(strGenre.length()-2, strGenre.length());
-        genresValue.setText(String.valueOf(strGenre));
-        StringBuilder strLang = new StringBuilder("");
-        for(String lang : g.getLanguages())
-            strLang.append(lang).append("; ");
-        strLang.delete(strLang.length()-2, strLang.length());
-        languagesValue.setText(String.valueOf(strLang));
-        JSONObject gameDetails = g.getGameDetails();
-        StringBuilder strGameDetails = new StringBuilder();
-        Iterator<String> keys = gameDetails.keys();
-        //System.out.println("ciao " + gameDetails);
-        while(keys.hasNext()){
-            String key = keys.next();
-
-            strGameDetails.append(key);
-            strGameDetails.append(": ");
-            strGameDetails.append(gameDetails.get(key));
-            strGameDetails.append("\n");
-        }
-        strGameDetails.delete(strGameDetails.length()-1, strGameDetails.length());
-        gameDetailsValue.setText(String.valueOf(strGameDetails));
-        ratingValue.setText(g.getRating());
-        achievementsValue.setText(String.valueOf(g.getAchievements()));
-
-        if(g.getStore().equals("Gog")) {
-            sizeValue.setText(String.valueOf(g.getSize()));
-            inDevelopmentValue.setText(String.valueOf(g.getInDevelopment()));
-            List<String> osList = g.getOses();
-            StringBuilder s = new StringBuilder();
-            for (String os : osList)
-                s.append(os).append(",\n");
-            osValue.setText(s.toString());
-
-            steamBoxDescription.setManaged(false);
-            steamBoxMinimumRequirements.setManaged(false);
-            steamBoxRecommendedRequirements.setManaged(false);
-            steamBoxDescription.setVisible(false);
-            steamBoxMinimumRequirements.setVisible(false);
-            steamBoxRecommendedRequirements.setVisible(false);
-        }
-        else{
-            descriptionValue.setText(g.getGameDescription());
-            minimumRequirementValue.setText(g.getMinimumRequirements());
-            recommendRequirementValue.setText(g.getRecommendedRequirements());
-
-            gogBoxSize.setManaged(false);
-            gogBoxInDevelopment.setManaged(false);
-            gogBoxOses.setManaged(false);
-            gogBoxSize.setVisible(false);
-            gogBoxInDevelopment.setVisible(false);
-            gogBoxOses.setVisible(false);
-        }
-
-        if(g.getStore().equals("Steam")) //a
-            reviews.addAll(getSteamData());
-        else if(g.getStore().equals("Gog"))
-            reviews.addAll(getGogData());
-        else
-            reviews.addAll(getGamerListData());
-        */
-
-
-        /*
-        int col=0;
-        int row=1;
-        try {
-            for(Review r : reviews){
-                FXMLLoader loader = new FXMLLoader();
-                AnchorPane anchorPane;
-                if(r.getStore().equals("Steam")) {
-                    loader.setLocation(getClass().getResource("/ReviewItemSteam.fxml"));
-                }
-                else if(r.getStore().equals("Gog")) {
-                    loader.setLocation(getClass().getResource("/ReviewItemGoG.fxml"));
-                }
-                else {
-                    loader.setLocation(getClass().getResource("/ReviewItemGamerlist.fxml"));
-                }
-                anchorPane = loader.load();
-
-                // TRE LOADER
-                ReviewItemController reviewItemController = loader.getController();
-                if(r.getStore().equals("Steam")) //a
-                    reviewItemController.setSteamData(r);
-                else if(r.getStore().equals("Gog"))
-                    reviewItemController.setGogData(r);
-                else
-                    reviewItemController.setGamerlistData(r);
-
-                if(col==3){
-                    col=0;
-                    row++;
-                }
-
-                grid.add(anchorPane, col++, row); // (child, column, row)
-
-                grid.setMinWidth(Region.USE_COMPUTED_SIZE);
-                grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                grid.setMaxWidth(Region.USE_COMPUTED_SIZE);
-
-                grid.setMinHeight(Region.USE_COMPUTED_SIZE);
-                grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
-
-                GridPane.setMargin(anchorPane, new Insets(20));
-            }
-        } catch (IOException e) {e.printStackTrace();}
-        */
-
-        /*
-        gridView = new GridView<>(anchors);
-        reviewVBox.getChildren().add(gridView);
-        gridView.setCellFactory(new Callback<GridView<AnchorPane>, GridCell<AnchorPane>>() {
-            public GridCell<AnchorPane> call(GridView<AnchorPane> gridView) {
-                return new AnchorPane();
-            }
-        });
-         */
 
     }
 
@@ -325,16 +104,6 @@ public class GameInfoController implements Initializable {
                     break;
                 }
                 counter++;
-
-                /*
-                anchors.add(anchorPane);
-                gridView.setMinWidth(Region.USE_COMPUTED_SIZE);
-                gridView.setPrefWidth(Region.USE_COMPUTED_SIZE);
-                gridView.setMaxWidth(Region.USE_COMPUTED_SIZE);
-                gridView.setMinHeight(Region.USE_COMPUTED_SIZE);
-                gridView.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                gridView.setMaxHeight(Region.USE_COMPUTED_SIZE);
-                */
 
                 grid.add(anchorPane, col++, row); // (child, column, row)
                 GridPane.setMargin(anchorPane, new Insets(20));
@@ -429,7 +198,7 @@ public class GameInfoController implements Initializable {
             deleteButton.setVisible(false);
             deleteButton.setManaged(false);
 
-            //DONE check if game in user gamerlist
+            //check if game in user gamerlist
             inGamelist = Session.getInstance().getLoggedUser().searchInGameList(game.getName()); //true;
             if (inGamelist)
                 gamelistButton.setText("REMOVE FROM GAMELIST");
@@ -441,23 +210,19 @@ public class GameInfoController implements Initializable {
         reviewed = false;
         List<Review> reviewByCurrentUser = Review.getReviewsByUser(currentUser);
         for(Review review : reviewByCurrentUser) {
-            //System.out.println(review.getContent());
             if(review.getGamename().equals(game.getName())){
                 reviewed = true;
             }
         }
 
-        before = System.currentTimeMillis();
+        //before = System.currentTimeMillis();
         try {
             FXMLLoader loader_review = new FXMLLoader();
             AnchorPane anchorPane;
-            //DONE Must initialize the review with the currently selected one
+            //Must initialize the review with the currently selected one
             if (reviewed) {
                 loader_review.setLocation(getClass().getResource("/MyReview.fxml"));
                 anchorPane = loader_review.load();
-
-                //MyReviewController myReviewController = loader_review.getController();
-                //myReviewController.setContent(content);
             } else {
                 loader_review.setLocation(getClass().getResource("/ReviewForm.fxml"));
                 anchorPane = loader_review.load();
@@ -469,25 +234,23 @@ public class GameInfoController implements Initializable {
         }
         catch (IOException e){e.printStackTrace();}
 
-        later = System.currentTimeMillis();
-        System.out.println("personal review: "+ (later-before));
+        //later = System.currentTimeMillis();
+        //System.out.println("personal review: "+ (later-before));
     }
 
     public void updateGamelist(){
         if(inGamelist){
             inGamelist=false;
             gamelistButton.setText("ADD IN GAMELIST");
-            //DONE remove from gamelist
 
-            //GamerListElement gle = new GamerListElement(gameValue.getText(), publisherValue.getText(), developerValue.getText(), 666);
-            //Session.getInstance().getLoggedUser().removeFromGamerList(gle);
+            //remove from gamelist
             Session.getInstance().getLoggedUser().removeFromGamerList(gameValue.getText());
         }
         else{
             inGamelist=true;
             gamelistButton.setText("REMOVE FROM GAMELIST");
 
-            //DONE insert in gamelist
+            //insert in gamelist
             GamerListElement gle = new GamerListElement(gameValue.getText(), publisherValue.getText(), developerValue.getText(), -1);
             Session.getInstance().getLoggedUser().insertInGamelist(gle);
         }

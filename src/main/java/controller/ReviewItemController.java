@@ -17,7 +17,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Review;
-import org.controlsfx.control.PopOver;
 import utils.UtilityMenu;
 
 import java.io.IOException;
@@ -44,10 +43,6 @@ public class ReviewItemController implements Initializable {
     @FXML
     private Text text, titleValue;
 
-    private PopOver popOver;
-    private Label contentPopup, titlePopup;
-    private boolean firstPopup;
-
     private Review review;
     private Stage stage;
     private Scene scene;
@@ -55,7 +50,6 @@ public class ReviewItemController implements Initializable {
     public void setSteamData(Review review){
         this.review = review;
         usernameValue.setText(review.getUsername());
-        //contentReview.setText(review.getContent());
         text.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
 
@@ -65,13 +59,11 @@ public class ReviewItemController implements Initializable {
         else
             thumbImage.setImage(new Image("/images/Dislike-icon.png"));
 
-        //text.wrappingWidthProperty().bind(scrollPane.widthProperty());
     }
 
     public void setGogData(Review review){
         this.review = review;
         usernameValue.setText(review.getUsername());
-        //contentReview.setText(review.getContent());
         text.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
 
@@ -83,7 +75,6 @@ public class ReviewItemController implements Initializable {
         this.review = review;
         usernameValue.setText(review.getUsername());
         text.setText(review.getContent());
-        //contentReview.setText(review.getContent());
         creationDateValue.setText(review.getCreationDate().toString());
     }
 
@@ -103,35 +94,6 @@ public class ReviewItemController implements Initializable {
             }
         });
 
-        /*
-        firstPopup = true;
-        reviewVbox.setOnMouseEntered(mouseEvent -> {
-            if(firstPopup){
-                firstPopup=false;
-                contentPopup = new Label(contentReview.getText());
-                contentPopup.setWrapText(true);
-                contentPopup.setTextAlignment(TextAlignment.CENTER);
-                VBox vBox;
-                if(titleValue!=null) {
-                    titlePopup = new Label(titleValue.getText());
-                    titlePopup.setWrapText(true);
-                    titlePopup.setTextAlignment(TextAlignment.CENTER);
-                    titlePopup.setStyle("-fx-font-weight: bold;");
-                    vBox = new VBox(titlePopup, contentPopup);
-                }
-                else{
-                    vBox = new VBox(contentPopup);
-                }
-                vBox.setPrefWidth(300);
-                vBox.setStyle("-fx-background-color: white;");
-                popOver = new PopOver(vBox);
-            }
-            popOver.show(contentReview);
-        });
-
-        reviewVbox.setOnMouseExited(mouseEvent -> {
-            popOver.hide();
-        });*/
     }
 
     public void switchToUser(MouseEvent event, String user) throws IOException {

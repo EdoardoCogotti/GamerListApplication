@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -28,6 +30,7 @@ import org.neo4j.driver.Session;
 import org.neo4j.driver.TransactionWork;
 import driver.MongoDriver;
 import driver.Neo4jDriver;
+import utils.Log;
 
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
@@ -131,7 +134,6 @@ public class Game {
         this.recommended_requirements = new_recommended_requirements;
         this.reviews = new ArrayList<ReviewCompact>();
 
-        //TO_CHECK
     }
 
     public Game(Document doc){
@@ -494,8 +496,11 @@ public class Game {
         }
 
         //DONE insert info in the graphDB if needed
-        addGameToGraph(this);
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "insert game" + name + " in MongoDB");
 
+        addGameToGraph(this);
+        logger.log(Level.INFO, "insert game" + name + " in Neo4j");
     }
 
     //Save a Game info on the DB
@@ -512,10 +517,12 @@ public class Game {
             throw new RuntimeException("ERROR: you are trying to update a review that isn't in the MongoDB");
         }
 
-        //TODO: insert info in the graphDB if needed
-
+        //DONE insert info in the graphDB if needed
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "update game" + name + " in MongoDB");
+        addGameToGraph(this);
+        logger.log(Level.INFO, "update game" + name + " in Neo4j");
     }
-
 
     public void delete(){
         MongoDriver mgDriver = MongoDriver.getInstance();
@@ -539,8 +546,10 @@ public class Game {
         } catch (MongoException me) {
             System.err.println("ERROR: Unable to delete the review associated with the game due to an error: " + me);
         }
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "delete game" + name + " from MongoDB");
 
-        //TODO: delete instance of the game from graphDB
+        //DONE delete instance of the game from graphDB
         try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
         {
             session.writeTransaction((TransactionWork<Void>) tx -> {
@@ -549,6 +558,7 @@ public class Game {
                 return null;
             });
         }
+        logger.log(Level.INFO, "delete game" + name + " from Neo4j");
     }
 
     //Get  list of games
@@ -749,9 +759,9 @@ public class Game {
     public static ArrayList<Document> getAll(){
         ArrayList<Document> listGames = new ArrayList<Document>();
         MongoDriver mgDriver = MongoDriver.getInstance();
-        MongoCollection<Document> gamesColl =  mgDriver.getCollection("users");
+        MongoCollection<Document> gamesColl =  mgDriver.getCollection("games");
 
-        String field = "state"; //languages
+        String field = "genres"; //languages
         // to reduce fields in the unwind phase
         Bson projection = project(fields(
                 include(field)
@@ -839,8 +849,9 @@ public class Game {
         {
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 Result positiveRev = tx.run(
-                        "MATCH (a:User)-[:FOLLOWING]-(user)-[r:HAS_REVIEWED]-(game)\n" +
-                                "WHERE a.username = $A " +
+                        "MATCH (a:User)-[:FOLLOWING]->(user)-[r:HAS_PLAYED]->(game)\n" +
+                                "WHERE a.username = $A\n" +
+                                "AND a.favorite_genre IN game.genres\n"+
                                 "AND r.positive = true\n" +
                                 "AND NOT (a)-[:HAS_PLAYED]-(game)\n" +
                                 "RETURN game.name as name, count(*) as occurrences\n" +

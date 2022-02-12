@@ -33,7 +33,6 @@ public class UserSearchController implements Initializable {
     @FXML
     private TextField searchBar;
 
-    private String[] users = {"Mike98", "Raven86", "Sabaku88", "Cydonia", "Edoardo97", "Beba01", "Francesco97", "Anna97"};
     private ObservableList user = FXCollections.observableArrayList();
     private String currentUser;
 
@@ -51,8 +50,6 @@ public class UserSearchController implements Initializable {
         for(User u : userlist) {
             user.add(u.getUsername());
         }
-        /*for(String u : users)
-            user.add(u);*/
 
         userList.setItems(user);
     }
@@ -111,8 +108,6 @@ public class UserSearchController implements Initializable {
         adminUserEditController.displayInfo(currentUser);
 
         scene = new Scene(newRoot);
-        //String css = this.getClass().getResource("/css/adminUserEditScene.css").toExternalForm();
-        //scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
     }

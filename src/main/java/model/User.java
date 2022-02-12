@@ -17,10 +17,13 @@ import org.neo4j.driver.Session;
 import org.neo4j.driver.TransactionWork;
 import driver.MongoDriver;
 import driver.Neo4jDriver;
+import utils.Log;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -61,7 +64,7 @@ public class User {
         // DONE
         User foundUser = getUserByName(username);
         if (foundUser != null) {    //&& !foundUser.admin l'utente può essere admin
-            //this.id = foundUser.getId();
+            this.id = foundUser.getId();
             this.firstName = foundUser.getFirstName();
             this.lastName = foundUser.getLastName();
             this.gender = foundUser.getGender();
@@ -89,6 +92,7 @@ public class User {
     //    costruttore da documento
     public User (Document doc) {
         this.id = doc.getObjectId("_id");
+        //System.out.println("object id :" + this.id);
         this.username = doc.getString("username");
         this.firstName = doc.getString("first_name");
         this.lastName = doc.getString("last_name");
@@ -176,11 +180,16 @@ public class User {
         //Convert to document and replace original document in MongoDB;
         InsertOneResult ret = usersColl.insertOne(this.toDocument());
         if(ret == null){
-            throw new RuntimeException("ERROR: it was't possible to insert the game in MongoDB");
+            Logger logger = Log.getLogger();
+            logger.log(Level.INFO, "ERROR: it was't possible to insert the user " + username + " in MongoDB");
+            throw new RuntimeException("ERROR: it was't possible to insert the user in MongoDB");
         }
+        //Logger logger = Log.getLogger();
+        //logger.log(Level.INFO, "Inserted " + username + " in MongoDB");
 
-        //TODO: insert info in the graphDB if needed (DONE)
+        //DONE: insert info in the graphDB if needed
         addUserToGraph(this.getUsername(), favoriteGenre);
+        //logger.log(Level.INFO, "Inserted " + username + " in Neo4J");
     }
 
     //      update dell-user nel database
@@ -195,10 +204,12 @@ public class User {
         Document newUsersDoc = this.toDocument();
         Document ret = usersColl.findOneAndReplace(bsonFilter, newUsersDoc);
         if(ret == null){
+            Logger logger = Log.getLogger();
+            logger.log(Level.INFO, "ERROR: you are trying to update user " +username+"that isn't in the MongoDB");
             throw new RuntimeException("ERROR: you are trying to update an user that isn't in the MongoDB");
         }
 
-        //TODO: insert info in the graphDB if needed
+        //DONE insert info in the graphDB if needed
 
     }
 
@@ -229,7 +240,7 @@ public class User {
     }
 
     public static User getUserByName(String searchWord ){
-        System.out.println(searchWord);
+        //System.out.println(searchWord);
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> usersColl =  mgDriver.getCollection("users");
 
@@ -279,20 +290,24 @@ public class User {
         return false;
     }
 
-    public void insertInGamelist (GamerListElement gle) { //TO_DO FRA PM
+    public void insertInGamelist (GamerListElement gle) { //DONE
         // DONE update in neo4j
         if(!searchInGameList(gle)) {
             this.gamerList.add(gle);
             System.out.println("The game has been inserted.");
+            System.out.println(this.toDocument());
             this.update();
         }
         else {
             System.out.println("The game was already in the gamer list.");
         }
-        //addInGameList(this.getUsername(), gle.getName());
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "Inserted gamerlist" + username + " in MongoDB");
+        addInGameList(this.getUsername(), gle.getName());
+        logger.log(Level.INFO, "Inserted gamerlist" + username + " in Neo4j");
     }
 
-    public void removeFromGamerList(GamerListElement gle) { //TO_DO FRA PM
+    public void removeFromGamerList(GamerListElement gle) { //DONE FRA PM
         // DONE update in neo4j
         if(searchInGameList(gle)) {
             if(this.gamerList.remove(gle)) {
@@ -303,10 +318,13 @@ public class User {
                 System.out.println("Removal of game failed.");
         }
         else System.out.println("Game is not in user list.");
-        //removeFromList(this.getUsername(), gle.getName());
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "Removed gamerlist" + username + " from MongoDB");
+        removeFromList(this.getUsername(), gle.getName());
+        logger.log(Level.INFO, "Removed gamerlist" + username + " from Neo4j");
     }
 
-    public void removeFromGamerList(String name) { //ADDED //TO_DO FRA PM
+    public void removeFromGamerList(String name) { //ADDED //DONE FRA PM
         // DONE update in neo4j
         for (GamerListElement game : this.gamerList) {
             if(game.getName().equals(name)) {
@@ -315,7 +333,10 @@ public class User {
                 break;
             }
         }
-        //removeFromList(this.getUsername(), name);
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "Removed gamerlist" + username + " from MongoDB");
+        removeFromList(this.getUsername(), name);
+        logger.log(Level.INFO, "Removed gamerlist" + username + " from Neo4j");
     }
 
     private Document toDocument(){
@@ -397,8 +418,13 @@ public class User {
             DeleteResult result = usersColl.deleteOne(bsonFilter);
             System.out.println("Deleted document count: " + result.getDeletedCount());
         } catch (MongoException me) {
+            Logger logger = Log.getLogger();
+            logger.log(Level.INFO, "ERROR: Unable to delete " + username + " from MongoDB");
             System.err.println("ERROR: Unable to delete the user due to an error: " + me);
         }
+
+        Logger logger = Log.getLogger();
+        logger.log(Level.INFO, "Deleted " + username + " from MongoDB");
 
         //ADDED
         try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
@@ -409,7 +435,7 @@ public class User {
                 return null;
             });
         }
-
+        logger.log(Level.INFO, "Deleted " + username + " from Neo4j");
     }
 
     public static List<String> getFollowingList(String username){
@@ -518,7 +544,7 @@ public class User {
         try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
         {
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run( "MERGE (p:User {username: $username, favoriteGenre: $favoriteGenre})",
+                tx.run( "MERGE (p:User {username: $username, favorite_genre: $favoriteGenre})",
                         parameters( "username", user, "favoriteGenre", favoriteGenre));
                 return null;
             });
@@ -572,7 +598,7 @@ public class User {
             suggestedUsers=session.readTransaction((TransactionWork<List<String>>) tx -> { //ADDED
                 List<String> userlist = new ArrayList<>();
                 Result sameGenre = tx.run(
-                        "MATCH (a:User)-[:FOLLOWING*2]-(user)\n" +
+                        "MATCH (a:User)-[:FOLLOWING*2]->(user)\n" +
                                 "WHERE a.username = $A " +
                                 "AND NOT user.username = a.username " +
                                 "AND user.favorite_genre = a.favorite_genre " +
@@ -603,8 +629,7 @@ public class User {
                                 "  (a:User),\n" +
                                 "  (b:Game)\n" +
                                 "WHERE a.username = $A AND b.name = $B\n" +
-                                "MERGE (a)-[r:HAS_PLAYED]->(b)\n" +
-                                "RETURN type(r)",
+                                "MERGE (a)-[r:HAS_PLAYED]->(b)",
                         parameters( "A", user, "B", game));
                 return null;
             });
