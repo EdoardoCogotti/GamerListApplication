@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="menuScene" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" stylesheets="@css/menubarScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenubarController">
+<AnchorPane fx:id="menuScene" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" stylesheets="@css/menubarScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.gamerlist.controller.MenubarController">
    <children>
       <HBox fx:id="menuBox" prefHeight="44.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>

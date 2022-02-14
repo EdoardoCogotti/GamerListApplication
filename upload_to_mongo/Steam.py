@@ -134,7 +134,7 @@ with open('./match/reviews.csv', encoding="utf-8", newline='') as mgf:
         "single_player": "Single-player" in rowG['game_details'],
         "multi_player": "Multiplayer" in rowG['game_details'],
         "coop": "Co-op," in rowG['game_details'],
-        "controller_support": "Full controller support," in rowG['game_details'],
+        "controller_support": "Full it.unipi.gamerlist.controller support," in rowG['game_details'],
         "cloud_saves": "Cloud" in rowG['game_details'],
         "achievement": "Achievements" in rowG['game_details'],
       }
