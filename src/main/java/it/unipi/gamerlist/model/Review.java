@@ -207,7 +207,12 @@ public class Review {
         ));
         game.update();
 
-        int res = addReview(this.username, this.gamename, this.positive);
+        boolean positive;
+        if(!this.store.equals("GOG"))
+            positive=this.positive;
+        else
+            positive=(this.rating>=3);
+        int res = addReview(this.username, this.gamename, positive);
         if(res==-1)
             logger.log(Level.INFO, "ERROR insert review" + id + " in Neo4j");
     }
@@ -216,7 +221,7 @@ public class Review {
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewsColl =  mgDriver.getCollection("reviews");
 
-        System.out.println("Searching review by "+username+" of "+gamename);
+        //System.out.println("Searching review by "+username+" of "+gamename);
         FindIterable<Document> reviewDocs = reviewsColl.find(
                 Filters.and(
                         Filters.eq("game_name", gamename),
@@ -235,6 +240,7 @@ public class Review {
         //save the changes to the current review (if the review is new, insert it)
         MongoDriver mgDriver = MongoDriver.getInstance();
         MongoCollection<Document> reviewColl =  mgDriver.getCollection("reviews");
+        Logger logger = Log.getLogger();
 
         //find a review by its id in mongo
         Bson bsonFilter = Filters.eq("_id", this.id);
@@ -243,12 +249,19 @@ public class Review {
         Document newReviewDoc = this.toDocument();
         Document ret = reviewColl.findOneAndReplace(bsonFilter, newReviewDoc);
         if(ret == null){
-            Logger logger = Log.getLogger();
             logger.log(Level.INFO, "ERROR update review" + id + " in MongoDB");
             throw new RuntimeException("ERROR: you are trying to update a review that isn't in the MongoDB");
         }
 
         // insert info in the graphDB if needed
+        boolean positive;
+        if(!this.store.equals("GOG"))
+            positive=this.positive;
+        else
+            positive=(this.rating>=3);
+        int res = updateReview(this.username, this.gamename, positive);
+        if(res==-1)
+            logger.log(Level.INFO, "ERROR insert review" + id + " in Neo4j");
     }
 
     public void delete(){
@@ -292,7 +305,8 @@ public class Review {
             doc.append("rating", this.rating); 
             doc.append("title", this.title); 
         }
-        if(this.store.equals("Steam")){
+        //if(this.store.equals("Steam")){
+        else{
             //Steam
             doc.append("positive", this.positive); 
         }
@@ -360,7 +374,7 @@ public class Review {
         );
         MongoCursor<Document> iterator = result.iterator();
         long later = System.currentTimeMillis();
-        System.out.println("1: "+ ( later - earlier));
+        //System.out.println("1: "+ ( later - earlier));
 
         int pos = 0;
         int length = 0;
@@ -375,8 +389,8 @@ public class Review {
 
         }
 
-        System.out.println(pos);
-        System.out.println(length);
+        //System.out.println(pos);
+        //System.out.println(length);
 
         return (pos*100)/length;
     }
@@ -427,10 +441,10 @@ public class Review {
 
         MongoCursor<Document> iterator = result.iterator();
 
-        System.out.println(iterator.hasNext());
+        //System.out.println(iterator.hasNext());
         while(iterator.hasNext()) {
             Document doc = iterator.next();
-            System.out.println(doc.toJson());
+            //System.out.println(doc.toJson());
             int tot= ((Document)doc.get("_id")).getInteger("totReviews");
             int n = doc.getInteger("negReviews");
             return (int) Math.round(100.0*n/tot);
@@ -448,11 +462,32 @@ public class Review {
         {
             res = session.writeTransaction((TransactionWork<Integer>) tx -> {
                 Result r = tx.run(
-                        "MATCH  (a:User), (b:Game)"+
-                                "WHERE a.username = $A AND b.name = $B" +
-                                "MERGE (a)-[r:HAS_REVIEWED {positive: $C}]->(b)" +
+                        "MATCH (a:User), (b:Game)\n"+
+                                "WHERE a.username = $A AND b.name = $B\n" +
+                                "MERGE (a)-[r:HAS_REVIEWED {positive: $C}]->(b)\n" +
                                 "RETURN id(r)",
                             parameters( "A", user, "B", game, "C", review));
+                if (r.hasNext()) {
+                    return r.single().get(0).asInt();
+                }
+                return -1;
+            });
+        }
+        return res;
+    }
+
+    public static int updateReview(final String user, final String game, boolean review) {
+
+        int res;
+        try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
+        {
+            res = session.writeTransaction((TransactionWork<Integer>) tx -> {
+                Result r = tx.run(
+                        "MATCH (a:User)-[r:HAS_REVIEWED]-(b:Game)\n"+
+                                "WHERE a.username = $A AND b.name = $B\n" +
+                                "SET r.positive= $C\n" +
+                                "RETURN id(r)",
+                        parameters( "A", user, "B", game, "C", review));
                 if (r.hasNext()) {
                     return r.single().get(0).asInt();
                 }

@@ -2,6 +2,7 @@ package it.unipi.gamerlist.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import it.unipi.gamerlist.model.Game;
@@ -18,6 +19,8 @@ public class ReviewFormController {
     private AnchorPane anchorPane;
     @FXML
     private TextArea reviewTextArea;
+    @FXML
+    private CheckBox positiveCheckBox;
 
     private boolean editFlag;
 
@@ -30,6 +33,7 @@ public class ReviewFormController {
             //update my review in db
             Review review = Review.get(gameName, username);
             review.setContent(content);
+            review.setPositive(positiveCheckBox.isSelected());
             review.update();
         }else{
             // add my review in db
@@ -41,6 +45,8 @@ public class ReviewFormController {
                     content,
                     0
             );
+            review.setPositive(positiveCheckBox.isSelected());
+            //System.out.println(review.toDocument());
             review.insert(Game.getGamesByNamePart(gameName).get(0));
         }
 

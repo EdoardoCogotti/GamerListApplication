@@ -176,10 +176,10 @@ public class GameInfoController implements Initializable {
         }
 
         //Get reviews from db
-        long before = System.currentTimeMillis();
+        //long before = System.currentTimeMillis();
         this.reviews = Review.getReviewsByGame(game);
-        long later = System.currentTimeMillis();
-        System.out.println("review time:" + (later-before));
+        //long later = System.currentTimeMillis();
+        //System.out.println("review time:" + (later-before));
         //exclude review by current user (it's visualize on top instead)
         Review toRemove = null;
         for(Review review : this.reviews) {

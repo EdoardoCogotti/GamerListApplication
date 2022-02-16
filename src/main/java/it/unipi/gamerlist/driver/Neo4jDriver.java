@@ -9,8 +9,12 @@ public class Neo4jDriver {
     private static Neo4jDriver neoInstance = null;
     private final Driver driver;
 
+    /* STANDALONE VERSION
     private Neo4jDriver() {
         driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "root"));
+    }*/
+    private Neo4jDriver() {
+        driver = GraphDatabase.driver("bolt://172.16.4.75:7687", AuthTokens.basic("neo4j", ""));
     }
 
     // singleton Pattern

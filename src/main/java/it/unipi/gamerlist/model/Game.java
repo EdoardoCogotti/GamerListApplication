@@ -160,7 +160,7 @@ public class Game {
 
         //if we have a GOG game, we import some fields over others
         if(this.store.equals("GOG")){
-            this.player_rating = doc.getDouble("player_rating");
+            this.player_rating = Double.parseDouble(String.valueOf(doc.get("player_rating")));
             this.oses = new ArrayList<String>(doc.getList("oses", String.class));
             this.size = doc.getString("size");
             this.in_development = doc.getBoolean("in_development");
@@ -553,7 +553,7 @@ public class Game {
 
         for(Document doc : gamesDocs) {
             Game newGame = new Game(doc);
-            System.out.println(newGame.getName());
+            //System.out.println(newGame.getName());
             games.add(newGame);
         }
 
@@ -635,7 +635,7 @@ public class Game {
                 while (cursor.hasNext()) {
 
                     Document document = cursor.next();
-                    System.out.println(document.toJson());
+                    //System.out.println(document.toJson());
                     listGames.add(document);
                 }
             } finally {
@@ -715,7 +715,7 @@ public class Game {
                 while (cursor.hasNext()) {
 
                     Document document = cursor.next();
-                    System.out.println(document.toJson());
+                    //System.out.println(document.toJson());
                     listGames.add(document);
                 }
             } finally {
@@ -768,7 +768,7 @@ public class Game {
                 while (cursor.hasNext()) {
 
                     Document document = cursor.next();
-                    System.out.println(document.toJson());
+                    //System.out.println(document.toJson());
                     listGames.add(document);
                 }
             } finally {
@@ -785,8 +785,8 @@ public class Game {
     //questa funzione aggiunge un gioco al graph
     public static int addGameToGraph( final Game game)
     {
-        System.out.println("names: " + game.getName());
-        System.out.println("genere : " +game.getGenres());
+        //System.out.println("names: " + game.getName());
+        //System.out.println("genere : " +game.getGenres());
         int res;
         try ( Session session = Neo4jDriver.getInstance().getDriver().session() )
         {
@@ -826,7 +826,7 @@ public class Game {
         {
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 Result positiveRev = tx.run(
-                        "MATCH (a:User)-[:FOLLOWING]->(user)-[r:HAS_PLAYED]->(game)\n" +
+                        "MATCH (a:User)-[:FOLLOWING]->(user)-[r:HAS_REVIEWED]->(game)\n" +
                                 "WHERE a.username = $A\n" +
                                 "AND a.favorite_genre IN game.genres\n"+
                                 "AND r.positive = true\n" +
@@ -835,12 +835,24 @@ public class Game {
                                 "ORDER BY occurrences DESC\n" +
                                 "LIMIT 3",
                         parameters( "A", user));
+                if(!positiveRev.hasNext()){
+                    positiveRev = tx.run(
+                            "MATCH (a:User)-[:FOLLOWING]->(user)-[r:HAS_REVIEWED]->(game)\n" +
+                                    "WHERE a.username = $A\n" +
+                                    //"AND a.favorite_genre IN game.genres\n"+
+                                    "AND r.positive = true\n" +
+                                    "AND NOT (a)-[:HAS_PLAYED]-(game)\n" +
+                                    "RETURN game.name as name, count(*) as occurrences\n" +
+                                    "ORDER BY occurrences DESC\n" +
+                                    "LIMIT 3",
+                            parameters( "A", user));
+                }
                 while(positiveRev.hasNext()) {
                     Record record = positiveRev.next();
                     suggested.add(record.get("name").asString());
-                    System.out.println("Reviewed game: ");
-                    System.out.println(record.get("name").asString());
-                    System.out.println(record.get("occurrences").asInt());
+                    //System.out.println("Reviewed game: ");
+                    //System.out.println(record.get("name").asString());
+                    //System.out.println(record.get("occurrences").asInt());
                 }
                 return null;
             });

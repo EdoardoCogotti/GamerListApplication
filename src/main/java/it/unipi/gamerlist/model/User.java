@@ -321,7 +321,7 @@ public class User {
         if(!searchInGameList(gle)) {
             this.gamerList.add(gle);
             System.out.println("The game has been inserted.");
-            System.out.println(this.toDocument());
+            //System.out.println(this.toDocument());
             this.update();
         }
         else {
@@ -529,13 +529,24 @@ public class User {
                 List<String> userlist = new ArrayList<>();
                 Result sameGenre = tx.run(
                         "MATCH (a:User)-[:FOLLOWING*2]->(user)\n" +
-                                "WHERE a.username = $A " +
-                                "AND NOT user.username = a.username " +
-                                "AND user.favorite_genre = a.favorite_genre " +
+                                "WHERE a.username = $A\n" +
+                                "AND NOT user.username = a.username\n" +
+                                "AND user.favorite_genre = a.favorite_genre\n" +
                                 "AND NOT (a)-[:FOLLOWING]->(user)\n" +
                                 "RETURN DISTINCT user.username as username\n" +
                                 "LIMIT 5",
                         parameters( "A", username));
+                if(!sameGenre.hasNext()){
+                    sameGenre = tx.run(
+                            "MATCH (a:User)-[:FOLLOWING*2]->(user)\n" +
+                                    "WHERE a.username = $A\n" +
+                                    "AND NOT user.username = a.username\n" +
+                                    //"AND user.favorite_genre = a.favorite_genre\n" +
+                                    "AND NOT (a)-[:FOLLOWING]->(user)\n" +
+                                    "RETURN DISTINCT user.username as username\n" +
+                                    "LIMIT 5",
+                            parameters( "A", username));
+                }
                 while(sameGenre.hasNext()) {
                     Record record = sameGenre.next();
                     userlist.add(record.get("username").asString());
@@ -633,7 +644,7 @@ public class User {
                     Record record = mostPlayed.next();
                     String genre = String.valueOf(record.get("genre"));
 
-                    System.out.println("utente: " + user + " genere: " + genre);
+                    //System.out.println("utente: " + user + " genere: " + genre);
 
                     Result updateUser = tx.run( "MATCH (a:User {username: $A})\n" +
                                     "SET a.most_played_genre = $B\n" +
@@ -661,9 +672,9 @@ public class User {
                         parameters( "A", user));
                 while(positiveRev.hasNext()) {
                     Record record = positiveRev.next();
-                    System.out.println("Friends' game: ");
-                    System.out.println(record.get("name").asString());
-                    System.out.println(record.get("occurrences").asInt());
+                    //System.out.println("Friends' game: ");
+                    //System.out.println(record.get("name").asString());
+                    //System.out.println(record.get("occurrences").asInt());
                 }
                 return null;
             });

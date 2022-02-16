@@ -1,5 +1,9 @@
 package it.unipi.gamerlist.driver;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -13,7 +17,15 @@ public class MongoDriver {
     private MongoDatabase database;
 
     private MongoDriver() {
-        client = MongoClients.create("mongodb://localhost:27017/");
+        //STANDALONE VERSION
+        //client = MongoClients.create("mongodb://localhost:27017/");
+
+        ConnectionString uri = new ConnectionString("mongodb://172.16.4.77:27018/");
+        MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uri)
+                .readPreference(ReadPreference.nearest()).retryWrites(true)
+                .writeConcern(WriteConcern.W1).build();
+        client = MongoClients.create(mcs);
+
         database = client.getDatabase("GamerList");
     }
 
